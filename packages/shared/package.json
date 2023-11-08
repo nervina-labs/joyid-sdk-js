@@ -3,7 +3,16 @@
   "version": "0.0.1",
   "description": "Shared code for JoyID SDK",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nervina-labs/joyid-sdk-js.git",
+    "directory": "packages/shared"
+  },
   "exports": {
     ".": {
       "import": {
@@ -21,11 +30,6 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsup"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nervina-labs/joyid-sdk-js.git",
-    "directory": "packages/shared"
   },
   "files": [
     "/src",

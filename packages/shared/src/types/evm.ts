@@ -7,6 +7,8 @@ export type EthAddress = `0x${string}`
 
 export type AccessList = Array<{ address: EthAddress; storageKeys: Hex[] }>
 
+export type { TypedData } from 'abitype'
+
 export interface TransactionRequest {
   // type?: number
   maxPriorityFeePerGas?: string
