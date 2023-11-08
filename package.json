@@ -1,0 +1,38 @@
+{
+  "name": "joyid-sdk-js",
+  "version": "1.0.0",
+  "description": "Monorepo for JoyID Javascript SDK",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "yuche",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "prettier": {
+    "semi": false,
+    "trailingComma": "es5",
+    "singleQuote": true,
+    "bracketSameLine": true,
+    "tabWidth": 2,
+    "printWidth": 80
+  },
+  "type": "module",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-standard-with-typescript": "^39.1.1",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-promise": "^6.0.0",
+    "typescript": "^5.2.2",
+    "unbuild": "^2.0.0"
+  }
+}

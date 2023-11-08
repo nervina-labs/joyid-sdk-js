@@ -1,0 +1,29 @@
+{
+  "name": "@joyid/shared",
+  "version": "0.0.1",
+  "description": "Shared code for JoyID SDK",
+  "main": "index.js",
+  "type": "module",
+  "sideEffects": false,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nervina-labs/joyid-sdk-js.git",
+    "directory": "packages/shared"
+  },
+  "files": [
+    "/src",
+    "/dist",
+    "/types",
+    "/utils"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "abitype": "^0.10.2",
+    "type-fest": "^4.6.0"
+  }
+}
