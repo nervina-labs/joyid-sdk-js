@@ -89,6 +89,7 @@ export type AuthResponse = {
 export type SignMessageResponse = {
   type: DappRequestType.SignMessage
 } & RequireExactlyOne<DappResponse<SignMessageResponseData>, 'data' | 'error'>
+
 export interface BaseSignMessageRequest extends AuthRequest {
   challenge: string
   isData?: boolean
@@ -125,4 +126,16 @@ export type SignCotaNFTResponse = {
   type: DappRequestType.SignCotaNFT
 } & RequireExactlyOne<DappResponse<SignCotaNFTResponseData>, 'data' | 'error'>
 
-export const SESSION_KEY_VER = '00'
+export interface JoyIDConfig {
+  joyidAppURL?: string
+  joyidServerURL?: string
+}
+
+export interface DappConfig extends JoyIDConfig {
+  // name of your app
+  name?: string
+  // logo of your app
+  logo?: string
+  // custom state that will be returned to your app after authentication
+  state?: unknown
+}

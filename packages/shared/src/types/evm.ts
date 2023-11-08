@@ -1,6 +1,6 @@
 import { type RequireAllOrNone } from 'type-fest'
 import { type TypedData } from 'abitype'
-import { type DappCommunicationType } from './dapp'
+import type { DappCommunicationType, DappConfig } from './dapp'
 
 export type Hex = `0x${string}`
 export type EthAddress = `0x${string}`
@@ -34,24 +34,10 @@ export interface Network {
   chainId: number
 }
 
-export interface JoyIDConfig {
-  joyidAppURL?: string
-  joyidServerURL?: string
-}
-
 export type EthNetworkConfig = RequireAllOrNone<
   { rpcURL?: string; network?: Network },
   'network' | 'rpcURL'
 >
-
-export interface DappConfig extends JoyIDConfig {
-  // name of your app
-  name?: string
-  // logo of your app
-  logo?: string
-  // custom state that will be returned to your app after authentication
-  state?: unknown
-}
 
 export type EvmConfig = EthNetworkConfig & DappConfig
 

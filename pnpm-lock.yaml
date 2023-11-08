@@ -42,8 +42,8 @@ importers:
   packages/shared:
     dependencies:
       abitype:
-        specifier: ^0.10.2
-        version: 0.10.2(typescript@5.2.2)
+        specifier: ^0.8.7
+        version: 0.8.7(typescript@5.2.2)
       type-fest:
         specifier: ^4.6.0
         version: 4.6.0
@@ -1021,14 +1021,12 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
 
-  /abitype@0.10.2(typescript@5.2.2):
-    resolution: {integrity: sha512-1XndI+RKFWK4+TXCNv1683MRyX5NGmlHXCvqzjOqhSS3PQrxT2QYRZq1bMPPRNjn89B3eVaM2w7y3jVj/OIUzA==}
+  /abitype@0.8.7(typescript@5.2.2):
+    resolution: {integrity: sha512-wQ7hV8Yg/yKmGyFpqrNZufCxbszDe5es4AZGYPBitocfSqXtjrTG9JMWFcc4N30ukl2ve48aBTwt7NJxVQdU3w==}
     peerDependencies:
       typescript: '>=5.0.4'
-      zod: ^3 >=3.22.0
+      zod: ^3 >=3.19.1
     peerDependenciesMeta:
-      typescript:
-        optional: true
       zod:
         optional: true
     dependencies:

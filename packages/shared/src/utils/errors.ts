@@ -22,13 +22,3 @@ export class DappError extends Error {
     this.rawError = rawError
   }
 }
-
-export class RedirectErrorWithState extends Error {
-  constructor(
-    public message: string,
-    public state?: any
-  ) {
-    super(message)
-    this.state = state
-  }
-}
