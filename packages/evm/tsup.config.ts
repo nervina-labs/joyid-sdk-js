@@ -1,9 +1,9 @@
 import { defineConfig } from 'tsup'
 
-import { dependencies } from './package.json'
+import { dependencies, name } from './package.json'
 
 export default defineConfig({
-  name: 'joyid-evm',
+  name,
   splitting: true,
   clean: true,
   bundle: true,
@@ -11,7 +11,7 @@ export default defineConfig({
   sourcemap: true,
   target: 'es2021',
   format: ['esm', 'cjs'],
-  entry: ['src/index.ts'],
+  entry: ['src/index.ts', 'src/aa.ts', 'src/web2.ts'],
   external: [...Object.keys(dependencies)],
   platform: 'browser',
 })
