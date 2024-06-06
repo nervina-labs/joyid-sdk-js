@@ -1,9 +1,38 @@
 import type { RequireExactlyOne } from 'type-fest'
-import type { CredentialKeyType, SigningAlg } from './key'
+import type { CKBTransaction } from './ckb'
+
+export enum SigningAlg {
+  RS256 = -257,
+  ES256 = -7,
+}
+
+export interface JoyIDConfig {
+  joyidAppURL?: string
+  joyidServerURL?: string
+}
+
+export interface DappConfig extends JoyIDConfig {
+  // name of your app
+  name?: string
+  // logo of your app
+  logo?: string
+  // custom state that will be returned to your app after authentication
+  state?: unknown
+}
+
+export type SessionKeyType = 'main_session_key' | 'sub_session_key'
+export type WebauthnKeyType = 'main_key' | 'sub_key'
+export type CredentialKeyType = SessionKeyType | WebauthnKeyType
 
 export type Base64URLString = string
 
-export type RequestNetwork = 'nervos' | 'nostr' | 'ethereum'
+export type RequestNetwork =
+  | 'nervos'
+  | 'nostr'
+  | 'ethereum'
+  | 'btc-p2tr'
+  | 'btc-p2wpkh'
+  | 'btc-auto'
 
 export interface BaseRequest {
   redirectURL: string
@@ -20,15 +49,35 @@ export interface AuthRequest extends BaseRequest {
   state?: unknown
 }
 
+export interface MiniAppBaseRequest {
+  name: string
+  logo: string
+  miniAppToken: string
+  callbackUrl: string
+  joyidAppURL?: string
+}
+
+export interface MiniAppAuthRequest extends MiniAppBaseRequest {
+  requestNetwork?: RequestNetwork
+  challenge?: string
+}
+
 export enum DappRequestType {
   Auth = 'Auth',
   SignMessage = 'SignMessage',
   SignEvm = 'SignEvm',
+  SignPsbt = 'SignPsbt',
+  BatchSignPsbt = 'BatchSignPsbt',
   SignCkbTx = 'SignCkbTx',
   SignCotaNFT = 'SignCotaNFT',
+  SignCkbRawTx = 'SignCkbRawTx',
   SignNostrEvent = 'SignNostrEvent',
   EncryptNostrMessage = 'EncryptNostrMessage',
+  EvmWeb2Login = 'EvmWeb2Login',
   DecryptNostrMessage = 'DecryptNostrMessage',
+  AuthMiniApp = 'AuthMiniApp',
+  SignMiniAppMessage = 'SignMiniAppMessage',
+  SignMiniAppEvm = 'SignMiniAppEvm',
 }
 
 export enum DappCommunicationType {
@@ -74,6 +123,15 @@ export interface AuthResponseData extends Partial<SignMessageResponseData> {
   message?: string
   keyType: CredentialKeyType
   alg: SigningAlg
+  btcAddressType?: 'p2tr' | 'p2wpkh'
+  taproot: {
+    address: string
+    pubkey: string
+  }
+  nativeSegwit: {
+    address: string
+    pubkey: string
+  }
 }
 
 export interface DappResponse<T> {
@@ -89,12 +147,18 @@ export type AuthResponse = {
 export type SignMessageResponse = {
   type: DappRequestType.SignMessage
 } & RequireExactlyOne<DappResponse<SignMessageResponseData>, 'data' | 'error'>
-
 export interface BaseSignMessageRequest extends AuthRequest {
   challenge: string
   isData?: boolean
   address?: string
   requestNetwork?: RequestNetwork
+}
+
+export interface MiniAppSignMessageRequest extends MiniAppBaseRequest {
+  requestNetwork?: RequestNetwork
+  challenge?: string
+  isData?: boolean
+  address: string
 }
 
 export interface SignEvmTxResponseData {
@@ -111,8 +175,14 @@ export type SignMessageRequest = RequireExactlyOne<
   'address'
 >
 
+export type BtcSignMessageType = 'bip322-simple' | 'ecdsa'
+
+export interface BtcSignMessageRequest extends SignMessageRequest {
+  signMessageType: BtcSignMessageType
+}
+
 export interface SignCkbTxResponseData {
-  tx: any
+  tx: CKBTransaction
   state?: any
 }
 
@@ -126,16 +196,10 @@ export type SignCotaNFTResponse = {
   type: DappRequestType.SignCotaNFT
 } & RequireExactlyOne<DappResponse<SignCotaNFTResponseData>, 'data' | 'error'>
 
-export interface JoyIDConfig {
-  joyidAppURL?: string
-  joyidServerURL?: string
-}
+export type SignCkbRawTxResponseData = SignCkbTxResponseData
 
-export interface DappConfig extends JoyIDConfig {
-  // name of your app
-  name?: string
-  // logo of your app
-  logo?: string
-  // custom state that will be returned to your app after authentication
-  state?: unknown
-}
+export type SignCkbRawTxResponse = {
+  type: DappRequestType.SignCkbRawTx
+} & RequireExactlyOne<DappResponse<SignCkbRawTxResponseData>, 'data' | 'error'>
+
+export const SESSION_KEY_VER = '00'

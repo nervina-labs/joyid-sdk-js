@@ -1,0 +1,47 @@
+{
+  "name": "@joyid/common",
+  "version": "0.0.1",
+  "description": "Shared code for JoyID SDK",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nervina-labs/joyid-sdk-js.git",
+    "directory": "packages/shared"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup"
+  },
+  "files": [
+    "/src",
+    "/dist",
+    "/types",
+    "/utils"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "abitype": "0.8.7",
+    "type-fest": "4.6.0"
+  }
+}

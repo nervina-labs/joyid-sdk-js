@@ -21,7 +21,33 @@
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,
-    "target": "es2021"
+    "target": "es2021",
+    "paths": {
+      "@joyid/common": [
+        "./packages/common/src"
+      ],
+      "@joyid/common/*": [
+        "packages/common/src/*"
+      ],
+      "@joyid/evm": [
+        "./packages/evm/src"
+      ],
+      "@joyid/evm/*": [
+        "./packages/evm/src/*"
+      ],
+      "@joyid/ethereum-provider": [
+        "./packages/ethereum-provider/src"
+      ],
+      "@joyid/ethereum-provider/*": [
+        "./packages/ethereum-provider/src/*"
+      ],
+      "@joyid/wagmi": [
+        "./packages/wagmi/src"
+      ],
+      "@joyid/wagmi/*": [
+        "./packages/wagmi/src/*"
+      ]
+    }
   },
   "exclude": [
     "**/node_modules/**",

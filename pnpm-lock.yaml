@@ -39,6 +39,12 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2
 
+  packages/evm:
+    dependencies:
+      '@joyid/shared':
+        specifier: workspace:*
+        version: link:../shared
+
   packages/shared:
     dependencies:
       abitype:

@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import type {
   AuthResponseData,
@@ -7,13 +9,15 @@ import type {
   SignEvmTxResponseData,
   SignMessageResponseData,
 } from '../types/dapp'
+import type { EvmWeb2LoginResponse } from '../types/evm'
 import type { SignNostrEventData } from '../types/nostr'
 import { getConfig } from './config'
 import {
   PopupCancelledError,
-  // PopupNotSupportedError,
+  PopupNotSupportedError,
   PopupTimeoutError,
 } from './errors'
+import { isStandaloneBrowser } from '../utils/browser'
 
 export interface PopupConfigOptions<
   T extends DappRequestType = DappRequestType.Auth,
@@ -53,24 +57,30 @@ interface PopupRerurnType {
   [DappRequestType.Auth]: AuthResponseData
   [DappRequestType.SignMessage]: SignMessageResponseData
   [DappRequestType.SignEvm]: SignEvmTxResponseData
+  [DappRequestType.SignPsbt]: SignEvmTxResponseData
+  [DappRequestType.BatchSignPsbt]: {
+    psbts: string[]
+  }
   [DappRequestType.SignCkbTx]: SignCkbTxResponseData
   [DappRequestType.SignCotaNFT]: SignCotaNFTResponseData
+  [DappRequestType.SignCkbRawTx]: SignCkbTxResponseData
   [DappRequestType.SignNostrEvent]: SignNostrEventData
   [DappRequestType.EncryptNostrMessage]: any
   [DappRequestType.DecryptNostrMessage]: any
+  [DappRequestType.AuthMiniApp]: any
+  [DappRequestType.SignMiniAppEvm]: any
+  [DappRequestType.SignMiniAppMessage]: any
+  [DappRequestType.EvmWeb2Login]: EvmWeb2LoginResponse
 }
 
 export const runPopup = async <T extends DappRequestType>(
   config: PopupConfigOptions<T>
 ): Promise<PopupRerurnType[T]> =>
   await new Promise<PopupRerurnType[T]>((resolve, reject) => {
-    // todo: fix me
-    // if (isStandaloneBrowser()) {
-    //   reject(new PopupNotSupportedError(config.popup))
-    // }
-    // eslint-disable-next-line prefer-const
+    if (isStandaloneBrowser()) {
+      reject(new PopupNotSupportedError(config.popup))
+    }
     let popupEventListener: (e: MessageEvent) => void
-    // eslint-disable-next-line prefer-const
     let timeoutId: undefined | ReturnType<typeof setTimeout>
     // Check each second if the popup is closed triggering a PopupCancelledError
     const popupTimer = setInterval(() => {
@@ -94,8 +104,7 @@ export const runPopup = async <T extends DappRequestType>(
     popupEventListener = (e: MessageEvent) => {
       const { joyidAppURL } = getConfig()
       if (joyidAppURL == null) {
-        reject(new Error('JoyID app url is not set'))
-        return
+        throw new Error('joyidAppURL is not set in the config')
       }
       const appURL = new URL(joyidAppURL)
       if (e.origin !== appURL.origin) {

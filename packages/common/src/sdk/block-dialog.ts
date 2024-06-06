@@ -86,13 +86,12 @@ const dialogInnerHtml = `
 
 export const appendStyle = (): void => {
   const _style = document.getElementById(styleId)
-  if (_style == null) {
+  if (_style != null) {
     return
   }
   const style = document.createElement('style')
   style.appendChild(document.createTextNode(styleSheet))
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-  const head = document.head || document.getElementsByTagName('head')[0]
+  const head = document.head ?? document.getElementsByTagName('head')[0]
   head.appendChild(style)
 }
 
@@ -113,7 +112,8 @@ export const createBlockDialog = async <T>(
     document.body.removeChild(dialogBg)
   }
   return await new Promise<T>((resolve, reject) => {
-    const approveBtnHandler = async (): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    approveBtn?.addEventListener('click', async () => {
       try {
         const data = await cb()
         closeDialog()
@@ -122,9 +122,7 @@ export const createBlockDialog = async <T>(
         closeDialog()
         reject(error)
       }
-    }
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    approveBtn?.addEventListener('click', approveBtnHandler)
+    })
     rejectBtn?.addEventListener('click', () => {
       closeDialog()
       reject(new Error('User Rejected'))

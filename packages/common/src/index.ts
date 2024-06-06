@@ -1,6 +1,5 @@
 export * from './utils'
 export * from './types/dapp'
 export * from './types/evm'
-export * from './types/key'
 export * from './types/nostr'
 export * from './sdk'
