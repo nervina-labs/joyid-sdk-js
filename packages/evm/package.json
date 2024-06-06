@@ -40,12 +40,12 @@
     },
     "./web2login": {
       "import": {
-        "types": "./dist/web2.d.ts",
-        "default": "./dist/web2.js"
+        "types": "./dist/web2login.d.ts",
+        "default": "./dist/web2login.js"
       },
       "require": {
-        "types": "./dist/web2.d.cts",
-        "default": "./dist/web2.cjs"
+        "types": "./dist/web2login.d.cts",
+        "default": "./dist/web2login.cjs"
       }
     },
     "./dist/*": "./dist/*",
