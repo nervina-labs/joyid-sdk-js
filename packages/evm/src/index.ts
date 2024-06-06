@@ -29,6 +29,8 @@ import {
 
 export type { EvmConfig, TransactionRequest, PopupConfigOptions as PopupConifg }
 
+export { safeExec } from '@joyid/common'
+
 const JOYID_STORAGE_KEY = 'joyid:ethereum::address'
 
 export const buildSignTxURL = (
