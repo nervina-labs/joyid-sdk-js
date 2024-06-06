@@ -1,9 +1,9 @@
 import { defineConfig } from 'tsup'
 
-import { dependencies } from './package.json'
+import { dependencies, name } from './package.json'
 
 export default defineConfig({
-  name: 'joyid-shared',
+  name,
   splitting: true,
   clean: true,
   bundle: true,
