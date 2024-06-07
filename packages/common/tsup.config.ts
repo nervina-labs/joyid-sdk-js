@@ -9,6 +9,7 @@ export default defineConfig({
   bundle: true,
   dts: true,
   target: 'es2021',
+  sourcemap: true,
   format: ['esm', 'cjs'],
   entry: ['src/index.ts'],
   external: [...Object.keys(dependencies)],

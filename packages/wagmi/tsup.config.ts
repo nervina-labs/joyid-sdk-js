@@ -8,6 +8,7 @@ export default defineConfig({
   clean: true,
   bundle: true,
   dts: true,
+  sourcemap: true,
   target: 'es2021',
   format: ['esm', 'cjs'],
   entry: ['src/index.ts'],

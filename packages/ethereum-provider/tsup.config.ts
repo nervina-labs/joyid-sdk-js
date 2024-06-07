@@ -7,6 +7,7 @@ export default defineConfig({
   splitting: true,
   clean: true,
   bundle: true,
+  sourcemap: true,
   dts: true,
   target: 'es2021',
   format: ['esm', 'cjs'],
