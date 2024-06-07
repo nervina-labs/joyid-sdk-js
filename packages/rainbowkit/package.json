@@ -26,7 +26,7 @@
   ],
   "devDependencies": {
     "viem": "2.10.11",
-    "wagmi": "2.9.7"
+    "wagmi": "2.9.10"
   },
   "peerDependencies": {
     "@rainbow-me/rainbowkit": "2.x",
