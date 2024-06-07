@@ -1,0 +1,34 @@
+{
+  "name": "@joyid/ckb",
+  "version": "0.0.9",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "overrides": {},
+  "files": [
+    "src",
+    "dist"
+  ],
+  "dependencies": {
+    "@joyid/common": "workspace:*",
+    "@nervosnetwork/ckb-sdk-utils": "^0.109.1",
+    "cross-fetch": "4.0.0",
+    "uncrypto": "^0.1.3"
+  }
+}
