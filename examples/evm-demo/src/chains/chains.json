@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Ethereum Sepolia",
+    "chainId": 11155111,
+    "rpcURL": "https://ethereum-sepolia.blockpi.network/v1/rpc/public",
+    "unit": "ETH",
+    "explorer": "https://sepolia.etherscan.io",
+    "faucet": "https://sepoliafaucet.com"
+  },
+  {
+    "name": "BNB Testnet",
+    "chainId": 97,
+    "rpcURL": "https://bsc-testnet.blockpi.network/v1/rpc/public",
+    "unit": "BNB",
+    "explorer": "https://testnet.bscscan.com",
+    "faucet": "https://testnet.bnbchain.org/faucet-smart"
+  },
+  {
+    "name": "Avalanche Fuji",
+    "chainId": 43113,
+    "rpcURL": "https://avalanche-fuji.blockpi.network/v1/rpc/public",
+    "unit": "AVAX",
+    "explorer": "https://testnet.snowtrace.io",
+    "faucet": "https://core.app/tools/testnet-faucet/?subnet=c&token=c"
+  },
+  {
+    "name": "Polygon Mumbai",
+    "chainId": 80001,
+    "rpcURL": "https://polygon-mumbai.blockpi.network/v1/rpc/public",
+    "unit": "MATIC",
+    "explorer": "https://mumbai.polygonscan.com",
+    "faucet": "https://mumbaifaucet.com"
+  }
+]
