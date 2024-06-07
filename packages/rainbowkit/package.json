@@ -1,0 +1,39 @@
+{
+  "name": "@joyid/rainbowkit",
+  "version": "2.0.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "devDependencies": {
+    "viem": "2.10.11",
+    "wagmi": "2.9.7"
+  },
+  "peerDependencies": {
+    "@rainbow-me/rainbowkit": "2.x",
+    "viem": "2.x",
+    "wagmi": "2.x"
+  },
+  "dependencies": {
+    "@joyid/wagmi": "workspace:*"
+  }
+}
