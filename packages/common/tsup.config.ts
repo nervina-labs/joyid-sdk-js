@@ -2,16 +2,11 @@ import { defineConfig } from 'tsup'
 
 import { dependencies, name } from './package.json'
 
+import config from '../../tsup-base.config'
+
 export default defineConfig({
+  ...config,
   name,
-  splitting: true,
-  clean: true,
-  bundle: true,
-  dts: true,
-  target: 'es2021',
-  sourcemap: true,
-  format: ['esm', 'cjs'],
-  entry: ['src/index.ts'],
   external: [...Object.keys(dependencies)],
   platform: 'browser',
 })
