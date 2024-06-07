@@ -1,0 +1,39 @@
+{
+  "name": "@joyid/ethereum-provider",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "lint": "eslint ./src",
+    "build": "tsup"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "overrides": {},
+  "files": [
+    "src",
+    "dist"
+  ],
+  "devDependencies": {
+    "viem": "2.10.11"
+  },
+  "dependencies": {
+    "@joyid/evm": "workspace:*",
+    "eventemitter3": "^5.0.1"
+  },
+  "peerDependencies": {
+    "viem": "2.x"
+  }
+}
