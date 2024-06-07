@@ -1,5 +1,10 @@
 /* eslint-disable camelcase */
 import { describe, it, expect } from 'vitest'
+import {
+  type SignMessageResponseData,
+  hexToArrayBuffer,
+  bufferToBase64URLString,
+} from '@joyid/common'
 import { verifyCredential, verifySignature } from './verify'
 import r1_main_session_key_sign from '../fixtures/r1_main_session_key_sign.json'
 import r1_mainkey_sign from '../fixtures/r1_mainkey_sign.json'
@@ -18,45 +23,61 @@ import rsa_mainkey_sign_credential from '../fixtures/rsa_mainkey_auth.json'
 import rsa_sub_session_key_sign_credential from '../fixtures/rsa_sub_session_key_auth.json'
 import rsa_subkey_sign_credential from '../fixtures/rsa_subkey_auth.json'
 
+function convertData(data: SignMessageResponseData): SignMessageResponseData {
+  return {
+    ...data,
+    signature: bufferToBase64URLString(hexToArrayBuffer(data.signature)),
+    message: bufferToBase64URLString(hexToArrayBuffer(data.message)),
+  }
+}
+
 describe('verify', () => {
   describe('verifySignature', () => {
     it('r1_main_session_key_sign', async () => {
-      const res = await verifySignature(r1_main_session_key_sign as any)
+      const res = await verifySignature(
+        convertData(r1_main_session_key_sign as any)
+      )
       expect(res).toBe(true)
     })
 
     it('r1_mainkey_sign', async () => {
-      const res = await verifySignature(r1_mainkey_sign as any)
+      const res = await verifySignature(convertData(r1_mainkey_sign as any))
       expect(res).toBe(true)
     })
 
     it('r1_sub_session_key_sign', async () => {
-      const res = await verifySignature(r1_sub_session_key_sign as any)
+      const res = await verifySignature(
+        convertData(r1_sub_session_key_sign as any)
+      )
       expect(res).toBe(true)
     })
 
     it('r1_subkey_sign', async () => {
-      const res = await verifySignature(r1_subkey_sign as any)
+      const res = await verifySignature(convertData(r1_subkey_sign as any))
       expect(res).toBe(true)
     })
 
     it('rsa_main_session_key_sign', async () => {
-      const res = await verifySignature(rsa_main_session_key_sign as any)
+      const res = await verifySignature(
+        convertData(rsa_main_session_key_sign as any)
+      )
       expect(res).toBe(true)
     })
 
     it('rsa_mainkey_sign', async () => {
-      const res = await verifySignature(rsa_mainkey_sign as any)
+      const res = await verifySignature(convertData(rsa_mainkey_sign as any))
       expect(res).toBe(true)
     })
 
     it('rsa_sub_session_key_sign', async () => {
-      const res = await verifySignature(rsa_sub_session_key_sign as any)
+      const res = await verifySignature(
+        convertData(rsa_sub_session_key_sign as any)
+      )
       expect(res).toBe(true)
     })
 
     it('rsa_subkey_sign', async () => {
-      const res = await verifySignature(rsa_subkey_sign as any)
+      const res = await verifySignature(convertData(rsa_subkey_sign as any))
       expect(res).toBe(true)
     })
 
