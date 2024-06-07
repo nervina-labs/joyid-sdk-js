@@ -12,6 +12,11 @@
   "scripts": {
     "build": "tsup"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nervina-labs/joyid-sdk-js.git",
+    "directory": "packages/bitcoin"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
