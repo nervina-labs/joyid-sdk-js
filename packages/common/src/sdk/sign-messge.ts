@@ -9,7 +9,7 @@ import { type PopupConfigOptions, openPopup, runPopup } from './popup'
 import { createBlockDialog } from './block-dialog'
 
 export const buildJoyIDSignMessageURL = (
-  request: SignMessageRequest,
+  request: SignMessageRequest & Record<string, unknown>,
   type: 'redirect' | 'popup'
 ): string => buildJoyIDURL(request, type, '/sign-message')
 
@@ -18,7 +18,7 @@ export const signMessageWithRedirect = (request: SignMessageRequest): void => {
 }
 
 export const signMessageWithPopup = async <T extends DappRequestType>(
-  request: SignMessageRequest,
+  request: SignMessageRequest & Record<string, unknown>,
   config?: Pick<PopupConfigOptions<T>, 'timeoutInSeconds' | 'popup'>
 ): Promise<SignMessageResponseData> => {
   config = config ?? {}
@@ -27,15 +27,15 @@ export const signMessageWithPopup = async <T extends DappRequestType>(
     config.popup = openPopup('')
 
     if (config.popup == null) {
-      return await createBlockDialog(
-        async () => await signMessageWithPopup(request, config)
+      return createBlockDialog(async () =>
+        signMessageWithPopup(request, config)
       )
     }
   }
 
   config.popup.location.href = buildJoyIDSignMessageURL(request, 'popup')
 
-  return await runPopup({
+  return runPopup({
     ...config,
     type: DappRequestType.SignMessage,
   })
