@@ -2,11 +2,11 @@
   "name": "joyid-sdk-js",
   "version": "1.0.0",
   "private": true,
-  "description": "Monorepo for JoyID Javascript SDK",
+  "description": "Monorepo for JoyID JavaScript SDK",
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "format": "prettier --write .",
+    "format": "eslint --fix .",
     "build": "pnpm run --r --filter \"./packages/**\" build",
     "test": "pnpm run --r --filter \"./packages/**\" test"
   },

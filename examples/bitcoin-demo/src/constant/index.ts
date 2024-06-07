@@ -1,0 +1,1 @@
+export const DEFAULT_SEND_ADDRESS = 'tb1qm25yz3gzk6g77wzkwmuaykqwpf2tq7g904h4sn'
