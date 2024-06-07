@@ -5,7 +5,7 @@ import type {
   SignTypedDataRequest,
   EvmConfig,
   PopupConfigOptions,
-  TypedData,
+  TypedDataDefinition,
 } from '@joyid/common'
 import {
   DappRequestType,
@@ -285,7 +285,7 @@ export const signMessageCallback = (
  * @returns `0x${string}`
  */
 export const signTypedData = async (
-  typedData: TypedData,
+  typedData: TypedDataDefinition,
   signerAddress?: string,
   config?: SignConfig
 ): Promise<Hex> => {
@@ -301,8 +301,8 @@ export const signTypedData = async (
     config.popup = openPopup('')
 
     if (config.popup == null) {
-      return await createBlockDialog(
-        async () => await signTypedData(typedData, signerAddress, config)
+      return createBlockDialog(async () =>
+        signTypedData(typedData, signerAddress, config)
       )
     }
   }
@@ -327,7 +327,7 @@ export const signTypedData = async (
 
 export const signTypedDataWithRedirect = (
   redirectURL: string,
-  typedData: TypedData,
+  typedData: TypedDataDefinition,
   signerAddress: string,
   config?: EvmConfig
 ): void => {
@@ -372,8 +372,8 @@ const signTxWithPopupBase = async (
     config.popup = openPopup('')
 
     if (config.popup == null) {
-      return await createBlockDialog(
-        async () => await signTxWithPopupBase(tx, signer, config, isSend)
+      return createBlockDialog(async () =>
+        signTxWithPopupBase(tx, signer, config, isSend)
       )
     }
   }
@@ -401,13 +401,13 @@ export const signTransaction = async (
   tx: TransactionRequest,
   signerAddress?: string,
   config?: SignConfig
-): Promise<Hex> => await signTxWithPopupBase(tx, signerAddress, config, false)
+): Promise<Hex> => signTxWithPopupBase(tx, signerAddress, config, false)
 
 export const sendTransaction = async (
   tx: TransactionRequest,
   signerAddress?: string,
   config?: SignConfig
-): Promise<Hex> => await signTxWithPopupBase(tx, signerAddress, config, true)
+): Promise<Hex> => signTxWithPopupBase(tx, signerAddress, config, true)
 
 export const signTransactionRedirectBase = (
   redirectURL: string,
