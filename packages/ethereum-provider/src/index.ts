@@ -69,7 +69,7 @@ export class EthereumProvider extends EventEmitter {
   }
 
   public getAccount(): Address | null {
-    return this.account || getConnectedAddress()
+    return this.account ?? getConnectedAddress()
   }
 
   private initConfig(chainId: number, config?: EvmConfig): Chain {
