@@ -1,3 +1,5 @@
+import { type JoyIDConfig } from './dapp'
+
 export type Hash = string
 export type HexNumber = string
 export type HexString = string
@@ -64,4 +66,46 @@ export interface CKBTransaction {
   outputsData: HexString[]
   version: HexNumber
   witnesses: HexString[]
+}
+
+export interface CkbTransactionRequest {
+  from: string
+  to: string
+  amount: string
+}
+
+export interface CkbDappConfig extends JoyIDConfig {
+  name?: string
+  logo?: string
+  redirectURL?: string
+  rpcURL?: string
+  network?: 'mainnet' | 'testnet'
+}
+
+export interface SignCkbTxRequest extends CkbDappConfig {
+  tx: CkbTransactionRequest
+  signerAddress: string
+  redirectURL: string
+}
+
+export interface SignCkbRawTxRequest extends CkbDappConfig {
+  tx: CKBTransaction
+  signerAddress: string
+  redirectURL: string
+  witnessIndex?: number
+  witnessLastIndex?: number
+}
+
+export interface CotaNFTTransactionRequest {
+  from: string
+  to: string
+  tokenKey?: string
+  tokenId?: string
+  tokenIndex?: string
+}
+
+export interface SignCotaNFTRequest extends CkbDappConfig {
+  tx: CotaNFTTransactionRequest
+  signerAddress: string
+  redirectURL: string
 }
