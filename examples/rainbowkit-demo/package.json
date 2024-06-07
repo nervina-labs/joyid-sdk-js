@@ -1,0 +1,35 @@
+{
+    "name": "joyid-rainbowkit-demo",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@joyid/rainbowkit": "workspace:*",
+        "@rainbow-me/rainbowkit": "2.1.1",
+        "@tanstack/react-query": "^5.39.0",
+        "@types/react": "18.2.6",
+        "@types/react-dom": "18.2.4",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "react-native": "^0.72.6",
+        "typescript": ">=5.0.4",
+        "viem": "2.12.5",
+        "wagmi": "2.9.10"
+    },
+    "devDependencies": {
+        "@types/react": "^18.2.28",
+        "@types/react-dom": "^18.2.13",
+        "@typescript-eslint/eslint-plugin": "^6.7.5",
+        "@typescript-eslint/parser": "^6.7.5",
+        "@vitejs/plugin-react": "^4.1.0",
+        "eslint": "^8.51.0",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-react-refresh": "^0.4.3",
+        "typescript": "^5.2.2"
+    }
+}
