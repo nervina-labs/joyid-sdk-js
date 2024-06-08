@@ -9,8 +9,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@joyid/rainbowkit": "workspace:*",
-        "@rainbow-me/rainbowkit": "2.1.1",
+        "@joyid/wagmi": "workspace:*",
         "@tanstack/react-query": "^5.39.0",
         "@types/react": "18.2.6",
         "@types/react-dom": "18.2.4",
