@@ -14,7 +14,7 @@ import { buildRedirectUrl } from '../utils'
 export const SignMessage: Component = () => {
   const location = useLocation<ReturnType<typeof signMessageCallback>>()
   const [challenge, setChallenge] = createSignal(
-    location.state?.state || 'Hello World'
+    (location.state?.state as string) || 'Hello World'
   )
   const [signature, setSignature] = createSignal(
     location.state?.signature || ''
@@ -94,8 +94,7 @@ export const SignMessage: Component = () => {
             onChange={(e) => {
               const val = e.currentTarget.value
               setSignType(val as any)
-            }}
-          >
+            }}>
             <option value="bip322-simple">bip322-simple</option>
             <option value="ecdsa">ecdsa</option>
           </select>
@@ -123,16 +122,14 @@ export const SignMessage: Component = () => {
         <button
           class="btn btn-wide btn-outline btn-secondary mt-8"
           disabled={signature().length === 0}
-          onClick={onVerifyMessage}
-        >
+          onClick={onVerifyMessage}>
           Verify Message
         </button>
         <button
           class="btn btn-wide btn-outline mt-8"
           onClick={() => {
             navi('/home', { replace: true })
-          }}
-        >{`<< Go BACK`}</button>
+          }}>{`<< Go BACK`}</button>
       </section>
     </Show>
   )

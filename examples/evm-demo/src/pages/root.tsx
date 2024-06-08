@@ -53,8 +53,7 @@ export const Root: Component = () => {
                   name: Chains[val].name,
                 },
               })
-            }}
-          >
+            }}>
             <For each={Object.keys(Chains)}>
               {(chainName) => {
                 const chain = Chains[chainName]
@@ -66,8 +65,7 @@ export const Root: Component = () => {
         <button
           class="btn btn-wide mt-8"
           classList={{ loading: isLoading() }}
-          onClick={onConenctPopup}
-        >
+          onClick={onConenctPopup}>
           Connect With Popup
         </button>
         <button class="btn btn-wide mt-8" onClick={onConnectRedirect}>

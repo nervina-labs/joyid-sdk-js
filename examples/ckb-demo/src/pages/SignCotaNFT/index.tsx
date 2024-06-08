@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import {
   Button,
   Textarea,
@@ -54,7 +54,6 @@ export function SignCotaNFT() {
   const [toAddress, setToAddress] = useAtom(toAddressAtom)
   const [tokenKey, setTokenKey] = useAtom(tokenKeyAtom)
   const [txHash, setTxHash] = useState('')
-  const [isChecking, setIsChecking] = useState(false)
   const toastError = useToastError()
   const [isTransferring, setIsTransferring] = useState(false)
   const account = useAccount()
@@ -89,28 +88,6 @@ export function SignCotaNFT() {
   useSubscription(tokenKeyChange$, async (val: string) => {
     setTokenKey(val)
   })
-
-  useEffect(() => {
-    setIsChecking(true)
-    if (
-      account &&
-      (account.keyType === 'main_session_key' ||
-        account.keyType === 'sub_session_key')
-    ) {
-      // verifyCredential(
-      //   account.pubkey,
-      //   account.address,
-      //   account.keyType,
-      //   account.alg!
-      // ).then((isValid) => {
-      //   if (!isValid) {
-      //     toastError(new Error('Your JoyID is expired, please login again.'))
-      //     setAccountInfo(null)
-      //   }
-      // })
-    }
-    setIsChecking(false)
-  }, [])
 
   if (!account) {
     return <Navigate to={RoutePath.Root} replace />
@@ -164,8 +141,8 @@ export function SignCotaNFT() {
         <Button
           colorScheme="teal"
           w="240px"
-          isLoading={isTransferring || isChecking}
-          loadingText={isChecking ? 'Checking...' : 'Transferring...'}
+          isLoading={isTransferring}
+          loadingText={'Transferring...'}
           onClick={async () => {
             setIsTransferring(true)
             if (account == null) {

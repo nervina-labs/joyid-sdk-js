@@ -13,8 +13,7 @@ export const useSendSuccessToast = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 class="stroke-current flex-shrink-0 h-6 w-6"
                 fill="none"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -27,23 +26,22 @@ export const useSendSuccessToast = () => {
                 <a
                   class="link break-all"
                   href={`${authData.explorer}/tx/${txHash}`}
-                  target="_blank"
-                >
+                  target="_blank">
                   {txHash}
                 </a>
               </div>
               <div class="flex-none">
                 <button
                   class="btn btn-circle btn-outline btn-error btn-xs"
-                  onClick={() => toast.dismiss(t.id)}
-                >
+                  onClick={() => {
+                    toast.dismiss(t.id)
+                  }}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-4 w-4"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
+                    stroke="currentColor">
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"

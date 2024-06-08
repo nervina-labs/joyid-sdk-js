@@ -27,6 +27,7 @@
   },
   "rules": {
     "no-return-await": "off",
-    "@typescript-eslint/return-await": ["error", "in-try-catch"]
+    "@typescript-eslint/return-await": ["error", "in-try-catch"],
+    "@typescript-eslint/no-misused-promises": "off"
   }
 }

@@ -45,7 +45,6 @@ export const Redirect: Component = () => {
     return <Navigate href="/sign-message" state={state} />
   }
 
-  search
   return (
     <Switch fallback={<Navigate href="/" />}>
       <Match when={search.action === 'connect'}>{redirectHome()}</Match>

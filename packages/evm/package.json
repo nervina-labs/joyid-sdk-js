@@ -15,7 +15,9 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "lint": "eslint .",
+    "format": "eslint --fix ."
   },
   "exports": {
     ".": {

@@ -11,7 +11,7 @@ export interface Chain {
 
 export const EthSepolia: Chain = chainList[0]
 
-export const Chains = chainList.reduce((prev, acc) => {
+export const Chains = chainList.reduce<Record<string, Chain>>((prev, acc) => {
   prev[acc.name] = acc
   return prev
-}, {} as Record<string, Chain>)
+}, {})

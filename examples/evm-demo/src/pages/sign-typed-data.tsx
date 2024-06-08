@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Navigate, useLocation, useNavigate } from '@solidjs/router'
 import { Component, Show, createSignal } from 'solid-js'
 import toast from 'solid-toast'
@@ -118,16 +119,14 @@ export const SignTypeData: Component = () => {
         <button
           class="btn btn-wide btn-outline btn-secondary mt-8"
           disabled={signature().length === 0}
-          onClick={onVerifyMessage}
-        >
+          onClick={onVerifyMessage}>
           Recover Typed Data
         </button>
         <button
           class="btn btn-wide btn-outline mt-8"
           onClick={() => {
             navi('/home', { replace: true })
-          }}
-        >{`<< Go Home`}</button>
+          }}>{`<< Go Home`}</button>
       </section>
     </Show>
   )

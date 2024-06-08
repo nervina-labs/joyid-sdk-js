@@ -38,7 +38,7 @@ export const Home: Component = () => {
   const provider = useProvider()
   const queryAXON = createQuery(
     () => ['balance', authData.ethAddress, authData.chainId],
-    () => {
+    async () => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return provider()?.getBalance(authData.ethAddress)
     },
@@ -66,8 +66,7 @@ export const Home: Component = () => {
                 }
               }
             })
-          }}
-        >
+          }}>
           <For each={Object.keys(Chains)}>
             {(chainName) => {
               const chain = Chains[chainName]
@@ -86,8 +85,7 @@ export const Home: Component = () => {
                 toast.success('Copied Successfully', {
                   position: 'bottom-center',
                 })
-              }}
-            >
+              }}>
               Copy Address
             </button>
           </div>
@@ -120,16 +118,14 @@ export const Home: Component = () => {
         </A>
         <a
           href="https://github.com/nervina-labs/joyid-evm-demo"
-          target="_blank"
-        >
+          target="_blank">
           <button class="btn btn-wide mt-8 btn-info btn-outline">GitHub</button>
         </a>
         <button
           class="btn btn-wide btn-outline mt-8"
           onClick={() => {
             logout()
-          }}
-        >
+          }}>
           Logout
         </button>
       </section>

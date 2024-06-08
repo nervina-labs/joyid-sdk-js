@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { createEffect } from 'solid-js'
 import { createStore, produce, SetStoreFunction, Store } from 'solid-js/store'
@@ -39,7 +40,7 @@ export function useLogout() {
       produce((s) => {
         for (const k in s) {
           if (Object.prototype.hasOwnProperty.call(s, k)) {
-            // @ts-ignore
+            // @ts-expect-error
             s[k] = undefined
           }
         }

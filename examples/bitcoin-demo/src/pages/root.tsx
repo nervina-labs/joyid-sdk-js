@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Component, Show, createSignal } from 'solid-js'
 import { Navigate, useNavigate } from '@solidjs/router'
 import { useAuthData } from '../hooks/localStorage'
@@ -41,7 +42,7 @@ export const Root: Component = () => {
     const url = buildConnectUrl(
       {
         requestAddressType: authData.addressType,
-        redirectURL: redirectURL,
+        redirectURL,
       },
       'redirect'
     )
@@ -67,8 +68,7 @@ export const Root: Component = () => {
               initConfig({
                 requestAddressType: val,
               })
-            }}
-          >
+            }}>
             <option value="auto">Auto</option>
             <option value="p2tr">P2TR</option>
             <option value="p2wpkh">P2WPKH</option>
@@ -77,8 +77,7 @@ export const Root: Component = () => {
         <button
           class="btn btn-wide mt-8"
           classList={{ loading: isLoading() }}
-          onClick={onConenctPopup}
-        >
+          onClick={onConenctPopup}>
           Connect With Popup
         </button>
         <button class="btn btn-wide mt-8" onClick={onConnectRedirect}>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import {
   Button,
   Textarea,
@@ -54,7 +54,6 @@ export function SignTransaction() {
   const [toAddress, setToAddress] = useAtom(toAddressAtom)
   const [amount, setAmount] = useAtom(amountAtom)
   const [txHash, setTxHash] = useState('')
-  const [isChecking, setIsChecking] = useState(false)
   const toastError = useToastError()
   const [isTransferring, setIsTransferring] = useState(false)
   const account = useAccount()
@@ -89,28 +88,6 @@ export function SignTransaction() {
   useSubscription(amountChange$, async (val: string) => {
     setAmount(val)
   })
-
-  useEffect(() => {
-    setIsChecking(true)
-    if (
-      account &&
-      (account.keyType === 'main_session_key' ||
-        account.keyType === 'sub_session_key')
-    ) {
-      // verifyCredential(
-      //   account.pubkey,
-      //   account.address,
-      //   account.keyType,
-      //   account.alg!
-      // ).then((isValid) => {
-      //   if (!isValid) {
-      //     toastError(new Error('Your JoyID is expired, please login again.'))
-      //     setAccountInfo(null)
-      //   }
-      // })
-    }
-    setIsChecking(false)
-  }, [])
 
   if (!account) {
     return <Navigate to={RoutePath.Root} replace />
@@ -166,14 +143,17 @@ export function SignTransaction() {
         <Button
           colorScheme="teal"
           w="240px"
-          isLoading={isTransferring || isChecking}
-          loadingText={isChecking ? 'Checking...' : 'Transferring...'}
+          isLoading={isTransferring}
+          loadingText={'Transferring...'}
           onClick={async () => {
+            if (account == null) {
+              return
+            }
             setIsTransferring(true)
             try {
               const signedTx = await signTransaction({
                 to: toAddress,
-                from: account?.address!,
+                from: account.address,
                 amount: BigInt(Number(amount) * 10 ** 8).toString(),
               })
               const hash = await rpc.sendTransaction(signedTx, 'passthrough')

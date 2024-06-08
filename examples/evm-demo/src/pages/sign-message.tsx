@@ -79,16 +79,14 @@ export const SignMessage: Component = () => {
         <button
           class="btn btn-wide btn-outline btn-secondary mt-8"
           disabled={signature().length === 0}
-          onClick={onVerifyMessage}
-        >
+          onClick={onVerifyMessage}>
           Verify Message
         </button>
         <button
           class="btn btn-wide btn-outline mt-8"
           onClick={() => {
             navi('/home', { replace: true })
-          }}
-        >{`<< Go Home`}</button>
+          }}>{`<< Go Home`}</button>
       </section>
     </Show>
   )

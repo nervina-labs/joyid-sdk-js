@@ -147,22 +147,19 @@ export const SendBtc: Component = () => {
           <button
             class="btn btn-wide btn-primary mt-12"
             onClick={onSend}
-            classList={{ loading: isLoading() }}
-          >
+            classList={{ loading: isLoading() }}>
             Send
           </button>
           <button
             class="btn btn-wide btn-outline btn-secondary mt-8"
-            onClick={onReset}
-          >
+            onClick={onReset}>
             Reset
           </button>
           <button
             class="btn btn-wide btn-outline mt-8"
             onClick={() => {
               navi('/home', { replace: true })
-            }}
-          >{`<< Go BACK`}</button>
+            }}>{`<< Go BACK`}</button>
         </section>
       </Show>
     </>

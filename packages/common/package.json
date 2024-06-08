@@ -29,7 +29,9 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "lint": "eslint .",
+    "format": "eslint --fix ."
   },
   "files": [
     "/src",

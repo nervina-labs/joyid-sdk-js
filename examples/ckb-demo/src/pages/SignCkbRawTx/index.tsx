@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useState } from 'react'
 import { Button, VStack, Input, Text, Link, useToast } from '@chakra-ui/react'
 import { Navigate, useNavigate } from 'react-router-dom'
@@ -139,7 +140,7 @@ export function SignCkbRawTx() {
       seller: ckbAddress!,
       listAmount: BigInt(1000 * 10 ** info.decimal),
       totalValue: BigInt(200 * 10 ** 8),
-      xudtType: bytes.hexify(blockchain.Script.pack(xudtType)),
+      xudtType: bytes.hexify(blockchain.Script.pack(xudtType as any)),
     })
     toast({
       status: 'info',

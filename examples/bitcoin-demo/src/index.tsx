@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* @refresh reload */
 import './global.css'
 
@@ -20,5 +21,5 @@ render(
       <App />
     </Router>
   ),
-  root as HTMLElement
+  root!
 )

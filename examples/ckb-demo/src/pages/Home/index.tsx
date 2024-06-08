@@ -33,6 +33,7 @@ export const Home = () => {
   const setAccount = useSetAccountInfo()
   const { data: capacity } = useQuery(
     ['ckb-capacity', account?.address],
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
     () => capacityOf(account?.address!),
     {
       enabled: account?.address !== null,

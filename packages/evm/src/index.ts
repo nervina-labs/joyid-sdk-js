@@ -305,7 +305,7 @@ export const signTypedData = async (
         signTypedData(typedData, signerAddress, config)
       )
     }
-  }
+  };
 
   const { popup, timeoutInSeconds, ...dappConfig } = config
 

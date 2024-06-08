@@ -28,7 +28,7 @@ export const Home: Component = () => {
   // const provider = useProvider()
   const queryBalance = createQuery(
     () => ['balance', authData.address],
-    () => {
+    async () => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return btcService.getBtcBalance(authData.address, {
         min_satoshi: MIN_UTXO_AMOUNT,
@@ -58,8 +58,7 @@ export const Home: Component = () => {
                 toast.success('Copied Successfully', {
                   position: 'bottom-center',
                 })
-              }}
-            >
+              }}>
               Copy Address
             </button>
             <button
@@ -69,8 +68,7 @@ export const Home: Component = () => {
                 toast.success('Copied Successfully', {
                   position: 'bottom-center',
                 })
-              }}
-            >
+              }}>
               Copy Pubkey
             </button>
           </div>
@@ -91,16 +89,14 @@ export const Home: Component = () => {
         </A>
         <a
           href="https://github.com/nervina-labs/joyid-bitcoin-demo"
-          target="_blank"
-        >
+          target="_blank">
           <button class="btn btn-wide mt-8 btn-info btn-outline">GitHub</button>
         </a>
         <button
           class="btn btn-wide btn-outline mt-8"
           onClick={() => {
             logout()
-          }}
-        >
+          }}>
           Logout
         </button>
       </section>
