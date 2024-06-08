@@ -26,6 +26,8 @@ import {
   bufferToHex,
   append0x,
   remove0x,
+  type CredentialKeyType,
+  SigningAlg,
 } from '@joyid/common'
 import {
   addressToScript,
@@ -48,6 +50,7 @@ export {
   getJoyIDLockScript,
   getCotaTypeScript,
   getCotaCellDep,
+  SigningAlg,
 }
 
 export type {
@@ -55,12 +58,15 @@ export type {
   PopupConfigOptions as PopupConifg,
   SignMessageResponseData as SignChallengeResponseData,
   AuthResponseData as ConnectResponseData,
+  SignCotaNFTRequest,
+  CotaNFTTransactionRequest,
   CKBTransaction,
   AuthRequest,
   AuthResponse,
   SignCkbTxRequest,
   SignMessageResponse,
   SignMessageRequest,
+  CredentialKeyType,
 }
 
 const appendPrefix = (tokenKey?: string): string | undefined => {
