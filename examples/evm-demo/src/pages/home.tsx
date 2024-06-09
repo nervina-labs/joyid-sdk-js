@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
-  Component,
+  type Component,
   For,
   Match,
   Show,
@@ -19,7 +19,7 @@ import { formatEther } from 'ethers/lib/utils'
 import { useProvider } from '../hooks/provider'
 import { Chains } from '../chains'
 import { produce } from 'solid-js/store'
-import { connectCallback } from '@joyid/evm'
+import { type connectCallback } from '@joyid/evm'
 
 export const Home: Component = () => {
   const location = useLocation<ReturnType<typeof connectCallback>>()
@@ -39,7 +39,6 @@ export const Home: Component = () => {
   const queryAXON = createQuery(
     () => ['balance', authData.ethAddress, authData.chainId],
     async () => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return provider()?.getBalance(authData.ethAddress)
     },
     {

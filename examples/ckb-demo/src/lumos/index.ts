@@ -1,16 +1,13 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable no-param-reassign */
 // import { bytify } from '@ckb-lumos/codec/lib/bytes'
 import {
   initializeConfig,
   createConfig,
   predefined,
-  ScriptConfig,
+  type ScriptConfig,
 } from '@ckb-lumos/config-manager'
 import { RPC } from '@ckb-lumos/rpc'
 import { Indexer } from '@ckb-lumos/ckb-indexer'
-import { CredentialKeyType, SigningAlg } from '@joyid/ckb'
+import { type CredentialKeyType, SigningAlg } from '@joyid/ckb'
 import { JOY_ID_LOCK_TX_HASH, CKB_RPC_URL, CKB_INDEXER_URL } from '../env'
 
 export const rpc = new RPC(CKB_RPC_URL)

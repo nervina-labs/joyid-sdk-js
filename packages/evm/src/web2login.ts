@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import {
   DappCommunicationType,
   type EvmWeb2LoginConfig,
@@ -26,9 +25,8 @@ export const connect = async (
     'timeoutInSeconds' | 'popup'
   >
 ): Promise<EvmWeb2LoginResponse> => {
-  // eslint-disable-next-line no-param-reassign
   config = config ?? {}
-  const request: any = {
+  const request = {
     signerAddress: uid,
     redirectURL: window.location.href,
     requestNetwork: 'ethereum',
@@ -40,7 +38,7 @@ export const connect = async (
     config.popup = openPopup('')
 
     if (config.popup != null) {
-      return await createBlockDialog(async () => await connect(uid, config))
+      return createBlockDialog(async () => connect(uid, config))
     }
   }
 
@@ -50,7 +48,7 @@ export const connect = async (
     '/evm-web2-login'
   )
 
-  return await runPopup({
+  return runPopup({
     ...config,
     type: DappRequestType.EvmWeb2Login,
   })

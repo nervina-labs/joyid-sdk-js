@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react'
 import { Button, Textarea, VStack, useToast, Box } from '@chakra-ui/react'
-import { verifySignature } from '@joyid/ckb'
-import { signChallenge, SignChallengeResponseData } from '@joyid/ckb'
+import {
+  verifySignature,
+  signChallenge,
+  type SignChallengeResponseData,
+} from '@joyid/ckb'
 import { atom, useAtom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { Navigate, useNavigate } from 'react-router-dom'
@@ -42,7 +45,7 @@ export const VerifyButton: React.FC = () => {
       return
     }
     const result = await verifySignature(response)
-    // eslint-disable-next-line no-alert
+
     alert(result)
   }
 
@@ -52,8 +55,7 @@ export const VerifyButton: React.FC = () => {
       w="240px"
       variant="outline"
       isDisabled={!response?.signature}
-      onClick={verify}
-    >
+      onClick={verify}>
       Verify Message
     </Button>
   )
@@ -91,7 +93,9 @@ export function SignMessage() {
           value={message}
           name="message"
           placeholder="The message to be signed"
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => {
+            setMessage(e.target.value)
+          }}
           isDisabled={response != null}
         />
         <Textarea
@@ -108,8 +112,7 @@ export function SignMessage() {
                 <code
                   style={{
                     whiteSpace: 'pre-wrap',
-                  }}
-                >
+                  }}>
                   {JSON.stringify(response, null, 4)}
                 </code>
               </pre>
@@ -120,8 +123,7 @@ export function SignMessage() {
           onClick={onPopupClick}
           colorScheme="teal"
           w="240px"
-          isLoading={isLoading}
-        >
+          isLoading={isLoading}>
           SignMessage
         </Button>
         <VerifyButton />
@@ -133,11 +135,14 @@ export function SignMessage() {
             setSignature('')
             setMessage('')
             setResponse(null)
-          }}
-        >
+          }}>
           Reset
         </Button>
-        <Button colorScheme="purple" onClick={() => navi(RoutePath.Home)}>
+        <Button
+          colorScheme="purple"
+          onClick={() => {
+            navi(RoutePath.Home)
+          }}>
           {`<< Go Home`}
         </Button>
       </VStack>

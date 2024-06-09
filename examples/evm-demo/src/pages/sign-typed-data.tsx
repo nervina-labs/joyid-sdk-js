@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Navigate, useLocation, useNavigate } from '@solidjs/router'
-import { Component, Show, createSignal } from 'solid-js'
+import { type Component, Show, createSignal } from 'solid-js'
 import toast from 'solid-toast'
 import { verifyTypedData } from 'ethers/lib.esm/utils'
 import {
-  signMessageCallback,
+  type signMessageCallback,
   signTypedData,
   signTypedDataWithRedirect,
 } from '@joyid/evm'

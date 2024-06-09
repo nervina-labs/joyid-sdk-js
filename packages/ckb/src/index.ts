@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-/* eslint-disable no-param-reassign */
+
 import {
   type CKBTransaction,
   createBlockDialog,
@@ -116,7 +116,6 @@ export type SignConfig = CkbDappConfig &
 export const connect = async (
   config?: SignConfig
 ): Promise<AuthResponseData> => {
-  // eslint-disable-next-line no-param-reassign
   config = {
     ...internalDappConfig,
     ...config,
@@ -134,7 +133,7 @@ export const signChallenge = async (
   config?: SignConfig
 ): Promise<SignMessageResponseData> => {
   const isData = typeof challenge !== 'string'
-  // eslint-disable-next-line no-param-reassign
+
   config = {
     ...internalDappConfig,
     ...config,
@@ -155,7 +154,6 @@ export const signTransaction = async (
   tx: CkbTransactionRequest,
   config?: SignConfig
 ): Promise<CKBTransaction> => {
-  // eslint-disable-next-line no-param-reassign
   config = {
     ...internalDappConfig,
     ...config,
@@ -191,7 +189,6 @@ export const signCotaNFTTx = async (
   tx: CotaNFTTransactionRequest,
   config?: SignConfig
 ): Promise<CKBTransaction> => {
-  // eslint-disable-next-line no-param-reassign
   config = {
     ...internalDappConfig,
     ...config,
@@ -231,7 +228,6 @@ export const signRawTransaction = async (
   signerAddress: string,
   config?: SignConfig
 ): Promise<SignCkbTxResponseData['tx']> => {
-  // eslint-disable-next-line no-param-reassign
   config = {
     ...tx,
     ...internalDappConfig,

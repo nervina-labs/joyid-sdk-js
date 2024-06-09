@@ -1,4 +1,4 @@
-import { Component, createEffect } from 'solid-js'
+import { type Component, createEffect } from 'solid-js'
 import { useRoutes } from '@solidjs/router'
 import { Toaster } from 'solid-toast'
 import { QueryClient, QueryClientProvider } from '@tanstack/solid-query'

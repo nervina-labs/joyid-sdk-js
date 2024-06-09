@@ -45,7 +45,7 @@ const useToastError = () => {
         description: 'See devtool console for more details',
       })
     }
-    // eslint-disable-next-line no-console
+
     console.error(error)
   }
 }
@@ -120,8 +120,7 @@ export function SignCotaNFT() {
             alignItems="center"
             justifyContent="center"
             textAlign="center"
-            variant="subtle"
-          >
+            variant="subtle">
             <AlertIcon />
             <AlertTitle>Transfer Successful</AlertTitle>
             <AlertDescription>
@@ -130,8 +129,7 @@ export function SignCotaNFT() {
                 href={`https://pudge.explorer.nervos.org/transaction/${txHash}`}
                 isExternal
                 wordBreak="break-all"
-                textDecoration="underline"
-              >
+                textDecoration="underline">
                 {txHash}
                 <ExternalLinkIcon mx="2px" />
               </Link>
@@ -162,8 +160,7 @@ export function SignCotaNFT() {
             } finally {
               setIsTransferring(false)
             }
-          }}
-        >
+          }}>
           Transfer
         </Button>
         <Button
@@ -180,11 +177,14 @@ export function SignCotaNFT() {
               tokenKeyRef.current.value = defaultTokenKey
             }
             setTxHash('')
-          }}
-        >
+          }}>
           Reset
         </Button>
-        <Button colorScheme="purple" onClick={() => navi(RoutePath.Home)}>
+        <Button
+          colorScheme="purple"
+          onClick={() => {
+            navi(RoutePath.Home)
+          }}>
           {`<< Go Home`}
         </Button>
       </VStack>

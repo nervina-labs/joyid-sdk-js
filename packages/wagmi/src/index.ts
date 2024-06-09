@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable class-methods-use-this */
+
 import {
   createConnector,
   ChainNotConfiguredError,
@@ -51,7 +48,7 @@ export function joyidConnector(
     },
     async getProvider() {
       if (!_provider) {
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         _provider = new EthereumProvider(config.chains as any, joyidConfig)
       }
       return _provider
@@ -121,7 +118,7 @@ export function joyidConnector(
       )
       provider.removeListener('chainChanged', this.onChainChanged)
       provider.removeListener('disconnect', this.onDisconnect.bind(this))
-      provider.on('connect', this.onConnect.bind(this) as any)
+      provider.on('connect', this.onConnect.bind(this))
     },
     async onConnect(connectInfo) {
       const accounts = await this.getAccounts()
@@ -133,9 +130,9 @@ export function joyidConnector(
       const provider = await this.getProvider()
       if (provider) {
         provider.removeListener('connect', this.onConnect.bind(this))
-        provider.on('accountsChanged', this.onAccountsChanged.bind(this) as any)
-        provider.on('chainChanged', this.onChainChanged as any)
-        provider.on('disconnect', this.onDisconnect.bind(this) as any)
+        provider.on('accountsChanged', this.onAccountsChanged.bind(this))
+        provider.on('chainChanged', this.onChainChanged)
+        provider.on('disconnect', this.onDisconnect.bind(this))
       }
     },
     onChainChanged(chainId) {
@@ -178,6 +175,7 @@ export function joyidConnector(
         ) {
           throw new UserRejectedRequestError(error)
         }
+        // eslint-disable-next-line @typescript-eslint/only-throw-error
         throw error
       }
     },

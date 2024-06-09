@@ -3,9 +3,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable no-void */
-/* eslint-disable no-cond-assign */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable no-restricted-syntax */
+
 // @ts-nocheck
 
 // qss has been slightly modified and inlined here for our use cases (and compression's sake). We've included it as a hard dependency for MIT license attribution.

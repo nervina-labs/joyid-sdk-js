@@ -1,11 +1,11 @@
-import { Component, Match, Switch } from 'solid-js'
+import { type Component, Match, Switch } from 'solid-js'
 import { Navigate, useSearchParams } from '@solidjs/router'
 import {
   signMessageCallback,
   signPsbtCallback,
   connectCallback,
 } from '@joyid/bitcoin'
-import { RedirectAction } from '../utils'
+import { type RedirectAction } from '../utils'
 import { useAuthData } from '../hooks/localStorage'
 
 export const Redirect: Component = () => {

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-/* eslint-disable no-param-reassign */
+
 import {
   createBlockDialog,
   openPopup as p,

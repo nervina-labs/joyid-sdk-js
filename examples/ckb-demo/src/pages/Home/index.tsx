@@ -34,7 +34,7 @@ export const Home = () => {
   const { data: capacity } = useQuery(
     ['ckb-capacity', account?.address],
     // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-    () => capacityOf(account?.address!),
+    async () => capacityOf(account?.address!),
     {
       enabled: account?.address !== null,
       refetchInterval: 1000 * 10,
@@ -54,8 +54,7 @@ export const Home = () => {
             colorScheme="teal"
             variant="outline"
             size="xs"
-            onClick={onCopy}
-          >
+            onClick={onCopy}>
             {hasCopied ? 'Copied!' : 'Copy Address'}
           </Button>
         </StatHelpText>
@@ -69,8 +68,7 @@ export const Home = () => {
             flexDirection="row"
             display="flex"
             alignItems="center"
-            mr="6px"
-          >
+            mr="6px">
             Claim CKB
             <ExternalLinkIcon mx="2px" />
           </Link>
@@ -79,37 +77,42 @@ export const Home = () => {
       <Button
         colorScheme="teal"
         w="240px"
-        onClick={() => navi(RoutePath.SignMessage)}
-      >
+        onClick={() => {
+          navi(RoutePath.SignMessage)
+        }}>
         Sign Message
       </Button>
       <Button
         colorScheme="teal"
         w="240px"
-        onClick={() => navi(RoutePath.CKBTransfer)}
-      >
+        onClick={() => {
+          navi(RoutePath.CKBTransfer)
+        }}>
         Transfer CKB
       </Button>
       <Button
         colorScheme="teal"
         w="240px"
-        onClick={() => navi(RoutePath.CotaNFTTransfer)}
-      >
+        onClick={() => {
+          navi(RoutePath.CotaNFTTransfer)
+        }}>
         Transfer CoTA NFT
       </Button>
       <Button
         colorScheme="teal"
         w="240px"
-        onClick={() => navi(RoutePath.SignCkbRawTx)}
-      >
+        onClick={() => {
+          navi(RoutePath.SignCkbRawTx)
+        }}>
         Sign CKB Raw Tx
       </Button>
       <Button
         colorScheme="teal"
         w="240px"
         variant="outline"
-        onClick={() => setAccount(null)}
-      >
+        onClick={() => {
+          setAccount(null)
+        }}>
         Logout
       </Button>
     </VStack>

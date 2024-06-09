@@ -124,7 +124,6 @@ export class EthereumProvider extends EventEmitter {
     return account
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public disconnect(): void {
     safeExec(() => {
       this.emit('disconnect')

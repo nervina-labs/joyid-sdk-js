@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 import fetch from 'cross-fetch'
 import { subtle } from 'uncrypto'
 import {
@@ -67,7 +66,6 @@ export const verifySessionKeySignature = async (
     const res = await subtle.verify(algoName, key, sig, msg)
     return res
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error(error)
     return false
   }
@@ -130,7 +128,6 @@ export const verifyNativeKeySignature = async ({
     )
     return res
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error(error)
     return false
   }
@@ -168,7 +165,6 @@ export const verifyCredential = async (
       return c.ckb_address === address && pk === pubkey
     })
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error(error)
     return false
   }

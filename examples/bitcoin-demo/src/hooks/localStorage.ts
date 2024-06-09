@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { createEffect } from 'solid-js'
-import { createStore, produce, SetStoreFunction, Store } from 'solid-js/store'
+import {
+  createStore,
+  produce,
+  type SetStoreFunction,
+  type Store,
+} from 'solid-js/store'
 import { JOY_ID_URL } from '../env'
 
 export function createLocalStore<T extends object>(

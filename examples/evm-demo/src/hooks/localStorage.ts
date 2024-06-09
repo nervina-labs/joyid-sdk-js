@@ -1,8 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { createEffect } from 'solid-js'
-import { createStore, produce, SetStoreFunction, Store } from 'solid-js/store'
-import { Chain } from '../chains'
+import {
+  createStore,
+  produce,
+  type SetStoreFunction,
+  type Store,
+} from 'solid-js/store'
+import { type Chain } from '../chains'
 
 export function createLocalStore<T extends object>(
   name: string,

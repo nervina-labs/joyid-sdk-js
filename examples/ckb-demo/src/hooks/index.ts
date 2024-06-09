@@ -1,5 +1,5 @@
 import { atomWithStorage, useAtomValue, useUpdateAtom } from 'jotai/utils'
-import { AuthResponse } from '@joyid/ckb'
+import { type AuthResponse } from '@joyid/ckb'
 
 export const accountAtom = atomWithStorage<NonNullable<
   AuthResponse['data'] & { callbackType: 'redirect' | 'popup' }

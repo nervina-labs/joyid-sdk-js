@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import type {
   AuthResponseData,
@@ -76,7 +76,7 @@ interface PopupRerurnType {
 export const runPopup = async <T extends DappRequestType>(
   config: PopupConfigOptions<T>
 ): Promise<PopupRerurnType[T]> =>
-  await new Promise<PopupRerurnType[T]>((resolve, reject) => {
+  new Promise<PopupRerurnType[T]>((resolve, reject) => {
     if (isStandaloneBrowser()) {
       reject(new PopupNotSupportedError(config.popup))
     }

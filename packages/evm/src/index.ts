@@ -104,7 +104,6 @@ type Hex = `0x${string}`
 type Address = Hex
 
 export const connect = async (config?: SignConfig): Promise<Address> => {
-  // eslint-disable-next-line no-param-reassign
   config = {
     ...internalConfig,
     ...config,
@@ -147,7 +146,6 @@ export const connectWithRedirect = (
   redirectURL: string,
   config?: EvmConfig
 ): void => {
-  // eslint-disable-next-line no-param-reassign
   config = {
     ...internalConfig,
     ...config,
@@ -187,7 +185,7 @@ export const signMessage = async (
   config?: SignConfig
 ): Promise<Hex> => {
   const isData = typeof message !== 'string'
-  // eslint-disable-next-line no-param-reassign
+
   config = {
     ...internalConfig,
     ...config,
@@ -212,7 +210,7 @@ export const signMessageWithRedirect = (
   config?: EvmConfig
 ): void => {
   const isData = typeof message !== 'string'
-  // eslint-disable-next-line no-param-reassign
+
   config = {
     ...internalConfig,
     ...config,
@@ -289,7 +287,6 @@ export const signTypedData = async (
   signerAddress?: string,
   config?: SignConfig
 ): Promise<Hex> => {
-  // eslint-disable-next-line no-param-reassign
   config = {
     ...internalConfig,
     ...config,
@@ -305,7 +302,7 @@ export const signTypedData = async (
         signTypedData(typedData, signerAddress, config)
       )
     }
-  };
+  }
 
   const { popup, timeoutInSeconds, ...dappConfig } = config
 
@@ -331,7 +328,6 @@ export const signTypedDataWithRedirect = (
   signerAddress: string,
   config?: EvmConfig
 ): void => {
-  // eslint-disable-next-line no-param-reassign
   config = {
     ...internalConfig,
     ...config,
@@ -362,7 +358,7 @@ const signTxWithPopupBase = async (
   if (signer == null) {
     throw new Error('signerAddress or tx.from is required')
   }
-  // eslint-disable-next-line no-param-reassign
+
   config = {
     ...internalConfig,
     ...config,
@@ -421,7 +417,6 @@ export const signTransactionRedirectBase = (
     throw new Error('signerAddress or tx.from is required')
   }
 
-  // eslint-disable-next-line no-param-reassign
   config = {
     ...internalConfig,
     ...config,

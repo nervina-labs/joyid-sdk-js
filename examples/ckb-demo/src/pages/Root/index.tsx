@@ -41,8 +41,7 @@ export function Root() {
           onClick={onPopupClick}
           colorScheme="teal"
           w="200px"
-          isLoading={isLoading}
-        >
+          isLoading={isLoading}>
           Connect JoyID
         </Button>
       </VStack>

@@ -24,7 +24,9 @@
   },
     "include": [
       "vite.env.d.ts",
-      "src"
+      "src",
+      "vite.config.ts",
+      "eslint.config.js",
     ],
   "references": [
     {

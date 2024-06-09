@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { DappCommunicationType, DappRequestType } from '../types/dapp'
 import type { AuthRequest, AuthResponseData } from '../types/dapp'
 import { buildJoyIDURL, getRedirectResponse } from './url'
@@ -24,9 +23,7 @@ export const authWithPopup = async (
     config.popup = openPopup('')
 
     if (config.popup == null) {
-      return await createBlockDialog(
-        async () => await authWithPopup(request, config)
-      )
+      return createBlockDialog(async () => authWithPopup(request, config))
     }
   }
 
@@ -35,7 +32,7 @@ export const authWithPopup = async (
     DappCommunicationType.Popup
   )
 
-  return await runPopup({
+  return runPopup({
     ...config,
     type: DappRequestType.Auth,
   })

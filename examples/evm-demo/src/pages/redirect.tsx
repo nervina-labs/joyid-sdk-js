@@ -1,4 +1,4 @@
-import { Component, Match, Switch } from 'solid-js'
+import { type Component, Match, Switch } from 'solid-js'
 import { Navigate, useSearchParams } from '@solidjs/router'
 import {
   signMessageCallback,
@@ -6,7 +6,7 @@ import {
   connectCallback,
   signTypedDataCallback,
 } from '@joyid/evm'
-import { RedirectAction } from '../utils'
+import { type RedirectAction } from '../utils'
 
 export const Redirect: Component = () => {
   const [search] = useSearchParams<Record<'action', RedirectAction>>()

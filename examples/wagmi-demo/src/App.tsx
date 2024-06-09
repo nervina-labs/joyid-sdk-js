@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { verifyMessage, parseEther, Hex } from 'viem'
+import { verifyMessage, parseEther, type Hex } from 'viem'
 import {
   useAccount,
   useConnect,
@@ -38,7 +38,9 @@ const SignMessage = ({ address }: { address?: Hex }) => {
       <input
         className="input input-bordered w-full mb-4"
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={(e) => {
+          setMessage(e.target.value)
+        }}
       />
       <label className="label">Signature:</label>
       <textarea
@@ -81,13 +83,17 @@ const SendTransaction = ({ address }: { address?: Hex }) => {
       <input
         className="input input-bordered w-full mb-4"
         value={toAddress}
-        onChange={(e) => setToAddress(e.target.value as Hex)}
+        onChange={(e) => {
+          setToAddress(e.target.value as Hex)
+        }}
       />
       <label className="label">Amount:</label>
       <input
         className="input input-bordered w-full mb-4"
         value={amount}
-        onChange={(e) => setAmount(e.target.value)}
+        onChange={(e) => {
+          setAmount(e.target.value)
+        }}
       />
       <button className="btn btn-primary" onClick={onSign}>
         Send
@@ -107,7 +113,11 @@ export function App() {
       {address ? (
         <>
           <h1 className="text-xl mb-4">{`Connected: ${address}`}</h1>
-          <button className="btn btn-primary" onClick={() => disconnect()}>
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              disconnect()
+            }}>
             Disconnect
           </button>
           <div className="divider" />
@@ -116,11 +126,11 @@ export function App() {
         <button
           className="btn btn-primary"
           disabled={connecting}
-          onClick={() =>
+          onClick={() => {
             connect({
               connector: connectors[0],
             })
-          }>
+          }}>
           {connecting ? (
             <span className="loading loading-spinner"></span>
           ) : null}

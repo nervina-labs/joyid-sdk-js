@@ -2,12 +2,12 @@
 import { useState } from 'react'
 import { Button, VStack, Input, Text, Link, useToast } from '@chakra-ui/react'
 import { Navigate, useNavigate } from 'react-router-dom'
-import { CKBTransaction, signRawTransaction } from '@joyid/ckb'
+import { type CKBTransaction, signRawTransaction } from '@joyid/ckb'
 import {
   Aggregator,
   Collector,
-  InscriptionInfo,
-  JoyIDConfig,
+  type InscriptionInfo,
+  type JoyIDConfig,
   NoLiveCellException,
   buildDeployTx,
   buildMintTx,
@@ -17,7 +17,7 @@ import {
   buildCancelTx,
   buildMakerTx,
   Collector as DexCollector,
-  JoyIDConfig as DexJoyIDConfig,
+  type JoyIDConfig as DexJoyIDConfig,
 } from '@nervina-labs/ckb-dex'
 import { blockchain } from '@ckb-lumos/base'
 import { bytes } from '@ckb-lumos/codec'
@@ -198,8 +198,7 @@ export function SignCkbRawTx() {
         {deployHash && (
           <Link
             isExternal
-            href={`https://pudge.explorer.nervos.org/transaction/${deployHash}`}
-          >{`Deploy tx hash: ${deployHash}`}</Link>
+            href={`https://pudge.explorer.nervos.org/transaction/${deployHash}`}>{`Deploy tx hash: ${deployHash}`}</Link>
         )}
 
         {id && (
@@ -210,28 +209,27 @@ export function SignCkbRawTx() {
             {mintHash && (
               <Link
                 isExternal
-                href={`https://pudge.explorer.nervos.org/transaction/${mintHash}`}
-              >{`Mint tx hash: ${mintHash}`}</Link>
+                href={`https://pudge.explorer.nervos.org/transaction/${mintHash}`}>{`Mint tx hash: ${mintHash}`}</Link>
             )}
             {mintHash && (
               <>
                 <Input
                   placeholder="to CKB address"
-                  onChange={(e) => setToAddress(e.currentTarget.value)}
+                  onChange={(e) => {
+                    setToAddress(e.currentTarget.value)
+                  }}
                 />
                 <Button
                   colorScheme="teal"
                   w="240px"
                   disabled={!toAddress}
-                  onClick={transfer}
-                >
+                  onClick={transfer}>
                   Transfer 1000 CKBI
                 </Button>
                 {transferHash && (
                   <Link
                     isExternal
-                    href={`https://pudge.explorer.nervos.org/transaction/${transferHash}`}
-                  >{`Transfer tx hash: ${transferHash}`}</Link>
+                    href={`https://pudge.explorer.nervos.org/transaction/${transferHash}`}>{`Transfer tx hash: ${transferHash}`}</Link>
                 )}
 
                 <Button colorScheme="teal" w="320px" onClick={listXudt}>
@@ -242,8 +240,7 @@ export function SignCkbRawTx() {
                   <>
                     <Link
                       isExternal
-                      href={`https://pudge.explorer.nervos.org/transaction/${listHash}`}
-                    >{`List tx hash: ${listHash}`}</Link>
+                      href={`https://pudge.explorer.nervos.org/transaction/${listHash}`}>{`List tx hash: ${listHash}`}</Link>
 
                     <Button colorScheme="teal" w="320px" onClick={cancelOrder}>
                       Cancel the above order
@@ -252,8 +249,7 @@ export function SignCkbRawTx() {
                     {cancelHash && (
                       <Link
                         isExternal
-                        href={`https://pudge.explorer.nervos.org/transaction/${cancelHash}`}
-                      >{`Cancel tx hash: ${cancelHash}`}</Link>
+                        href={`https://pudge.explorer.nervos.org/transaction/${cancelHash}`}>{`Cancel tx hash: ${cancelHash}`}</Link>
                     )}
                   </>
                 )}
@@ -262,7 +258,11 @@ export function SignCkbRawTx() {
           </>
         )}
 
-        <Button colorScheme="purple" onClick={() => navi(RoutePath.Home)}>
+        <Button
+          colorScheme="purple"
+          onClick={() => {
+            navi(RoutePath.Home)
+          }}>
           {`<< Go Home`}
         </Button>
       </VStack>

@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-param-reassign */
 import { parseAddress } from '@ckb-lumos/helpers'
 import { indexer } from '.'
 

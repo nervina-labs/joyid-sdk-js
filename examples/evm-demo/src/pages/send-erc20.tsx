@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Navigate, useLocation, useNavigate } from '@solidjs/router'
 import toast from 'solid-toast'
-import { Component, Show, createSignal, onMount } from 'solid-js'
+import { type Component, Show, createSignal, onMount } from 'solid-js'
 import {
   signTransaction,
-  signTransactionCallback,
+  type signTransactionCallback,
   signTransactionWithRedirect,
 } from '@joyid/evm'
 import { useProvider } from '../hooks/provider'

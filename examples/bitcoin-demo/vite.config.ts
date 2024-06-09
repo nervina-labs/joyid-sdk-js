@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { defineConfig } from 'vite'
 import solidPlugin from 'vite-plugin-solid'
 import wasm from 'vite-plugin-wasm'

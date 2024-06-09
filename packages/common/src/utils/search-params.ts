@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-dynamic-delete */
-/* eslint-disable no-param-reassign */
-/* eslint-disable guard-for-in */
-/* eslint-disable no-restricted-syntax */
+
 import { DappError, DappErrorName } from './errors'
 import { decode, encode } from './qss'
 

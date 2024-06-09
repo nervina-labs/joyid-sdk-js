@@ -1,10 +1,10 @@
 import { Navigate, useLocation, useNavigate } from '@solidjs/router'
-import { Component, Show, createSignal } from 'solid-js'
+import { type Component, Show, createSignal } from 'solid-js'
 import toast from 'solid-toast'
 import { verifyMessage } from 'ethers/lib.esm/utils'
 import {
   signMessage,
-  signMessageCallback,
+  type signMessageCallback,
   signMessageWithRedirect,
 } from '@joyid/evm'
 import { useAuthData } from '../hooks/localStorage'

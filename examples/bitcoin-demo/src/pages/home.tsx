@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Component, Match, Show, Switch, onMount } from 'solid-js'
+import { type Component, Match, Show, Switch, onMount } from 'solid-js'
 import { writeClipboard } from '@solid-primitives/clipboard'
 import { A, Navigate, useLocation } from '@solidjs/router'
 import toast from 'solid-toast'
@@ -29,7 +29,6 @@ export const Home: Component = () => {
   const queryBalance = createQuery(
     () => ['balance', authData.address],
     async () => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return btcService.getBtcBalance(authData.address, {
         min_satoshi: MIN_UTXO_AMOUNT,
       })

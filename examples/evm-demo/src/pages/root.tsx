@@ -1,4 +1,4 @@
-import { Component, For, Show, createSignal } from 'solid-js'
+import { type Component, For, Show, createSignal } from 'solid-js'
 import { Navigate, useNavigate } from '@solidjs/router'
 import { useAuthData } from '../hooks/localStorage'
 import { connect, connectWithRedirect, initConfig } from '@joyid/evm'

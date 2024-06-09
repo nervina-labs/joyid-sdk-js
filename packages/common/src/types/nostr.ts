@@ -6,7 +6,7 @@ import {
 import { type RequireExactlyOne } from 'type-fest'
 
 /** @deprecated Use numbers instead. */
-/* eslint-disable no-unused-vars */
+
 export enum EventKind {
   Metadata = 0,
   Text = 1,

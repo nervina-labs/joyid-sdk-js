@@ -56,5 +56,6 @@
   "include": [
     "packages/**/*",
     "tsup-base.config.ts",
+    "eslint.config.js"
   ]
 }

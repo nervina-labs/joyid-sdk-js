@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable class-methods-use-this */
 import {
   providers,
   Signer,

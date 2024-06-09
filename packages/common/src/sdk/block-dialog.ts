@@ -111,8 +111,7 @@ export const createBlockDialog = async <T>(
     document.body.removeChild(dialog)
     document.body.removeChild(dialogBg)
   }
-  return await new Promise<T>((resolve, reject) => {
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  return new Promise<T>((resolve, reject) => {
     approveBtn?.addEventListener('click', async () => {
       try {
         const data = await cb()

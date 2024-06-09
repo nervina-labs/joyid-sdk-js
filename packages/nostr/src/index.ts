@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import type { EventTemplate, Event } from './event'
 import {
   createBlockDialog,
@@ -118,10 +117,10 @@ async function encrypt(pubkey: string, plaintext: string): Promise<string> {
 
   popup.location.href = generateNostrMessageUrl(pubkey, plaintext, 'encrypt')
 
-  const res = await runPopup<any>({
+  const res = await runPopup({
     timeoutInSeconds: 60 * 100,
     popup,
-    type: DappRequestType.SignNostrEvent,
+    type: DappRequestType.EncryptNostrMessage,
   })
 
   if (res.error != null) {
@@ -140,10 +139,10 @@ async function decrypt(pubkey: string, ciphertext: string): Promise<string> {
 
   popup.location.href = generateNostrMessageUrl(pubkey, ciphertext, 'decrypt')
 
-  const res = await runPopup<any>({
+  const res = await runPopup({
     timeoutInSeconds: 6000,
     popup,
-    type: DappRequestType.SignNostrEvent,
+    type: DappRequestType.DecryptNostrMessage,
   })
 
   if (res.error != null) {
