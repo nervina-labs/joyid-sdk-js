@@ -7,8 +7,8 @@
   "scripts": {
     "postinstall": "pnpm run build",
     "lint": "eslint .",
-    "ci:publish": "pnpm publish -r",
-    "changeset": "changeset version",
+    "changeset:version": "changeset version && pnpm -r generate:version && git add --all",
+    "changeset:release": "changeset publish",
     "format": "eslint --fix .",
     "build": "pnpm run --r --filter \"./packages/**\" build",
     "test": "pnpm run --r --filter \"./packages/**\" test"
