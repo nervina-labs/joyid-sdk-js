@@ -1,11 +1,16 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.0.1/schema.json",
-  "changelog": "@changesets/cli/changelog",
-  "commit": false,
-  "fixed": [],
+  "changelog": [
+    "@changesets/changelog-github",
+    {
+      "repo": "nervina-labs/joyid-sdk-js"
+    }
+  ],
+    "commit": false,
+  "fixed": [["@joyid/*"]],
   "linked": [],
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["examples/*"]
+  "ignore": []
 }
