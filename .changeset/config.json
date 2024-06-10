@@ -12,5 +12,6 @@
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
+  "bumpVersionsWithWorkspaceProtocolOnly": true,
   "ignore": ["*-demo"]
 }
