@@ -409,9 +409,9 @@ importers:
 
   packages/bitcoin:
     dependencies:
-      '@joyid/evm':
+      '@joyid/common':
         specifier: workspace:*
-        version: link:../evm
+        version: link:../common
 
   packages/ckb:
     dependencies:
