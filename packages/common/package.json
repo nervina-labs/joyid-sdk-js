@@ -43,7 +43,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "abitype": "0.8.7",
+    "abitype": "1.0.2",
     "type-fest": "4.6.0"
   }
 }
