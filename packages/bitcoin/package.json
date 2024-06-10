@@ -33,6 +33,6 @@
     "dist"
   ],
   "dependencies": {
-    "@joyid/evm": "workspace:*"
+    "@joyid/common": "workspace:*"
   }
 }
