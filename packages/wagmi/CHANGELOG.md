@@ -1,0 +1,10 @@
+# @joyid/wagmi
+
+## 2.0.1
+
+### Patch Changes
+
+- [#8](https://github.com/nervina-labs/joyid-sdk-js/pull/8) [`5d653e7`](https://github.com/nervina-labs/joyid-sdk-js/commit/5d653e71b7d8d47edcf300d9acd8a9fb7c852c32) Thanks [@yuche](https://github.com/yuche)! - Open source JoyID SDK
+
+- Updated dependencies [[`5d653e7`](https://github.com/nervina-labs/joyid-sdk-js/commit/5d653e71b7d8d47edcf300d9acd8a9fb7c852c32)]:
+  - @joyid/ethereum-provider@2.0.1
