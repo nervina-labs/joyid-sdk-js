@@ -105,3 +105,7 @@ export function hexToString(hex: string): string {
     str += String.fromCharCode(parseInt(hex.substr(i, 2), 16))
   return str
 }
+
+export function base64urlToHex(s: string) {
+  return bufferToHex(base64URLStringToBuffer(s))
+}
