@@ -7,6 +7,7 @@
   "scripts": {
     "postinstall": "pnpm run build",
     "lint": "eslint .",
+    "changeset": "changeset",
     "changeset:version": "changeset version && pnpm -r generate:version && git add --all",
     "changeset:release": "changeset publish",
     "format": "eslint --fix .",
