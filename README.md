@@ -7,7 +7,7 @@ This is monorepo for JoyID JavaScript SDK.
 In order to interact with [JoyID App](https://app.joy.id) we provide different packages to meet different requirements.
 
 * [`@joyid/ckb`](./packages/ckb/): SDK for manipulating [Nervos CKB](https://www.nervos.org/) assets, including transferring CKB/mNFT/CoTA NFT, signing Raw Transaction, etc.
-* [`@joyid/bitcoin`](./packages/bitcoin/): UniSat SDK compatible with [Bitcoin](https://bitcoin.org/).
+* [`@joyid/bitcoin`](./packages/bitcoin/): [UniSat Wallet](https://docs.unisat.io/dev/unisat-developer-center/unisat-wallet) compatible SDK for manipulating [Bitcoin](https://bitcoin.org/) assets.
 * [`@joyid/evm`](./packages//evm/): SDK for manipulating [EVM-compatible blockchains](https://blog.thirdweb.com/evm-compatible-blockchains-and-ethereum-virtual-machine/) assets.
 * [`@joyid/nostr`](./packages//nostr/): [NIP-07](https://github.com/nostr-protocol/nips/blob/master/07.md) implementation for [Nostr](https://nostr.com/) protocol.
 * [`@joyid/ethers`](./packages/ethers/): [Ethers.js](https://docs.ethers.io/v5/) implementation for JoyID EVM SDK.
