@@ -466,6 +466,12 @@ importers:
         specifier: workspace:*
         version: link:../common
 
+  packages/miniapp:
+    dependencies:
+      '@joyid/common':
+        specifier: workspace:*
+        version: link:../common
+
   packages/nostr:
     dependencies:
       '@joyid/common':

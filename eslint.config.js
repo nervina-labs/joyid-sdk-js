@@ -31,11 +31,11 @@ export default tseslint.config(
     ],
   },
   {
-    languageOptions: {
-      parserOptions: {
-        project: true,
-      },
-    },
+    // languageOptions: {
+    //   parserOptions: {
+    //     project: true,
+    //   },
+    // },
     rules: {
       'no-return-await': 'off',
       '@typescript-eslint/return-await': ['error', 'in-try-catch'],
