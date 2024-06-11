@@ -28,8 +28,7 @@
   },
   "scripts": {
     "lint": "eslint ./src",
-    "build": "tsup",
-    "test": "vitest"
+    "build": "tsup"
   },
   "overrides": {},
   "files": [
