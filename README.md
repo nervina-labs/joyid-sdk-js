@@ -14,6 +14,7 @@ In order to interact with [JoyID App](https://app.joy.id) we provide different p
 * [`@joyid/wagmi`](./packages/wagmi/): [Wagmi](https://wagmi.io/) implementation for JoyID EVM SDK.
 * [`@joyid/rainbowkit`](./packages/rainbowkit/): [RainbowKit](https://www.rainbowkit.com/) implementation for JoyID EVM SDK.
 * [`@joyid/ethereum-provider`](./packages/ethereum-provider/): [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193) implementation for JoyID EVM SDK.
+* [`@joyid/miniapp`](./packages/miniapp/): SDK for Telegram MiniApp.
 
 You can choose the appropriate SDK package according to your application scenario and follow the instructions in the documentation for installation and use. If you need technical support, feel free to contact us in [Discord](https://discord.com/invite/77MyakRKVB).
 
@@ -27,12 +28,12 @@ pnpm run dev
 
 There are six examples in the `examples` directory:
 
-* [`CKB Demo`](./examples/ckb/): Example for `@joyid/ckb` SDK.
-* [`Bitcoin Demo`](./examples/bitcoin/): Example for `@joyid/bitcoin` SDK.
-* [`EVM Demo`](./examples/evm/): Example for `@joyid/evm` SDK.
-* [`Wagmi Demo`](./examples/wagmi/): Example for `@joyid/wagmi` SDK.
-* [`RainbowKit Demo`](./examples/rainbowkit/): Example for `@joyid/rainbowkit` SDK.
-* [`nostr Demo`](./examples/nostr/): Example for `@joyid/nostr` SDK.
+* [`CKB Demo`](./examples/ckb/): Example for `@joyid/ckb` SDK. [Preview](https://joyid-ckb-demo.vercel.app/)
+* [`Bitcoin Demo`](./examples/bitcoin/): Example for `@joyid/bitcoin` SDK. [Preview](https://joyid-bitcoin-demo.vercel.app/)
+* [`EVM Demo`](./examples/evm/): Example for `@joyid/evm` SDK. [Preview](https://joyid-evm-demo.vercel.app/)
+* [`Wagmi Demo`](./examples/wagmi/): Example for `@joyid/wagmi` SDK. [Preview](https://joyid-wagmi-demo.vercel.app/)
+* [`RainbowKit Demo`](./examples/rainbowkit/): Example for `@joyid/rainbowkit` SDK. [Preview](https://joyid-rainbowkit-demo.vercel.app/)
+* [`nostr Demo`](./examples/nostr/): Example for `@joyid/nostr` SDK. [Preview](https://docs.joyid.dev/guide/nostr/nip-07#try-it-out)
 
 ## Development
 

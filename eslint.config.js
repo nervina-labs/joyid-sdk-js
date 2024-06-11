@@ -22,6 +22,12 @@ export default tseslint.config(
       'packages/nostr/dist/**/*',
       'packages/rainbowkit/dist/**/*',
       'packages/wagmi/dist/**/*',
+      'packages/miniapp/dist/**/*',
+      'examples/bitcoin-demo/dist/**/*',
+      'examples/ckb-demo/dist/**/*',
+      'examples/evm-demo/dist/**/*',
+      'examples/rainbowkit-demo/dist/**/*',
+      'examples/wagmi-demo/dist/**/*',
     ],
   },
   {
