@@ -1,6 +1,4 @@
 /* eslint-disable prefer-const */
-
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import type {
   AuthResponseData,
   DappRequestType,

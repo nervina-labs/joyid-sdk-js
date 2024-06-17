@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-
 import {
   createConnector,
   ChainNotConfiguredError,
@@ -22,12 +20,10 @@ export function joyidConnector(
 ): CreateConnectorFn<EthereumProvider> {
   type Provider = EthereumProvider
 
-  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   type Properties = {
     onConnect: (connectInfo: ProviderConnectInfo) => void
   }
 
-  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   type StorageItem = {
     'joyid.disconnected': true
   }
@@ -48,7 +44,6 @@ export function joyidConnector(
     },
     async getProvider() {
       if (!_provider) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         _provider = new EthereumProvider(config.chains as any, joyidConfig)
       }
       return _provider
@@ -175,7 +170,7 @@ export function joyidConnector(
         ) {
           throw new UserRejectedRequestError(error)
         }
-        // eslint-disable-next-line @typescript-eslint/only-throw-error
+
         throw error
       }
     },

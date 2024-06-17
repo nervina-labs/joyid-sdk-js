@@ -9,4 +9,4 @@ export const BTC_SERVICE_URL: string =
 export const BTC_SERVER_TOKEN: string =
   import.meta.env.VITE_APP_BTC_SERVER_TOKEN ?? ''
 
-export const MIN_UTXO_AMOUNT = 10000
+export const MIN_UTXO_AMOUNT = 10_000

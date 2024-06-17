@@ -8,6 +8,6 @@ export default defineConfig({
   ...config,
   name,
   entry: ['src/index.ts'],
-  external: [...Object.keys(dependencies)],
+  external: Object.keys(dependencies),
   platform: 'browser',
 })

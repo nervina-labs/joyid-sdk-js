@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-
 import {
   type CKBTransaction,
   createBlockDialog,
@@ -15,10 +13,6 @@ import {
   type CkbTransactionRequest,
   type CotaNFTTransactionRequest,
   type SignCotaNFTRequest,
-  type AuthRequest,
-  type AuthResponse,
-  type SignMessageRequest,
-  type SignMessageResponse,
   type SignCkbTxResponseData,
   type AuthResponseData,
   type SignMessageResponseData,
@@ -26,8 +20,6 @@ import {
   bufferToHex,
   append0x,
   remove0x,
-  type CredentialKeyType,
-  SigningAlg,
 } from '@joyid/common'
 import {
   addressToScript,
@@ -35,39 +27,8 @@ import {
   serializeScript,
 } from '@nervosnetwork/ckb-sdk-utils'
 import { Aggregator } from './aggregator'
-import {
-  getJoyIDCellDep,
-  getJoyIDLockScript,
-  getCotaTypeScript,
-  getCotaCellDep,
-} from './constants'
+
 export * from './verify'
-
-export {
-  openPopup,
-  Aggregator,
-  getJoyIDCellDep,
-  getJoyIDLockScript,
-  getCotaTypeScript,
-  getCotaCellDep,
-  SigningAlg,
-}
-
-export type {
-  CkbDappConfig,
-  PopupConfigOptions as PopupConifg,
-  SignMessageResponseData as SignChallengeResponseData,
-  AuthResponseData as ConnectResponseData,
-  SignCotaNFTRequest,
-  CotaNFTTransactionRequest,
-  CKBTransaction,
-  AuthRequest,
-  AuthResponse,
-  SignCkbTxRequest,
-  SignMessageResponse,
-  SignMessageRequest,
-  CredentialKeyType,
-}
 
 const appendPrefix = (tokenKey?: string): string | undefined => {
   if (!tokenKey) {
@@ -140,7 +101,7 @@ export const signChallenge = async (
   }
   const res = await signMessageWithPopup({
     challenge:
-      typeof challenge !== 'string' ? bufferToHex(challenge) : challenge,
+      typeof challenge === 'string' ? challenge : bufferToHex(challenge),
     isData,
     address: signerAddress,
     redirectURL: location.href,
@@ -295,3 +256,29 @@ export const getSubkeyUnlock = async (
     await aggregator.generateSubkeyUnlockSmt(req)
   return unlockEntry
 }
+
+export {
+  type AuthRequest,
+  type AuthResponse,
+  type SignMessageResponse,
+  type SignMessageRequest,
+  type CredentialKeyType,
+  SigningAlg,
+  type CkbDappConfig,
+  openPopup,
+  type PopupConfigOptions as PopupConifg,
+  type AuthResponseData as ConnectResponseData,
+  type SignMessageResponseData as SignChallengeResponseData,
+  type CotaNFTTransactionRequest,
+  type SignCotaNFTRequest,
+  type SignCkbTxRequest,
+  type CKBTransaction,
+} from '@joyid/common'
+export {
+  getJoyIDCellDep,
+  getCotaTypeScript,
+  getJoyIDLockScript,
+  getCotaCellDep,
+} from './constants'
+
+export { Aggregator } from './aggregator'

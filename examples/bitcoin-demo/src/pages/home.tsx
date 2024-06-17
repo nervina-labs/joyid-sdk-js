@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { type Component, Match, Show, Switch, onMount } from 'solid-js'
 import { writeClipboard } from '@solid-primitives/clipboard'
 import { A, Navigate, useLocation } from '@solidjs/router'

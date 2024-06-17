@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { type Component, Show, createSignal } from 'solid-js'
 import { Navigate, useNavigate } from '@solidjs/router'
 import { useAuthData } from '../hooks/localStorage'

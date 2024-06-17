@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-assertions */
 import { type CellDep, type Script } from '@joyid/common'
 
 const TestnetInfo = {

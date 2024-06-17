@@ -71,8 +71,6 @@ export const verifySessionKeySignature = async (
   }
 }
 
-export type { SigningAlg, CredentialKeyType }
-
 export const verifyNativeKeySignature = async ({
   message,
   signature,
@@ -169,3 +167,5 @@ export const verifyCredential = async (
     return false
   }
 }
+
+export { type SigningAlg, type CredentialKeyType } from '@joyid/common'

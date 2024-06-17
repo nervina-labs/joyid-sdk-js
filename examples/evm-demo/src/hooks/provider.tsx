@@ -4,12 +4,11 @@ import { createMemo } from 'solid-js'
 
 export const SepoliaNetwork = {
   name: 'Ethereum Sepolia',
-  chainId: 11155111,
+  chainId: 11_155_111,
 }
 
 export const useProvider = () => {
   const { authData } = useAuthData()
-  // eslint-disable-next-line solid/reactivity
   return createMemo(() =>
     authData.name
       ? new providers.JsonRpcBatchProvider(authData.rpcURL, {

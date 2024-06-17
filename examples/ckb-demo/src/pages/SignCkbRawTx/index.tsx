@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useState } from 'react'
 import { Button, VStack, Input, Text, Link, useToast } from '@chakra-ui/react'
 import { Navigate, useNavigate } from 'react-router-dom'
@@ -26,7 +25,7 @@ import { RoutePath } from '../../route/path'
 import { CKB_INDEXER_URL, CKB_RPC_URL, COTA_AGGREGATOR_URL } from '../../env'
 
 const info: InscriptionInfo = {
-  maxSupply: BigInt(2100_0000),
+  maxSupply: BigInt(21_000_000),
   mintLimit: BigInt(1000),
   xudtHash: '',
   mintStatus: 0,

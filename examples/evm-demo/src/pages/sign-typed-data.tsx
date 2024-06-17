@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Navigate, useLocation, useNavigate } from '@solidjs/router'
 import { type Component, Show, createSignal } from 'solid-js'
 import toast from 'solid-toast'
