@@ -36,7 +36,7 @@ export const App: React.FC = () => {
   )
 }
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.querySelector('#root')!).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>

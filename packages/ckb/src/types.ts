@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-interface */
 export type Hex = string
 export type Byte = string | number
 export type Byte2 = string | number

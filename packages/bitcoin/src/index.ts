@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-
 import {
   createBlockDialog,
   openPopup as p,
@@ -24,8 +22,6 @@ import {
 } from '@joyid/common'
 
 export const openPopup = p
-
-export type { BtcConfig }
 
 const JOYID_STORAGE_KEY = 'joyid:bitcoin::account'
 
@@ -58,9 +54,9 @@ export const buildSignPsbtsURL = (
 const getRequestNetwork = (
   requestAddressType: BtcConfig['requestAddressType']
 ): RequestNetwork =>
-  requestAddressType !== null
-    ? (`btc-${requestAddressType}` as RequestNetwork)
-    : 'btc-auto'
+  requestAddressType == null
+    ? 'btc-auto'
+    : (`btc-${requestAddressType}` as RequestNetwork)
 
 export const buildConnectUrl = (
   { requestAddressType, ...config }: BtcConfig & { redirectURL: string },
@@ -136,9 +132,8 @@ export const requestAccounts = async (): Promise<string[]> => {
 }
 
 export const getAccounts = (): string[] =>
-  connectedAccount.address != null
-    ? [connectedAccount.address]
-    : safeExec(() => {
+  connectedAccount.address == null
+    ? safeExec(() => {
         const json = localStorage.getItem(JOYID_STORAGE_KEY)
         if (json) {
           const account = JSON.parse(json)
@@ -148,6 +143,7 @@ export const getAccounts = (): string[] =>
         }
         return []
       }) ?? []
+    : [connectedAccount.address]
 
 export const getPublicKey = (): string | null => {
   if (connectedAccount.pubkey) {
@@ -341,3 +337,5 @@ export const signPsbtCallback = (uri?: string): WithState & { tx: string } => {
     tx,
   }
 }
+
+export { type BtcConfig } from '@joyid/common'

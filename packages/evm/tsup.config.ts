@@ -8,6 +8,6 @@ export default defineConfig({
   ...config,
   name,
   entry: ['src/index.ts', 'src/aa.ts', 'src/web2login.ts'],
-  external: [...Object.keys(dependencies)],
+  external: Object.keys(dependencies),
   platform: 'browser',
 })

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* @refresh reload */
 import './global.css'
 
@@ -7,7 +6,7 @@ import { Router } from '@solidjs/router'
 
 import App from './app'
 
-const root = document.getElementById('root')
+const root = document.querySelector('#root')
 
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   throw new Error(

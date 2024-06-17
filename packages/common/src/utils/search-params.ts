@@ -1,6 +1,7 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-/* eslint-disable @typescript-eslint/no-dynamic-delete */
+/* eslint-disable unicorn/no-array-callback-reference */
+/* eslint-disable unicorn/no-typeof-undefined */
+/* eslint-disable unicorn/no-array-for-each */
+/* eslint-disable unicorn/prefer-string-slice */
 
 import { DappError, DappErrorName } from './errors'
 import { decode, encode } from './qss'

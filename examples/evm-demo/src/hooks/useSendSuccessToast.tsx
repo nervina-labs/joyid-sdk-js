@@ -57,7 +57,7 @@ export const useSendSuccessToast = () => {
       },
       {
         position: 'bottom-center',
-        duration: 10000,
+        duration: 10_000,
         unmountDelay: 0,
       }
     )

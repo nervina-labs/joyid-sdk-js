@@ -1,15 +1,16 @@
-/* eslint-disable no-param-reassign */
 import type {
-  TransactionRequest,
   MiniAppSignEvmTxRequest,
   MiniAppSignTypedDataRequest,
   MiniAppBaseRequest,
   MiniAppAuthRequest,
   MiniAppSignMessageRequest,
 } from '@joyid/common'
-import { EvmConfig, encodeSearch, internalConfig, bufferToHex } from '@joyid/common'
-
-export type { EvmConfig, TransactionRequest }
+import {
+  EvmConfig,
+  encodeSearch,
+  internalConfig,
+  bufferToHex,
+} from '@joyid/common'
 
 export const initConfig = (config?: EvmConfig) => {
   Object.assign(internalConfig, config)
@@ -60,7 +61,7 @@ export const buildSignMessageUrl = (
       ...internalConfig,
       ...config,
       requestNetwork: 'ethereum',
-      challenge: typeof message !== 'string' ? bufferToHex(message) : message,
+      challenge: typeof message === 'string' ? message : bufferToHex(message),
       isData,
     },
     '/sign-mini-app-msg'
@@ -76,7 +77,9 @@ export const buildSignTxURL = (config: MiniAppSignEvmTxRequest): string =>
     '/sign-mini-app-evm'
   )
 
-export const buildSignTypedDataUrl = (config: MiniAppSignTypedDataRequest): string =>
+export const buildSignTypedDataUrl = (
+  config: MiniAppSignTypedDataRequest
+): string =>
   buildJoyIDURL(
     {
       ...internalConfig,
@@ -84,3 +87,5 @@ export const buildSignTypedDataUrl = (config: MiniAppSignTypedDataRequest): stri
     },
     '/sign-mini-app-typed-data'
   )
+
+export { type TransactionRequest, type EvmConfig } from '@joyid/common'

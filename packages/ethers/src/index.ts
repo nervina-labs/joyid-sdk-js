@@ -5,17 +5,13 @@ import {
   type TypedDataField,
 } from 'ethers'
 import {
-  connect,
   type EvmConfig,
   type TransactionRequest,
   signTransaction,
-  type PopupConifg,
-  type SignConfig,
   signMessage,
   initConfig,
   getConfig,
   getConnectedAddress,
-  signTypedData,
 } from '@joyid/evm'
 import {
   type Bytes,
@@ -23,10 +19,6 @@ import {
   getAddress,
   type ConnectionInfo,
 } from 'ethers/lib.esm/utils'
-
-export type { EvmConfig, TransactionRequest, PopupConifg, SignConfig }
-
-export { connect, initConfig, getConnectedAddress, signTypedData }
 
 export class JoyIDSigner extends Signer {
   private readonly _address: string
@@ -47,7 +39,7 @@ export class JoyIDSigner extends Signer {
   }
 
   async getAddress(): Promise<string> {
-    return Promise.resolve(getAddress(this._address))
+    return getAddress(this._address)
   }
 
   async signTransaction(tx: TransactionRequest): Promise<string> {
@@ -97,3 +89,14 @@ export class JoyIDProvider extends providers.JsonRpcProvider {
     throw new Error('No connected address')
   }
 }
+
+export {
+  connect,
+  type PopupConifg,
+  signTypedData,
+  type SignConfig,
+  type EvmConfig,
+  type TransactionRequest,
+  initConfig,
+  getConnectedAddress,
+} from '@joyid/evm'

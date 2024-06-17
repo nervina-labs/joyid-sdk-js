@@ -26,12 +26,12 @@ export enum EventKind {
   Report = 1984,
   ZapRequest = 9734,
   Zap = 9735,
-  RelayList = 10002,
-  ClientAuth = 22242,
-  HttpAuth = 27235,
-  ProfileBadge = 30008,
-  BadgeDefinition = 30009,
-  Article = 30023,
+  RelayList = 10_002,
+  ClientAuth = 22_242,
+  HttpAuth = 27_235,
+  ProfileBadge = 30_008,
+  BadgeDefinition = 30_009,
+  Article = 30_023,
 }
 
 export interface EventTemplate<K extends number = number> {

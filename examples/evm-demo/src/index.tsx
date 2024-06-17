@@ -6,7 +6,7 @@ import { Router } from '@solidjs/router'
 
 import App from './app'
 
-const root = document.getElementById('root')
+const root = document.querySelector('#root')
 
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   throw new Error(
@@ -20,6 +20,6 @@ render(
       <App />
     </Router>
   ),
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
   root!
 )

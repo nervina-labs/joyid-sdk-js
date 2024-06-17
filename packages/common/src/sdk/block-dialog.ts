@@ -1,3 +1,6 @@
+/* eslint-disable unicorn/prefer-dom-node-remove */
+/* eslint-disable unicorn/prefer-query-selector */
+/* eslint-disable unicorn/prefer-dom-node-append */
 const styleId = 'joyid-block-dialog-style'
 
 const approveId = 'joyid-block-dialog-approve'

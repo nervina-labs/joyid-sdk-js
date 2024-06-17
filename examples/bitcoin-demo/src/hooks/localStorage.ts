@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { createEffect } from 'solid-js'
 import {
   createStore,

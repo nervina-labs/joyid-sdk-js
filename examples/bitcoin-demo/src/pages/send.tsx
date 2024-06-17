@@ -44,7 +44,7 @@ export const SendBtc: Component = () => {
       tos: [
         {
           address: toAddress(),
-          value: parseInt((Number(toAmount()) * 1e8).toString(), 10),
+          value: Number.parseInt((Number(toAmount()) * 1e8).toString(), 10),
         },
       ],
       feeRate: 1,

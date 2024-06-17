@@ -7,6 +7,6 @@ import config from '../../tsup-base.config'
 export default defineConfig({
   ...config,
   name,
-  external: [...Object.keys(dependencies)],
+  external: Object.keys(dependencies),
   platform: 'browser',
 })

@@ -1,3 +1,6 @@
+/* eslint-disable unicorn/no-for-loop */
+/* eslint-disable unicorn/prefer-code-point */
+/* eslint-disable unicorn/text-encoding-identifier-case */
 /**
  * Convert from a Base64URL-encoded string to an Array Buffer. Best used when converting a
  * credential ID from a JSON string to an ArrayBuffer, like in allowCredentials or
@@ -57,7 +60,8 @@ export function bufferToBase64URLString(buffer: ArrayBuffer): string {
 export function hexToArrayBuffer(input: string): ArrayBuffer {
   const view = new Uint8Array(input.length / 2)
   for (let i = 0; i < input.length; i += 2) {
-    view[i / 2] = parseInt(input.substring(i, i + 2), 16)
+    // eslint-disable-next-line unicorn/prefer-string-slice
+    view[i / 2] = Number.parseInt(input.substring(i, i + 2), 16)
   }
 
   return view.buffer
@@ -102,7 +106,8 @@ export function append0x(hex: string): string {
 export function hexToString(hex: string): string {
   let str = ''
   for (let i = 0; i < hex.length; i += 2)
-    str += String.fromCharCode(parseInt(hex.substr(i, 2), 16))
+    // eslint-disable-next-line unicorn/prefer-string-slice
+    str += String.fromCharCode(Number.parseInt(hex.substr(i, 2), 16))
   return str
 }
 

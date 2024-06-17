@@ -11,6 +11,7 @@ export interface Chain {
 
 export const EthSepolia: Chain = chainList[0]
 
+// eslint-disable-next-line unicorn/no-array-reduce
 export const Chains = chainList.reduce<Record<string, Chain>>((prev, acc) => {
   prev[acc.name] = acc
   return prev

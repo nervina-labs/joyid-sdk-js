@@ -13,4 +13,4 @@ i18n.use(initReactI18next).init({
   cache: localStorage,
 })
 
-export default i18n
+export { default } from 'i18next'

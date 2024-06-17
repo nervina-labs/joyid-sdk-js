@@ -27,9 +27,12 @@ import {
   safeExec,
 } from '@joyid/common'
 
-export type { EvmConfig, TransactionRequest, PopupConfigOptions as PopupConifg }
-
-export { safeExec } from '@joyid/common'
+export {
+  safeExec,
+  type EvmConfig,
+  type PopupConfigOptions as PopupConifg,
+  type TransactionRequest,
+} from '@joyid/common'
 
 const JOYID_STORAGE_KEY = 'joyid:ethereum::address'
 
@@ -82,7 +85,7 @@ export const buildSignMessageUrl = (
       ...internalConfig,
       ...config,
       requestNetwork: 'ethereum',
-      challenge: typeof message !== 'string' ? bufferToHex(message) : message,
+      challenge: typeof message === 'string' ? message : bufferToHex(message),
       isData,
     },
     type
@@ -194,7 +197,7 @@ export const signMessage = async (
 
   const res = await signMessageWithPopup({
     requestNetwork: 'ethereum',
-    challenge: typeof message !== 'string' ? bufferToHex(message) : message,
+    challenge: typeof message === 'string' ? message : bufferToHex(message),
     isData,
     address: signerAddress,
     redirectURL: location.href,
@@ -220,7 +223,7 @@ export const signMessageWithRedirect = (
 
   signWithRedirect({
     requestNetwork: 'ethereum',
-    challenge: typeof message !== 'string' ? bufferToHex(message) : message,
+    challenge: typeof message === 'string' ? message : bufferToHex(message),
     isData,
     address: signerAddress,
     redirectURL,

@@ -17,7 +17,7 @@ type UnsignedEvent = EventTemplate<number> & {
   pubkey?: string
 }
 
-export type { UnsignedEvent, Event }
+export type { UnsignedEvent }
 
 export const initConfig = (config?: NostrConfig): DappConfig => {
   Object.assign(internalDappConfig, config)
@@ -25,8 +25,6 @@ export const initConfig = (config?: NostrConfig): DappConfig => {
 }
 
 export const getConfig = (): NostrConfig => internalDappConfig
-
-export { openPopup }
 
 const buildSignEventUrl = (event: UnsignedEvent): string => {
   const {
@@ -69,7 +67,6 @@ async function signEvent(event: UnsignedEvent): Promise<Event<number>> {
     throw new Error('Please call getPublicKey() first or pass event.pubkey')
   }
 
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   event.pubkey = pubkey || undefined
 
   popup.location.href = buildSignEventUrl(event)
@@ -164,3 +161,6 @@ export const nostr = {
     decrypt,
   },
 }
+
+export { type Event } from './event'
+export { openPopup } from '@joyid/common'

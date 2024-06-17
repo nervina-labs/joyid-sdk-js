@@ -1,5 +1,3 @@
-/* eslint-disable n/handle-callback-err */
-
 export class GenericError extends Error {
   constructor(
     public error: string,

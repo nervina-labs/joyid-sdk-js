@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Navigate, useLocation, useNavigate } from '@solidjs/router'
 import toast from 'solid-toast'
 import { type Component, Show, createSignal, onMount } from 'solid-js'

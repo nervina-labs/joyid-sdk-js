@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react'
 import { Button, Textarea, VStack, useToast, Box } from '@chakra-ui/react'
 import {

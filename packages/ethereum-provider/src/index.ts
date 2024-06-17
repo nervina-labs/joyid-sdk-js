@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import {
   type EIP1193RequestFn,
   type EIP1474Methods,
@@ -140,10 +139,12 @@ export class EthereumProvider extends EventEmitter {
         this.account = account
         return [account] as any
       }
-      case 'eth_accounts':
+      case 'eth_accounts': {
         return [this.account] as any
-      case 'eth_chainId':
+      }
+      case 'eth_chainId': {
         return this.chainId
+      }
       case 'eth_sign': {
         throw new Error('eth_sign is not supported, use personal_sign instead')
       }

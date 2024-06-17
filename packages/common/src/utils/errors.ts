@@ -14,11 +14,7 @@ export class DappError extends Error {
     rawError: unknown = undefined
   ) {
     super(message)
-    if (message === DappErrorName.UserRejected) {
-      this.name = message
-    } else {
-      this.name = name
-    }
+    this.name = message === DappErrorName.UserRejected ? message : name
     this.rawError = rawError
   }
 }
