@@ -1,5 +1,12 @@
 # @joyid/rainbowkit
 
+## 2.0.2
+
+### Patch Changes
+
+- Updated dependencies [[`891b189`](https://github.com/nervina-labs/joyid-sdk-js/commit/891b189bcb168513aab9f118dfd9fee6d4ac3a06)]:
+  - @joyid/wagmi@2.0.2
+
 ## 2.0.1
 
 ### Patch Changes
