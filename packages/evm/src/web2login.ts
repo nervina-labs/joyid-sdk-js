@@ -34,10 +34,10 @@ export const connect = async (
     ...internalConfig,
   }
 
-  if (config.popup != null) {
+  if (config.popup == null) {
     config.popup = openPopup('')
 
-    if (config.popup != null) {
+    if (config.popup == null) {
       return createBlockDialog(async () => connect(uid, config))
     }
   }
