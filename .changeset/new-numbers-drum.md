@@ -1,5 +1,5 @@
 ---
-'@joyid/common': minor
+'@joyid/common': patch
 ---
 
 feat: Add witnessIndexes to SignCkbRawTxRequest
