@@ -92,7 +92,10 @@ export interface SignCkbRawTxRequest extends CkbDappConfig {
   tx: CKBTransaction
   signerAddress: string
   redirectURL: string
+  witnessIndexes?: number[]
+  // deprecated: Please use witnessIndexes to specify locations of JoyID cells
   witnessIndex?: number
+  // deprecated: Please use witnessIndexes to specify locations of JoyID cells
   witnessLastIndex?: number
 }
 
