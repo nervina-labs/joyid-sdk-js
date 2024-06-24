@@ -9,7 +9,12 @@ import {
   openPopup,
   runPopup,
   internalConfig,
+  getRedirectResponse,
 } from '@joyid/common'
+
+interface WithState {
+  state?: string
+}
 
 export const initConfig = (config?: EvmWeb2LoginConfig): EvmWeb2LoginConfig => {
   Object.assign(internalConfig, config)
@@ -52,4 +57,42 @@ export const connect = async (
     ...config,
     type: DappRequestType.EvmWeb2Login,
   })
+}
+
+export const connectWithRedirect = (
+  redirectURL: string,
+  uid?: string,
+  config?: EvmWeb2LoginConfig
+): void => {
+  const request = {
+    signerAddress: uid,
+    redirectURL: redirectURL,
+    requestNetwork: 'ethereum',
+    requestType: DappRequestType.EvmWeb2Login,
+    ...internalConfig,
+    ...config,
+  }
+
+  window.location.assign(
+    buildJoyIDURL(request, DappCommunicationType.Redirect, '/evm-web2-login')
+  )
+}
+
+export const connectCallback = (
+  uri?: string
+): EvmWeb2LoginResponse & WithState => {
+  const { state, uid, entropy } = getRedirectResponse<
+    EvmWeb2LoginResponse & WithState
+  >(uri)
+  if (state != null) {
+    return {
+      state,
+      uid,
+      entropy,
+    }
+  }
+  return {
+    uid,
+    entropy,
+  }
 }
