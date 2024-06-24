@@ -1,5 +1,11 @@
 # @joyid/common
 
+## 0.1.0
+
+### Minor Changes
+
+- [#26](https://github.com/nervina-labs/joyid-sdk-js/pull/26) [`4c2a6a9`](https://github.com/nervina-labs/joyid-sdk-js/commit/4c2a6a965c39d3df4d68422ad84e51cceed7efb3) Thanks [@Hanssen0](https://github.com/Hanssen0)! - feat(common): support local config for `runPopup`
+
 ## 0.0.4
 
 ### Patch Changes

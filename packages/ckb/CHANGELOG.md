@@ -1,5 +1,12 @@
 # @joyid/ckb
 
+## 0.1.1
+
+### Patch Changes
+
+- Updated dependencies [[`4c2a6a9`](https://github.com/nervina-labs/joyid-sdk-js/commit/4c2a6a965c39d3df4d68422ad84e51cceed7efb3)]:
+  - @joyid/common@0.1.0
+
 ## 0.1.0
 
 ### Minor Changes
