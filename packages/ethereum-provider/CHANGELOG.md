@@ -1,5 +1,12 @@
 # @joyid/ethereum-provider
 
+## 1.0.5
+
+### Patch Changes
+
+- Updated dependencies [[`fbaa09f`](https://github.com/nervina-labs/joyid-sdk-js/commit/fbaa09f82b6d3f3d8d7f741e88c1293d1e69609a)]:
+  - @joyid/evm@0.4.0
+
 ## 1.0.4
 
 ### Patch Changes
