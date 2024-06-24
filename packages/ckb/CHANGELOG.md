@@ -1,5 +1,16 @@
 # @joyid/ckb
 
+## 0.1.0
+
+### Minor Changes
+
+- [#22](https://github.com/nervina-labs/joyid-sdk-js/pull/22) [`afe92c1`](https://github.com/nervina-labs/joyid-sdk-js/commit/afe92c151155381097916ce93c3cfc058a319b04) Thanks [@duanyytop](https://github.com/duanyytop)! - feat: Add witnessIndexes to signRawTransaction
+
+### Patch Changes
+
+- Updated dependencies [[`afe92c1`](https://github.com/nervina-labs/joyid-sdk-js/commit/afe92c151155381097916ce93c3cfc058a319b04)]:
+  - @joyid/common@0.0.4
+
 ## 0.0.11
 
 ### Patch Changes
