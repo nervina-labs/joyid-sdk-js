@@ -64,12 +64,14 @@ export const initConfig = (config?: CkbDappConfig): CkbDappConfig => {
 
 export const getConfig = (): CkbDappConfig => internalDappConfig
 
-// The witnessIndex represents the position of the first JoyID cell in inputs, and the default value is 0.
-// The witnessLastIndex represents the position of the last JoyID cell in inputs, and the default value is inputs.length - 1
-// The witnessLastIndex must not be smaller than witnessIndex.
-// For example: witnessIndex = 1, witnessLastIndex = 3, this means the inputs[1..3] are JoyID cell, and the other inputs are another lock scripts.
+// The witnessIndexes represents the positions of the JoyID cells in inputs, the default value is [0..inputs.length)
+// deprecated: The witnessIndex represents the position of the first JoyID cell in inputs, and the default value is 0.
+// deprecated: The witnessLastIndex represents the position of the last JoyID cell in inputs, and the default value is inputs.length - 1
+// deprecated: The witnessLastIndex must not be smaller than witnessIndex.
+// deprecated: For example: witnessIndex = 1, witnessLastIndex = 3, this means the inputs[1..3] are JoyID cell, and the other inputs are another lock scripts.
 export type SignConfig = CkbDappConfig &
   Pick<PopupConfigOptions, 'timeoutInSeconds' | 'popup'> & {
+    witnessIndexes?: number[]
     witnessIndex?: number
     witnessLastIndex?: number
   }
@@ -195,13 +197,26 @@ export const signRawTransaction = async (
     ...config,
   }
 
-  if (config.witnessIndex && config.witnessLastIndex) {
-    if (config.witnessLastIndex < config.witnessIndex) {
+  const { witnessIndexes, witnessIndex, witnessLastIndex } = config
+
+  if (witnessIndexes) {
+    if (witnessIndexes.length === 0) {
+      throw new Error('The witnessIndexes must be not empty')
+    }
+    if (witnessIndexes.length > tx.inputs.length) {
+      throw new Error(
+        'The length of witnessIndexes must not be bigger than the length of inputs'
+      )
+    }
+  }
+
+  if (witnessIndex && witnessLastIndex) {
+    if (witnessLastIndex < witnessIndex) {
       throw new Error(
         'The witnessLastIndex must not be smaller than the witnessIndex'
       )
     }
-    if (config.witnessLastIndex >= tx.inputs.length) {
+    if (witnessLastIndex >= tx.inputs.length) {
       throw new Error(
         'The witnessLastIndex must be smaller than the length of inputs'
       )
