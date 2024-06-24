@@ -1,5 +1,11 @@
 # @joyid/evm
 
+## 0.4.0
+
+### Minor Changes
+
+- [#24](https://github.com/nervina-labs/joyid-sdk-js/pull/24) [`fbaa09f`](https://github.com/nervina-labs/joyid-sdk-js/commit/fbaa09f82b6d3f3d8d7f741e88c1293d1e69609a) Thanks [@yuche](https://github.com/yuche)! - Add web2login redirect mode
+
 ## 0.3.4
 
 ### Patch Changes
