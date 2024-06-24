@@ -1,6 +1,6 @@
 {
   "name": "@joyid/common",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Shared code for JoyID SDK",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
