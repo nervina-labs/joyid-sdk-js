@@ -1,6 +1,7 @@
 /* eslint-disable prefer-const */
 import type {
   AuthResponseData,
+  DappConfig,
   DappRequestType,
   SignCkbTxResponseData,
   SignCotaNFTResponseData,
@@ -51,7 +52,7 @@ export const openPopup = (url: string = ''): Window | null => {
   )
 }
 
-interface PopupRerurnType {
+export interface PopupRerurnType {
   [DappRequestType.Auth]: AuthResponseData
   [DappRequestType.SignMessage]: SignMessageResponseData
   [DappRequestType.SignEvm]: SignEvmTxResponseData
@@ -72,7 +73,7 @@ interface PopupRerurnType {
 }
 
 export const runPopup = async <T extends DappRequestType>(
-  config: PopupConfigOptions<T>
+  config: PopupConfigOptions<T> & Partial<DappConfig>
 ): Promise<PopupRerurnType[T]> =>
   new Promise<PopupRerurnType[T]>((resolve, reject) => {
     if (isStandaloneBrowser()) {
@@ -100,7 +101,7 @@ export const runPopup = async <T extends DappRequestType>(
     )
 
     popupEventListener = (e: MessageEvent) => {
-      const { joyidAppURL } = getConfig()
+      const joyidAppURL = config.joyidAppURL ?? getConfig().joyidAppURL
       if (joyidAppURL == null) {
         throw new Error('joyidAppURL is not set in the config')
       }
