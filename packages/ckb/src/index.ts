@@ -64,9 +64,9 @@ export const initConfig = (config?: CkbDappConfig): CkbDappConfig => {
 
 export const getConfig = (): CkbDappConfig => internalDappConfig
 
-// The witnessIndexes represents the positions of the JoyID cells in inputs, the default value is [0..inputs.length)
-// deprecated: The witnessIndex represents the position of the first JoyID cell in inputs, and if it is undefined, witnessIndexes will work.
-// deprecated: The witnessLastIndex represents the position of the last JoyID cell in inputs, and if it is undefined, witnessIndexes will work
+// The witnessIndexes represents the positions of the JoyID cells in inputs, the default value is empty array
+// deprecated: The witnessIndex represents the position of the first JoyID cell in inputs, and the default value is 0
+// deprecated: The witnessLastIndex represents the position of the last JoyID cell in inputs, and the default value is inputs.length - 1
 // deprecated: The witnessLastIndex must not be smaller than witnessIndex.
 // deprecated: For example: witnessIndex = 1, witnessLastIndex = 3, this means the inputs[1..3] are JoyID cell, and the other inputs are another lock scripts.
 export type SignConfig = CkbDappConfig &
