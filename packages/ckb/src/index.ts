@@ -21,14 +21,12 @@ import {
   append0x,
   remove0x,
 } from '@joyid/common'
-import {
-  addressToScript,
-  blake160,
-  serializeScript,
-} from '@nervosnetwork/ckb-sdk-utils'
+import ckbUtils from '@nervosnetwork/ckb-sdk-utils'
 import { Aggregator } from './aggregator'
 
 export * from './verify'
+
+const { addressToScript, blake160, serializeScript } = ckbUtils
 
 const appendPrefix = (tokenKey?: string): string | undefined => {
   if (!tokenKey) {
