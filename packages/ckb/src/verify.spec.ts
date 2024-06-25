@@ -89,7 +89,37 @@ describe('verify', () => {
     })
   })
 
-  describe.skip('verifyCredential', () => {
+  describe('verifyCredential', () => {
+    const joyidServerURL = 'https://api.testnet.joyid.dev/api/v1'
+
+    it('main key r1 with credential object', async () => {
+      const credential = {
+        address:
+          'ckt1qrfrwcdnvssswdwpn3s9v8fp87emat306ctjwsm3nmlkjg8qyza2cqgqq8n3thvttqfasgrql80e3s5l66lcneyxrsuglhh2',
+        pubkey:
+          '93222c01a3514baab677d722b39b3dede3660e9203a729b969f82b98c428d441a32a8094bff3d90827ca326fb88066cf70bae9c67bef8494549315e7d7b152e6',
+        keyType: 'main_key',
+        alg: -7,
+      } as const
+
+      const res = await verifyCredential(credential, joyidServerURL)
+      expect(res).toBe(true)
+    })
+
+    it('sub key r1 with credential object', async () => {
+      const credential = {
+        address:
+          'ckt1qrfrwcdnvssswdwpn3s9v8fp87emat306ctjwsm3nmlkjg8qyza2cqgqq8n3thvttqfasgrql80e3s5l66lcneyxrsuglhh2',
+        pubkey:
+          'd81a8aca0dfabcb4a67fd3f3518daae06b2e93899fc4988b1dbf2cca496cfe4478444bfb9df5f3d65ec072c82817216442260ce108fa1fbe45999cc24aa93a81',
+        keyType: 'sub_key',
+        alg: -7,
+      } as const
+
+      const res = await verifyCredential(credential, joyidServerURL)
+      expect(res).toBe(true)
+    })
+
     it.skip('r1_main_session_key_auth', async () => {
       const { address, pubkey, keyType, alg } =
         r1_main_session_key_sign_credential
@@ -97,7 +127,7 @@ describe('verify', () => {
       expect(res).toBe(true)
     })
 
-    it('r1_mainkey_auth', async () => {
+    it.skip('r1_mainkey_auth', async () => {
       const { address, pubkey, keyType, alg } = r1_mainkey_sign_credential
       const res = await verifyCredential(pubkey, address, keyType as any, alg)
       expect(res).toBe(true)
@@ -110,7 +140,7 @@ describe('verify', () => {
       expect(res).toBe(true)
     })
 
-    it('r1_subkey_auth', async () => {
+    it.skip('r1_subkey_auth', async () => {
       const { address, pubkey, keyType, alg } = r1_subkey_sign_credential
       const res = await verifyCredential(pubkey, address, keyType as any, alg)
       expect(res).toBe(true)
@@ -123,7 +153,7 @@ describe('verify', () => {
       expect(res).toBe(true)
     })
 
-    it('rsa_mainkey_auth', async () => {
+    it.skip('rsa_mainkey_auth', async () => {
       const { address, pubkey, keyType, alg } = rsa_mainkey_sign_credential
       const res = await verifyCredential(pubkey, address, keyType as any, alg)
       expect(res).toBe(true)
@@ -136,7 +166,7 @@ describe('verify', () => {
       expect(res).toBe(true)
     })
 
-    it('rsa_subkey_auth', async () => {
+    it.skip('rsa_subkey_auth', async () => {
       const { address, pubkey, keyType, alg } = rsa_subkey_sign_credential
       const res = await verifyCredential(pubkey, address, keyType as any, alg)
       expect(res).toBe(true)

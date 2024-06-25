@@ -141,16 +141,89 @@ export const verifySignature = async (
   return verifySessionKeySignature(message, signature, pubkey)
 }
 
-export const verifyCredential = async (
+interface CredentialInfo {
+  pubkey: string
+  address: string
+  keyType: CredentialKeyType
+  alg: SigningAlg
+}
+
+/**
+ * Verifies the credential information.
+ *
+ * @param {CredentialInfo} credential Information of the credential to verify.
+ * @param {string} joyidServerURL The URL of the JOYID server. <br>
+ * Testnet: https://api.testnet.joyid.dev/api/v1 <br>
+ * Mainnet: https://api.joy.id/api/v1
+ * @returns {Promise<boolean>} A promise that resolves to a boolean indicating
+ *                              whether the verification was successful.
+ */
+export async function verifyCredential(
+  credential: CredentialInfo,
+  joyidServerURL: string
+): Promise<boolean>
+
+/**
+ * Verifies the credential information.
+ *
+ * @param {string} pubkey The public key of the credential to verify.
+ * @param {string} address The address of the credential to verify.
+ * @param {CredentialKeyType} keyType Type of the key.
+ * @param {SigningAlg} alg The signing algorithm to be used.
+ * @returns {Promise<boolean>} A promise that resolves to a boolean indicating
+ *                              whether the verification was successful.
+ */
+export async function verifyCredential(
   pubkey: string,
   address: string,
   keyType: CredentialKeyType,
   alg: SigningAlg
-): Promise<boolean> => {
-  const serverURL = getConfig().joyidServerURL
+): Promise<boolean>
+
+/**
+ * Verifies the credential information.
+ *
+ * @param {string|CredentialInfo} credentialOrPubkey Either the public key or
+ *                                                    the `CredentialInfo`.
+ * @param {string} addressOrJoyidServerURL Either the address or
+ *                                         the `joyidServerURL`.
+ * Testnet: https://api.testnet.joyid.dev/api/v1 <br>
+ * Mainnet: https://api.joy.id/api/v1
+ * @param {CredentialKeyType} _keyType Type of the key.
+ * @param {SigningAlg} _alg The signing algorithm to be used.
+ * @returns {Promise<boolean>} A promise that resolves to a boolean indicating
+ *                              whether the verification was successful.
+ */
+export async function verifyCredential(
+  credentialOrPubkey: string | CredentialInfo,
+  addressOrJoyidServerURL?: string,
+  _keyType?: CredentialKeyType,
+  _alg?: SigningAlg
+): Promise<boolean> {
+  let pubkey: string,
+    address: string,
+    keyType: CredentialKeyType,
+    alg: SigningAlg
+
+  let serverURL = getConfig().joyidServerURL
+
+  if (typeof credentialOrPubkey === 'string') {
+    pubkey = credentialOrPubkey
+    address = addressOrJoyidServerURL!
+    keyType = _keyType!
+    alg = _alg!
+  } else {
+    ;({ pubkey, address, keyType, alg } = credentialOrPubkey)
+    serverURL = addressOrJoyidServerURL
+  }
+
   try {
     const result = await fetch(`${serverURL}/credentials/${address}`, {
       method: 'GET',
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+      },
     }).then(async (res) => res.json())
 
     return result.credentials.some((c: any) => {
