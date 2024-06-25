@@ -1,5 +1,13 @@
 # @joyid/ckb
 
+## 0.1.2
+
+### Patch Changes
+
+- [#31](https://github.com/nervina-labs/joyid-sdk-js/pull/31) [`72b5364`](https://github.com/nervina-labs/joyid-sdk-js/commit/72b5364ecd97a869e34e9185ea8ca23cb1d9d1cc) Thanks [@yuche](https://github.com/yuche)! - fix: `@nervosnetwork/ckb-sdk-utils` esm import
+
+- [#29](https://github.com/nervina-labs/joyid-sdk-js/pull/29) [`c9c92cc`](https://github.com/nervina-labs/joyid-sdk-js/commit/c9c92cca1cba8176fe98fb81e25c5c8fdf1bf9e1) Thanks [@yuche](https://github.com/yuche)! - refactor: verifyCredential now accept credential info and joyid server url as parameter
+
 ## 0.1.1
 
 ### Patch Changes
