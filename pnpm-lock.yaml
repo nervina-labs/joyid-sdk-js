@@ -434,6 +434,9 @@ importers:
       '@nervosnetwork/ckb-sdk-utils':
         specifier: ^0.109.1
         version: 0.109.1
+      camelcase-keys:
+        specifier: ^7.0.2
+        version: 7.0.2
       cross-fetch:
         specifier: 4.0.0
         version: 4.0.0
@@ -5270,7 +5273,7 @@ packages:
       qr-code-styling: 1.6.0-rc.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      react-i18next: 13.5.0(i18next@22.5.1)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)
+      react-i18next: 13.5.0(i18next@23.11.5)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)
       react-native: 0.72.6(@babel/core@7.23.2)(@babel/preset-env@7.24.7)(react@18.2.0)
 
   /@metamask/sdk@0.20.5(react-dom@18.2.0)(react-i18next@13.5.0)(react-native@0.72.6)(react@18.2.0):
@@ -10629,6 +10632,11 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.7
 
+  /i18next@23.11.5:
+    resolution: {integrity: sha512-41pvpVbW9rhZPk5xjCX2TPJi2861LEig/YRhUkY+1FQ2IQPS0bKUDYnEqY8XPPbB48h1uIwLnP9iiEfuSl20CA==}
+    dependencies:
+      '@babel/runtime': 7.24.7
+
   /iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
     engines: {node: '>=0.10.0'}
@@ -13060,7 +13068,7 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0):
+  /react-i18next@13.5.0(i18next@23.11.5)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0):
     resolution: {integrity: sha512-CFJ5NDGJ2MUyBohEHxljOq/39NQ972rh1ajnadG9BjTk+UXbHLq4z5DKEbEQBDoIhUmmbuS/fIMJKo6VOax1HA==}
     peerDependencies:
       i18next: '>= 23.2.3'
@@ -13075,7 +13083,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.7
       html-parse-stringify: 3.0.1
-      i18next: 22.5.1
+      i18next: 23.11.5
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-native: 0.72.6(@babel/core@7.23.2)(@babel/preset-env@7.24.7)(react@18.2.0)

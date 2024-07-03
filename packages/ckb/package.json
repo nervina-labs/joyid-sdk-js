@@ -36,6 +36,7 @@
   "dependencies": {
     "@joyid/common": "workspace:*",
     "@nervosnetwork/ckb-sdk-utils": "^0.109.1",
+    "camelcase-keys": "^7.0.2",
     "cross-fetch": "4.0.0",
     "uncrypto": "^0.1.3"
   }

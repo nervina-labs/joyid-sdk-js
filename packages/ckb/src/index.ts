@@ -274,5 +274,5 @@ export {
   getJoyIDLockScript,
   getCotaCellDep,
 } from './constants'
-
+export { toCamelCase } from './utils'
 export { Aggregator } from './aggregator'

@@ -1,3 +1,5 @@
+import camelcaseKeys from 'camelcase-keys'
+
 /* eslint-disable unicorn/prefer-string-slice */
 /**
  * Web crypto use IEEE P1363 ECDSA signature format
@@ -17,4 +19,15 @@ export function derToIEEE(sig: ArrayBuffer): Uint8Array {
   return new Uint8Array(
     p1363Sig.match(/[\da-f]{2}/gi)!.map((h) => Number.parseInt(h, 16))
   )
+}
+
+export function toCamelCase<T>(obj: object): T | undefined {
+  try {
+    return camelcaseKeys(obj, {
+      deep: true,
+    }) as T
+  } catch (error) {
+    console.error(error)
+  }
+  return undefined
 }
