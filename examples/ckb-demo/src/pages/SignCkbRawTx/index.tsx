@@ -132,7 +132,7 @@ export function SignCkbRawTx() {
       toast({ status: 'error', title: 'Xudt type script cannot be empty' })
       return
     }
-    const { rawTx, listPackage, witnessIndex } = await buildMakerTx({
+    const { rawTx, listPackage } = await buildMakerTx({
       collector: dexCollector,
       // @ts-ignore
       joyID: joyID as DexJoyIDConfig,
@@ -145,9 +145,7 @@ export function SignCkbRawTx() {
       status: 'info',
       title: `List package is: ${listPackage / BigInt(10 ** 8)}CKB`,
     })
-    const signedTx = await signRawTransaction(rawTx, ckbAddress!, {
-      witnessIndex,
-    })
+    const signedTx = await signRawTransaction(rawTx, ckbAddress!)
     const hash = await collector.getCkb().rpc.sendTransaction(signedTx)
     setListHash(hash)
   }
@@ -164,16 +162,14 @@ export function SignCkbRawTx() {
     const orderOutPoints = [
       bytes.hexify(blockchain.OutPoint.pack(orderOutPoint)),
     ]
-    const { rawTx, witnessIndex } = await buildCancelTx({
+    const { rawTx } = await buildCancelTx({
       collector: dexCollector,
       // @ts-ignore
       joyID: joyID as DexJoyIDConfig,
       seller: ckbAddress!,
       orderOutPoints,
     })
-    const signedTx = await signRawTransaction(rawTx, ckbAddress!, {
-      witnessIndex,
-    })
+    const signedTx = await signRawTransaction(rawTx, ckbAddress!)
     const hash = await collector.getCkb().rpc.sendTransaction(signedTx)
     setCancelHash(hash)
   }
