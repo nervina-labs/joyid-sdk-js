@@ -23,7 +23,6 @@
     "@joyid/ckb": "workspace:*",
     "@nervina-labs/ckb-dex": "0.1.6",
     "axios": "^1.6.0",
-    "ckb-omiga": "^0.0.12",
     "cross-fetch": "^3.1.5",
     "framer-motion": "^7.6.1",
     "i18next": "^22.0.1",

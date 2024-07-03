@@ -101,14 +101,6 @@ export const Home = () => {
       <Button
         colorScheme="teal"
         w="240px"
-        onClick={() => {
-          navi(RoutePath.SignCkbRawTx)
-        }}>
-        Sign CKB Raw Tx
-      </Button>
-      <Button
-        colorScheme="teal"
-        w="240px"
         variant="outline"
         onClick={() => {
           setAccount(null)

@@ -21,7 +21,7 @@ import {
   append0x,
   remove0x,
 } from '@joyid/common'
-import ckbUtils from '@nervosnetwork/ckb-sdk-utils'
+import * as ckbUtils from '@nervosnetwork/ckb-sdk-utils'
 import { Aggregator } from './aggregator'
 
 export * from './verify'
@@ -62,16 +62,10 @@ export const initConfig = (config?: CkbDappConfig): CkbDappConfig => {
 
 export const getConfig = (): CkbDappConfig => internalDappConfig
 
-// The witnessIndexes represents the positions of the JoyID cells in inputs, the default value is empty array
-// deprecated: The witnessIndex represents the position of the first JoyID cell in inputs, and the default value is 0
-// deprecated: The witnessLastIndex represents the position of the last JoyID cell in inputs, and the default value is inputs.length - 1
-// deprecated: The witnessLastIndex must not be smaller than witnessIndex.
-// deprecated: For example: witnessIndex = 1, witnessLastIndex = 3, this means the inputs[1..3] are JoyID cell, and the other inputs are another lock scripts.
+// The witnessIndexes represents the positions of the JoyID cells in inputs, the default value is an empty array
 export type SignConfig = CkbDappConfig &
   Pick<PopupConfigOptions, 'timeoutInSeconds' | 'popup'> & {
     witnessIndexes?: number[]
-    witnessIndex?: number
-    witnessLastIndex?: number
   }
 
 export const connect = async (
@@ -195,28 +189,15 @@ export const signRawTransaction = async (
     ...config,
   }
 
-  const { witnessIndexes, witnessIndex, witnessLastIndex } = config
+  const { witnessIndexes } = config
 
-  if (witnessIndexes) {
+  if (Array.isArray(witnessIndexes)) {
     if (witnessIndexes.length === 0) {
       throw new Error('The witnessIndexes must be not empty')
     }
     if (witnessIndexes.length > tx.inputs.length) {
       throw new Error(
         'The length of witnessIndexes must not be bigger than the length of inputs'
-      )
-    }
-  }
-
-  if (witnessIndex && witnessLastIndex) {
-    if (witnessLastIndex < witnessIndex) {
-      throw new Error(
-        'The witnessLastIndex must not be smaller than the witnessIndex'
-      )
-    }
-    if (witnessLastIndex >= tx.inputs.length) {
-      throw new Error(
-        'The witnessLastIndex must be smaller than the length of inputs'
       )
     }
   }

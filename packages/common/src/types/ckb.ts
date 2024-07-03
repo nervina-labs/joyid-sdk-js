@@ -93,10 +93,6 @@ export interface SignCkbRawTxRequest extends CkbDappConfig {
   signerAddress: string
   redirectURL: string
   witnessIndexes?: number[]
-  // deprecated: Please use witnessIndexes to specify locations of JoyID cells
-  witnessIndex?: number
-  // deprecated: Please use witnessIndexes to specify locations of JoyID cells
-  witnessLastIndex?: number
 }
 
 export interface CotaNFTTransactionRequest {
