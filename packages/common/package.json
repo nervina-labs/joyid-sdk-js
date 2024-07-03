@@ -31,6 +31,7 @@
   "scripts": {
     "build": "tsup",
     "lint": "eslint .",
+    "test": "vitest",
     "format": "eslint --fix ."
   },
   "files": [

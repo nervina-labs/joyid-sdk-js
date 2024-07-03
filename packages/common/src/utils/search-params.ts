@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/no-array-callback-reference */
 /* eslint-disable unicorn/no-typeof-undefined */
 /* eslint-disable unicorn/no-array-for-each */
 /* eslint-disable unicorn/prefer-string-slice */
@@ -67,8 +66,6 @@ export function stringifySearchWith(
         const val = search[key]
         if (typeof val === 'undefined' || val === undefined) {
           delete search[key]
-        } else if (Array.isArray(val)) {
-          search[key] = val.map(stringifyValue)
         } else {
           search[key] = stringifyValue(val)
         }
