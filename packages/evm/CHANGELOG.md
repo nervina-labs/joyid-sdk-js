@@ -1,5 +1,12 @@
 # @joyid/evm
 
+## 0.4.2
+
+### Patch Changes
+
+- Updated dependencies [[`c48c154`](https://github.com/nervina-labs/joyid-sdk-js/commit/c48c15437ae2eed03888f0c89d6a481c72529ffa), [`a5a3788`](https://github.com/nervina-labs/joyid-sdk-js/commit/a5a37882ffee6333c247d18a4881ced234156673)]:
+  - @joyid/common@0.2.0
+
 ## 0.4.1
 
 ### Patch Changes

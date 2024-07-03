@@ -1,5 +1,12 @@
 # @joyid/ethereum-provider
 
+## 1.0.7
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @joyid/evm@0.4.2
+
 ## 1.0.6
 
 ### Patch Changes

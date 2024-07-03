@@ -1,5 +1,12 @@
 # @joyid/ethers
 
+## 0.1.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @joyid/evm@0.4.2
+
 ## 0.1.10
 
 ### Patch Changes
