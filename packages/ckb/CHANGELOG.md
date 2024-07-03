@@ -1,5 +1,16 @@
 # @joyid/ckb
 
+## 1.0.0
+
+### Major Changes
+
+- [#34](https://github.com/nervina-labs/joyid-sdk-js/pull/34) [`c48c154`](https://github.com/nervina-labs/joyid-sdk-js/commit/c48c15437ae2eed03888f0c89d6a481c72529ffa) Thanks [@duanyytop](https://github.com/duanyytop)! - refactor: Remove witnessIndex and witnessLastIndex from signRawTx
+
+### Patch Changes
+
+- Updated dependencies [[`c48c154`](https://github.com/nervina-labs/joyid-sdk-js/commit/c48c15437ae2eed03888f0c89d6a481c72529ffa), [`a5a3788`](https://github.com/nervina-labs/joyid-sdk-js/commit/a5a37882ffee6333c247d18a4881ced234156673)]:
+  - @joyid/common@0.2.0
+
 ## 0.1.2
 
 ### Patch Changes
