@@ -6,7 +6,6 @@ import { SignMessage } from '../pages/SignMessage'
 import { SignTransaction } from '../pages/SignTransaction'
 import { RoutePath } from './path'
 import { SignCotaNFT } from '../pages/SignCotaNFT'
-import { SignCkbRawTx } from '../pages/SignCkbRawTx'
 
 export const routers: RouteObject[] = [
   {
@@ -33,10 +32,6 @@ export const routers: RouteObject[] = [
       {
         path: RoutePath.CotaNFTTransfer,
         element: <SignCotaNFT />,
-      },
-      {
-        path: RoutePath.SignCkbRawTx,
-        element: <SignCkbRawTx />,
       },
     ],
   },

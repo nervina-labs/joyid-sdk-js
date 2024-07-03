@@ -21,7 +21,7 @@ import {
   append0x,
   remove0x,
 } from '@joyid/common'
-import ckbUtils from '@nervosnetwork/ckb-sdk-utils'
+import * as ckbUtils from '@nervosnetwork/ckb-sdk-utils'
 import { Aggregator } from './aggregator'
 
 export * from './verify'
