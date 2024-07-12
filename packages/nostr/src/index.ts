@@ -45,7 +45,24 @@ const buildSignEventUrl = (event: UnsignedEvent): string => {
 
 export const STORAGE_KEY = 'joyid:nostr::pubkey'
 
-async function getPublicKey(): Promise<string> {
+export const getConnectedPubkey = (): string | null => {
+  if (
+    typeof window !== 'undefined' &&
+    window.localStorage &&
+    typeof window.localStorage.getItem === 'function'
+  ) {
+    return window.localStorage.getItem(STORAGE_KEY)
+  }
+  return null
+}
+
+async function getPublicKey(forceReconnected = true): Promise<string> {
+  if (!forceReconnected) {
+    const connectedPk = getConnectedPubkey()
+    if (connectedPk != null) {
+      return connectedPk
+    }
+  }
   const res = await authWithPopup({
     redirectURL: location.href,
     requestNetwork: 'nostr',
