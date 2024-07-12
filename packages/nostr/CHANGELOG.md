@@ -1,5 +1,11 @@
 # @joyid/nostr
 
+## 0.2.0
+
+### Minor Changes
+
+- [#36](https://github.com/nervina-labs/joyid-sdk-js/pull/36) [`7ed8302`](https://github.com/nervina-labs/joyid-sdk-js/commit/7ed83028838cc4d7eb573279ac3062db5ca4166e) Thanks [@yuche](https://github.com/yuche)! - feat: add `getConnectedPubkey` function
+
 ## 0.1.6
 
 ### Patch Changes
