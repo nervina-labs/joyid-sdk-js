@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
 importers:
 
   .:
@@ -432,8 +428,8 @@ importers:
         specifier: workspace:*
         version: link:../common
       '@nervosnetwork/ckb-sdk-utils':
-        specifier: ^0.109.1
-        version: 0.109.1
+        specifier: ^0.109.2
+        version: 0.109.2
       cross-fetch:
         specifier: 4.0.0
         version: 4.0.0
@@ -505,7 +501,7 @@ importers:
         version: 2.10.11(typescript@5.2.2)
       wagmi:
         specifier: 2.9.10
-        version: 2.9.10(@tanstack/react-query@5.40.1)(react-dom@18.2.0)(react-i18next@13.5.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@2.10.11)
+        version: 2.9.10(@tanstack/react-query@5.40.1)(@types/react@18.2.6)(react-dom@18.2.0)(react-i18next@13.5.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@2.12.5)
 
   packages/wagmi:
     dependencies:
@@ -518,7 +514,7 @@ importers:
         version: 2.10.11(typescript@5.2.2)
       wagmi:
         specifier: 2.9.10
-        version: 2.9.10(@tanstack/react-query@5.40.1)(react-dom@18.2.0)(react-i18next@13.5.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@2.10.11)
+        version: 2.9.10(@tanstack/react-query@5.40.1)(@types/react@18.2.6)(react-dom@18.2.0)(react-i18next@13.5.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@2.12.5)
 
 packages:
 
@@ -5270,7 +5266,7 @@ packages:
       qr-code-styling: 1.6.0-rc.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      react-i18next: 13.5.0(i18next@22.5.1)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)
+      react-i18next: 13.5.0(i18next@23.12.2)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)
       react-native: 0.72.6(@babel/core@7.23.2)(@babel/preset-env@7.24.7)(react@18.2.0)
 
   /@metamask/sdk@0.20.5(react-dom@18.2.0)(react-i18next@13.5.0)(react-native@0.72.6)(react@18.2.0):
@@ -5420,7 +5416,7 @@ packages:
       '@ckb-lumos/base': 0.21.1
       '@joyid/ckb': 0.0.3
       '@nervosnetwork/ckb-sdk-core': 0.109.1
-      '@nervosnetwork/ckb-sdk-utils': 0.109.1
+      '@nervosnetwork/ckb-sdk-utils': 0.109.2
       '@nervosnetwork/ckb-types': 0.109.1
       axios: 1.7.2
       bignumber.js: 9.1.2
@@ -5464,8 +5460,22 @@ packages:
       tslib: 2.3.1
     dev: false
 
+  /@nervosnetwork/ckb-sdk-utils@0.109.2:
+    resolution: {integrity: sha512-pXgQvQQA2TuXiAmKGvL9kWjXdCsX+qP8HqHSLt6kwrjFe846d4dZxZ5AunpP+xsQNst+L5V7xcvunaBOkTdD6g==}
+    dependencies:
+      '@nervosnetwork/ckb-types': 0.109.2
+      bech32: 2.0.0
+      elliptic: 6.5.4
+      jsbi: 3.1.3
+      tslib: 2.3.1
+    dev: false
+
   /@nervosnetwork/ckb-types@0.109.1:
     resolution: {integrity: sha512-mD5mOCGa1JertKZekHSUVYwFPW27VJ0/MdwblWvEEK7pNIU6az+dLiIxgvl4TxR+j+7/GqmXNH1U59CM92y/wg==}
+    dev: false
+
+  /@nervosnetwork/ckb-types@0.109.2:
+    resolution: {integrity: sha512-NAQbUi+j6tWlUYijvHqWIUwrbawIeAeSlxUQm0wkqSKbtAEoiR4L6RZS7cgn7uH+SMsp78mciXP8gixrfH3rEQ==}
     dev: false
 
   /@noble/curves@1.2.0:
@@ -5664,7 +5674,7 @@ packages:
       react-remove-scroll: 2.5.7(@types/react@18.2.6)(react@18.2.0)
       ua-parser-js: 1.0.38
       viem: 2.10.11(typescript@5.2.2)
-      wagmi: 2.9.10(@tanstack/react-query@5.40.1)(react-dom@18.2.0)(react-i18next@13.5.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@2.10.11)
+      wagmi: 2.9.10(@tanstack/react-query@5.40.1)(@types/react@18.2.6)(react-dom@18.2.0)(react-i18next@13.5.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@2.12.5)
     transitivePeerDependencies:
       - '@types/react'
     dev: false
@@ -5942,8 +5952,8 @@ packages:
       '@ckb-lumos/codec': 0.22.2
       '@exact-realty/multipart-parser': 1.0.14
       '@nervosnetwork/ckb-sdk-core': 0.109.1
-      '@nervosnetwork/ckb-sdk-utils': 0.109.1
-      '@nervosnetwork/ckb-types': 0.109.1
+      '@nervosnetwork/ckb-sdk-utils': 0.109.2
+      '@nervosnetwork/ckb-types': 0.109.2
       '@rgbpp-sdk/service': 0.0.0-snap-20240607032945
       '@spore-sdk/core': 0.2.0-beta.8(@ckb-lumos/lumos@0.22.0-next.5)(lodash@4.17.21)
       axios: 1.7.2
@@ -5969,7 +5979,7 @@ packages:
     dependencies:
       '@ckb-lumos/base': 0.22.2
       '@ckb-lumos/codec': 0.22.2
-      '@nervosnetwork/ckb-types': 0.109.1
+      '@nervosnetwork/ckb-types': 0.109.2
       lodash: 4.17.21
     dev: false
 
@@ -7126,54 +7136,6 @@ packages:
       - uWebSockets.js
       - utf-8-validate
       - zod
-    dev: false
-
-  /@wagmi/connectors@5.0.9(@wagmi/core@2.10.5)(react-dom@18.2.0)(react-i18next@13.5.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@2.10.11):
-    resolution: {integrity: sha512-3T3OqMw7wHk5QTBKZ9mW1iH5NSvtGwy59JuApylR5RkVlOP7iYwfGEILYxqBhX8VwTONKkb4G4sxphEQQOYSjg==}
-    peerDependencies:
-      '@wagmi/core': 2.10.5
-      typescript: '>=5.0.4'
-      viem: 2.x
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@coinbase/wallet-sdk': 4.0.3
-      '@metamask/sdk': 0.20.5(react-dom@18.2.0)(react-i18next@13.5.0)(react-native@0.72.6)(react@18.2.0)
-      '@safe-global/safe-apps-provider': 0.18.1(typescript@5.2.2)
-      '@safe-global/safe-apps-sdk': 8.1.0(typescript@5.2.2)
-      '@wagmi/core': 2.10.5(react@18.2.0)(typescript@5.2.2)(viem@2.10.11)
-      '@walletconnect/ethereum-provider': 2.13.0(@types/react@18.2.6)(react@18.2.0)
-      '@walletconnect/modal': 2.6.2(@types/react@18.2.6)(react@18.2.0)
-      cbw-sdk: /@coinbase/wallet-sdk@3.9.3
-      typescript: 5.2.2
-      viem: 2.10.11(typescript@5.2.2)
-    transitivePeerDependencies:
-      - '@azure/app-configuration'
-      - '@azure/cosmos'
-      - '@azure/data-tables'
-      - '@azure/identity'
-      - '@azure/keyvault-secrets'
-      - '@azure/storage-blob'
-      - '@capacitor/preferences'
-      - '@netlify/blobs'
-      - '@planetscale/database'
-      - '@react-native-async-storage/async-storage'
-      - '@types/react'
-      - '@upstash/redis'
-      - '@vercel/kv'
-      - bufferutil
-      - encoding
-      - ioredis
-      - react
-      - react-dom
-      - react-i18next
-      - react-native
-      - rollup
-      - supports-color
-      - uWebSockets.js
-      - utf-8-validate
-      - zod
 
   /@wagmi/core@2.10.5(@types/react@18.2.6)(react@18.2.0)(typescript@5.2.2)(viem@2.12.5):
     resolution: {integrity: sha512-BvqFEdJTTepOKtPnacq7oE8gUZ4llzdxmPSBEYePArd1dvP/e5gwwfS5/8VBcvDvGcoX4N0lw5A4NNOJKL0Q+A==}
@@ -7191,32 +7153,6 @@ packages:
       mipd: 0.0.5(typescript@5.2.2)
       typescript: 5.2.2
       viem: 2.12.5(typescript@5.2.2)
-      zustand: 4.4.1(@types/react@18.2.6)(react@18.2.0)
-    transitivePeerDependencies:
-      - '@types/react'
-      - bufferutil
-      - immer
-      - react
-      - utf-8-validate
-      - zod
-    dev: false
-
-  /@wagmi/core@2.10.5(react@18.2.0)(typescript@5.2.2)(viem@2.10.11):
-    resolution: {integrity: sha512-BvqFEdJTTepOKtPnacq7oE8gUZ4llzdxmPSBEYePArd1dvP/e5gwwfS5/8VBcvDvGcoX4N0lw5A4NNOJKL0Q+A==}
-    peerDependencies:
-      '@tanstack/query-core': '>=5.0.0'
-      typescript: '>=5.0.4'
-      viem: 2.x
-    peerDependenciesMeta:
-      '@tanstack/query-core':
-        optional: true
-      typescript:
-        optional: true
-    dependencies:
-      eventemitter3: 5.0.1
-      mipd: 0.0.5(typescript@5.2.2)
-      typescript: 5.2.2
-      viem: 2.10.11(typescript@5.2.2)
       zustand: 4.4.1(@types/react@18.2.6)(react@18.2.0)
     transitivePeerDependencies:
       - '@types/react'
@@ -10629,6 +10565,11 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.7
 
+  /i18next@23.12.2:
+    resolution: {integrity: sha512-XIeh5V+bi8SJSWGL3jqbTEBW5oD6rbP5L+E7dVQh1MNTxxYef0x15rhJVcRb7oiuq4jLtgy2SD8eFlf6P2cmqg==}
+    dependencies:
+      '@babel/runtime': 7.24.7
+
   /iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
     engines: {node: '>=0.10.0'}
@@ -13060,7 +13001,7 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0):
+  /react-i18next@13.5.0(i18next@23.12.2)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0):
     resolution: {integrity: sha512-CFJ5NDGJ2MUyBohEHxljOq/39NQ972rh1ajnadG9BjTk+UXbHLq4z5DKEbEQBDoIhUmmbuS/fIMJKo6VOax1HA==}
     peerDependencies:
       i18next: '>= 23.2.3'
@@ -13075,7 +13016,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.7
       html-parse-stringify: 3.0.1
-      i18next: 22.5.1
+      i18next: 23.12.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-native: 0.72.6(@babel/core@7.23.2)(@babel/preset-env@7.24.7)(react@18.2.0)
@@ -14922,7 +14863,6 @@ packages:
       - bufferutil
       - utf-8-validate
       - zod
-    dev: false
 
   /vite-node@1.6.0:
     resolution: {integrity: sha512-de6HJgzC+TFzOu0NTC4RAIsyf/DY/ibWDYQUcuEA84EMHhcefTUGkjFHKKEJhQN4A+6I0u++kr3l36ZF2d7XRw==}
@@ -15248,53 +15188,6 @@ packages:
       - uWebSockets.js
       - utf-8-validate
       - zod
-    dev: false
-
-  /wagmi@2.9.10(@tanstack/react-query@5.40.1)(react-dom@18.2.0)(react-i18next@13.5.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@2.10.11):
-    resolution: {integrity: sha512-9Df6BQghzIw9na4p/jOvQc/pYLTSsUYlFDeft7Ssby+qHv2gxYpzwjx3jIoVfrPY2UEm8ojgXYoEENJN9JmoRQ==}
-    peerDependencies:
-      '@tanstack/react-query': '>=5.0.0'
-      react: '>=18'
-      typescript: '>=5.0.4'
-      viem: 2.x
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@tanstack/react-query': 5.40.1(react@18.2.0)
-      '@wagmi/connectors': 5.0.9(@wagmi/core@2.10.5)(react-dom@18.2.0)(react-i18next@13.5.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@2.10.11)
-      '@wagmi/core': 2.10.5(react@18.2.0)(typescript@5.2.2)(viem@2.10.11)
-      react: 18.2.0
-      typescript: 5.2.2
-      use-sync-external-store: 1.2.0(react@18.2.0)
-      viem: 2.10.11(typescript@5.2.2)
-    transitivePeerDependencies:
-      - '@azure/app-configuration'
-      - '@azure/cosmos'
-      - '@azure/data-tables'
-      - '@azure/identity'
-      - '@azure/keyvault-secrets'
-      - '@azure/storage-blob'
-      - '@capacitor/preferences'
-      - '@netlify/blobs'
-      - '@planetscale/database'
-      - '@react-native-async-storage/async-storage'
-      - '@tanstack/query-core'
-      - '@types/react'
-      - '@upstash/redis'
-      - '@vercel/kv'
-      - bufferutil
-      - encoding
-      - immer
-      - ioredis
-      - react-dom
-      - react-i18next
-      - react-native
-      - rollup
-      - supports-color
-      - uWebSockets.js
-      - utf-8-validate
-      - zod
 
   /walker@1.0.8:
     resolution: {integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}
@@ -15589,3 +15482,7 @@ packages:
       '@types/react': 18.2.6
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
