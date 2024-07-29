@@ -26,8 +26,8 @@
   "dependencies": {
     "@babel/runtime": "^7.24.0",
     "@joyid/bitcoin": "workspace:*",
-    "@rgbpp-sdk/btc": "0.0.0-snap-20240329095255",
-    "@rgbpp-sdk/service": "0.0.0-snap-20240329095255",
+    "@rgbpp-sdk/btc": "0.0.0-snap-20240727021715",
+    "@rgbpp-sdk/service": "0.0.0-snap-20240727021715",
     "@solid-primitives/clipboard": "^1.5.4",
     "@solid-primitives/storage": "^2.1.1",
     "@solidjs/router": "0.8.2",
