@@ -150,6 +150,7 @@ export class EthereumProvider extends EventEmitter {
       }
       case 'wallet_switchEthereumChain': {
         const [chainId] = args.params as [chainId: string]
+        this.switchChain(chainId)
         this.emit('chainChanged', chainId)
         return undefined
       }
