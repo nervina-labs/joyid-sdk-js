@@ -8,6 +8,14 @@
     "faucet": "https://sepoliafaucet.com"
   },
   {
+    "name": "Polygon",
+    "chainId": 137,
+    "rpcURL": "https://polygon-mainnet.blockpi.network/v1/rpc/public",
+    "unit": "MATIC",
+    "explorer": "https://mumbai.polygonscan.com",
+    "faucet": "https://sepoliafaucet.com"
+  },
+  {
     "name": "BNB Testnet",
     "chainId": 97,
     "rpcURL": "https://bsc-testnet.blockpi.network/v1/rpc/public",
