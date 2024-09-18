@@ -1,5 +1,11 @@
 # @joyid/ethereum-provider
 
+## 1.0.8
+
+### Patch Changes
+
+- [#41](https://github.com/nervina-labs/joyid-sdk-js/pull/41) [`aa9a9ce`](https://github.com/nervina-labs/joyid-sdk-js/commit/aa9a9ce9a98e385e7da18764af2fa182687e3fce) Thanks [@micwallace](https://github.com/micwallace)! - fix: Chain config not updated when switching chains
+
 ## 1.0.7
 
 ### Patch Changes
