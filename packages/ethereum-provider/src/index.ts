@@ -149,7 +149,8 @@ export class EthereumProvider extends EventEmitter {
         throw new Error('eth_sign is not supported, use personal_sign instead')
       }
       case 'wallet_switchEthereumChain': {
-        const [chainId] = args.params as [chainId: string]
+        const chainId = args.params?.[0]?.chainId as string
+        this.switchChain(parseInt(chainId))
         this.emit('chainChanged', chainId)
         return undefined
       }
