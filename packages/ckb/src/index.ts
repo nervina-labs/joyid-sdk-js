@@ -21,6 +21,8 @@ import {
   append0x,
   remove0x,
 } from '@joyid/common'
+import { blockchain, utils } from '@ckb-lumos/base'
+import { bytes, number } from '@ckb-lumos/codec'
 import * as ckbUtils from '@nervosnetwork/ckb-sdk-utils'
 import { Aggregator } from './aggregator'
 
@@ -63,6 +65,7 @@ export const initConfig = (config?: CkbDappConfig): CkbDappConfig => {
 export const getConfig = (): CkbDappConfig => internalDappConfig
 
 // The witnessIndexes represents the positions of the JoyID cells in inputs, the default value is an empty array
+// e.g. If the transaction inputs have two JoyID cells whose positions are 1 and 3(zero-based index), the witnessIndexes should be [1, 3]
 export type SignConfig = CkbDappConfig &
   Pick<PopupConfigOptions, 'timeoutInSeconds' | 'popup'> & {
     witnessIndexes?: number[]
@@ -232,6 +235,107 @@ export const signRawTransaction = async (
   })
 
   return res.tx
+}
+
+const SECP256R1_PUBKEY_SIG_LEN = 129
+// The witnessIndexes represents the positions of the JoyID cells in inputs, the default value is an array containing only 0
+// e.g. If the transaction inputs have two JoyID cells whose positions are 1 and 3(zero-based index), the witnessIndexes should be [1, 3]
+export const calculateChallenge = async (
+  tx: CKBTransaction,
+  witnessIndexes = [0]
+): Promise<string> => {
+  const { witnesses } = tx
+  if (witnesses.length === 0) {
+    throw new Error('Witnesses cannot be empty')
+  }
+
+  if (witnessIndexes.length === 0) {
+    throw new Error('JoyID witnesses can not be empty')
+  }
+
+  const firstWitnessIndex = witnessIndexes[0] ?? 0
+  if (typeof tx.witnesses[firstWitnessIndex] !== 'string') {
+    throw new TypeError(
+      'The first JoyID witness must be serialized hex string of WitnessArgs'
+    )
+  }
+  const transactionHash = bytes.bytify(
+    utils.ckbHash(blockchain.RawTransaction.pack(tx))
+  )
+  const witnessArgs = blockchain.WitnessArgs.unpack(
+    tx.witnesses[firstWitnessIndex]
+  )
+  const emptyWitness = {
+    ...witnessArgs,
+    lock: new Uint8Array(SECP256R1_PUBKEY_SIG_LEN),
+  }
+
+  const serializedEmptyWitnessBytes = blockchain.WitnessArgs.pack(emptyWitness)
+  const serializedEmptyWitnessSize = serializedEmptyWitnessBytes.length
+
+  const hasher = new utils.CKBHasher()
+  hasher.update(transactionHash)
+  hasher.update(
+    number.Uint64LE.pack(`0x${serializedEmptyWitnessSize.toString(16)}`)
+  )
+  hasher.update(serializedEmptyWitnessBytes)
+
+  for (const witnessIndex of witnessIndexes.slice(1)) {
+    const witness = witnesses[witnessIndex]
+    if (witness) {
+      const arr = bytes.bytify(
+        typeof witness === 'string'
+          ? witness
+          : blockchain.WitnessArgs.pack(witness)
+      )
+      hasher.update(number.Uint64LE.pack(`0x${arr.length.toString(16)}`))
+      hasher.update(arr)
+    }
+  }
+
+  if (witnesses.length > tx.inputs.length) {
+    for (const w of witnesses.slice(tx.inputs.length)) {
+      const arr = bytes.bytify(
+        typeof w === 'string' ? w : blockchain.WitnessArgs.pack(w)
+      )
+      hasher.update(number.Uint64LE.pack(`0x${arr.length.toString(16)}`))
+      hasher.update(arr)
+    }
+  }
+
+  const challenge = remove0x(hasher.digestHex())
+  return challenge
+}
+
+const WITNESS_NATIVE_MODE = '01'
+const WITNESS_SUBKEY_MODE = '02'
+// The witnessIndexes represents the positions of the JoyID cells in inputs, the default value is an array containing only 0
+// e.g. If the transaction inputs have two JoyID cells whose positions are 1 and 3(zero-based index), the witnessIndexes should be [1, 3]
+export const buildSignedTx = (
+  unsignedTx: CKBTransaction,
+  signedData: SignMessageResponseData,
+  witnessIndexes = [0]
+): CKBTransaction => {
+  if (unsignedTx.witnesses.length === 0) {
+    throw new Error('Witnesses length error')
+  }
+  const firstWitnessIndex = witnessIndexes[0] ?? 0
+  const firstWitness = unsignedTx.witnesses[firstWitnessIndex]!
+  const witnessArgs = blockchain.WitnessArgs.unpack(firstWitness)
+
+  const { message, signature, pubkey, keyType } = signedData
+
+  const mode = keyType === 'sub_key' ? WITNESS_SUBKEY_MODE : WITNESS_NATIVE_MODE
+  witnessArgs.lock = `0x${mode}${pubkey}${signature}${message}`
+
+  const signedWitness = append0x(
+    bufferToHex(blockchain.WitnessArgs.pack(witnessArgs))
+  )
+
+  const signedTx = unsignedTx
+  signedTx.witnesses[firstWitnessIndex] = signedWitness
+
+  return signedTx
 }
 
 export const getSubkeyUnlock = async (
