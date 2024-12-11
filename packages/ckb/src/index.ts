@@ -263,7 +263,7 @@ export const calculateChallenge = async (
     utils.ckbHash(blockchain.RawTransaction.pack(tx))
   )
   const witnessArgs = blockchain.WitnessArgs.unpack(
-    tx.witnesses[firstWitnessIndex]
+    tx.witnesses[firstWitnessIndex]!
   )
   const emptyWitness = {
     ...witnessArgs,
