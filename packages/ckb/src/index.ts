@@ -21,14 +21,23 @@ import {
   append0x,
   remove0x,
 } from '@joyid/common'
-import { blockchain, utils } from '@ckb-lumos/base'
-import { bytes, number } from '@ckb-lumos/codec'
 import * as ckbUtils from '@nervosnetwork/ckb-sdk-utils'
 import { Aggregator } from './aggregator'
+import { deserializeWitnessArgs } from './utils'
 
 export * from './verify'
 
-const { addressToScript, blake160, serializeScript } = ckbUtils
+const {
+  PERSONAL,
+  addressToScript,
+  blake160,
+  blake2b,
+  hexToBytes,
+  toUint64Le,
+  serializeScript,
+  rawTransactionToHash,
+  serializeWitnessArgs,
+} = ckbUtils
 
 const appendPrefix = (tokenKey?: string): string | undefined => {
   if (!tokenKey) {
@@ -259,51 +268,50 @@ export const calculateChallenge = async (
       'The first JoyID witness must be serialized hex string of WitnessArgs'
     )
   }
-  const transactionHash = bytes.bytify(
-    utils.ckbHash(blockchain.RawTransaction.pack(tx))
-  )
-  const witnessArgs = blockchain.WitnessArgs.unpack(
-    tx.witnesses[firstWitnessIndex]!
-  )
-  const emptyWitness = {
+  const transactionHash = rawTransactionToHash(tx)
+  const witnessArgs = deserializeWitnessArgs(tx.witnesses[firstWitnessIndex]!)
+
+  const emptyWitness: CKBComponents.WitnessArgs = {
     ...witnessArgs,
-    lock: new Uint8Array(SECP256R1_PUBKEY_SIG_LEN),
+    lock: `0x${'00'.repeat(SECP256R1_PUBKEY_SIG_LEN)}`,
   }
 
-  const serializedEmptyWitnessBytes = blockchain.WitnessArgs.pack(emptyWitness)
+  console.log(console.log(emptyWitness))
+
+  const serializedEmptyWitnessBytes = hexToBytes(
+    serializeWitnessArgs(emptyWitness)
+  )
   const serializedEmptyWitnessSize = serializedEmptyWitnessBytes.length
 
-  const hasher = new utils.CKBHasher()
-  hasher.update(transactionHash)
+  const hasher = blake2b(32, null, null, PERSONAL)
+  hasher.update(hexToBytes(transactionHash))
   hasher.update(
-    number.Uint64LE.pack(`0x${serializedEmptyWitnessSize.toString(16)}`)
+    hexToBytes(toUint64Le(`0x${serializedEmptyWitnessSize.toString(16)}`))
   )
   hasher.update(serializedEmptyWitnessBytes)
 
   for (const witnessIndex of witnessIndexes.slice(1)) {
     const witness = witnesses[witnessIndex]
     if (witness) {
-      const arr = bytes.bytify(
-        typeof witness === 'string'
-          ? witness
-          : blockchain.WitnessArgs.pack(witness)
+      const bytes = hexToBytes(
+        typeof witness === 'string' ? witness : serializeWitnessArgs(witness)
       )
-      hasher.update(number.Uint64LE.pack(`0x${arr.length.toString(16)}`))
-      hasher.update(arr)
+      hasher.update(hexToBytes(toUint64Le(`0x${bytes.length.toString(16)}`)))
+      hasher.update(bytes)
     }
   }
 
   if (witnesses.length > tx.inputs.length) {
-    for (const w of witnesses.slice(tx.inputs.length)) {
-      const arr = bytes.bytify(
-        typeof w === 'string' ? w : blockchain.WitnessArgs.pack(w)
+    for (const witness of witnesses.slice(tx.inputs.length)) {
+      const bytes = hexToBytes(
+        typeof witness === 'string' ? witness : serializeWitnessArgs(witness)
       )
-      hasher.update(number.Uint64LE.pack(`0x${arr.length.toString(16)}`))
-      hasher.update(arr)
+      hasher.update(hexToBytes(toUint64Le(`0x${bytes.length.toString(16)}`)))
+      hasher.update(bytes)
     }
   }
 
-  const challenge = remove0x(hasher.digestHex())
+  const challenge = `${hasher.digest('hex')}`
   return challenge
 }
 
@@ -321,16 +329,14 @@ export const buildSignedTx = (
   }
   const firstWitnessIndex = witnessIndexes[0] ?? 0
   const firstWitness = unsignedTx.witnesses[firstWitnessIndex]!
-  const witnessArgs = blockchain.WitnessArgs.unpack(firstWitness)
+  const witnessArgs = deserializeWitnessArgs(firstWitness)
 
   const { message, signature, pubkey, keyType } = signedData
 
   const mode = keyType === 'sub_key' ? WITNESS_SUBKEY_MODE : WITNESS_NATIVE_MODE
   witnessArgs.lock = `0x${mode}${pubkey}${signature}${message}`
 
-  const signedWitness = append0x(
-    bufferToHex(blockchain.WitnessArgs.pack(witnessArgs))
-  )
+  const signedWitness = append0x(serializeWitnessArgs(witnessArgs))
 
   const signedTx = unsignedTx
   signedTx.witnesses[firstWitnessIndex] = signedWitness

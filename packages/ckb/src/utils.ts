@@ -1,4 +1,8 @@
 /* eslint-disable unicorn/prefer-string-slice */
+
+import { append0x, remove0x } from '@joyid/common'
+import { hexToBytes } from '@nervosnetwork/ckb-sdk-utils'
+
 /**
  * Web crypto use IEEE P1363 ECDSA signature format
  * ref: https://stackoverflow.com/questions/39554165/ecdsa-signatures-between-node-js-and-webcrypto-appear-to-be-incompatible
@@ -17,4 +21,29 @@ export function derToIEEE(sig: ArrayBuffer): Uint8Array {
   return new Uint8Array(
     p1363Sig.match(/[\da-f]{2}/gi)!.map((h) => Number.parseInt(h, 16))
   )
+}
+
+export function leHexStringToU32(hex: string): number {
+  const bytes = hexToBytes(append0x(hex))
+  const beHex = `0x${bytes.reduceRight((pre, cur) => pre + cur.toString(16).padStart(2, '0'), '')}`
+  return Number.parseInt(beHex)
+}
+
+export function deserializeWitnessArgs(hex: string): CKBComponents.WitnessArgs {
+  const args = remove0x(hex)
+  // full_size(4bytes) + offsets(4bytes * 3) + body(lock + input_type + output_type)
+  const lockOffset = leHexStringToU32(args.slice(8, 16)) * 2
+  const inputTypeOffset = leHexStringToU32(args.slice(16, 24)) * 2
+  const outputTypeOffset = leHexStringToU32(args.slice(24, 32)) * 2
+
+  // lock = size(4bytes) + body
+  const lock = args.slice(lockOffset, inputTypeOffset).slice(8)
+  const inputType = args.slice(inputTypeOffset, outputTypeOffset).slice(8)
+  const outputType = args.slice(outputTypeOffset).slice(8)
+
+  return {
+    lock: lock.length === 0 ? '0x' : `0x${lock}`,
+    inputType: inputType.length === 0 ? '0x' : `0x${inputType}`,
+    outputType: outputType.length === 0 ? '0x' : `0x${outputType}`,
+  }
 }

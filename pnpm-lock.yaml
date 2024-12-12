@@ -428,12 +428,6 @@ importers:
 
   packages/ckb:
     dependencies:
-      '@ckb-lumos/base':
-        specifier: 0.22.2
-        version: 0.22.2
-      '@ckb-lumos/codec':
-        specifier: 0.22.2
-        version: 0.22.2
       '@joyid/common':
         specifier: workspace:*
         version: link:../common

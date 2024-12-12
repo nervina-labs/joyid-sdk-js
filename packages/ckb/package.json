@@ -36,8 +36,6 @@
   "dependencies": {
     "@joyid/common": "workspace:*",
     "@nervosnetwork/ckb-sdk-utils": "^0.109.2",
-    "@ckb-lumos/base": "0.22.2",
-    "@ckb-lumos/codec": "0.22.2",
     "cross-fetch": "4.0.0",
     "uncrypto": "^0.1.3"
   }
