@@ -1,5 +1,11 @@
 # @joyid/ckb
 
+## 1.1.0
+
+### Minor Changes
+
+- [#45](https://github.com/nervina-labs/joyid-sdk-js/pull/45) [`0ceb255`](https://github.com/nervina-labs/joyid-sdk-js/commit/0ceb2551fe476aa5d417cc6c1e4ce37cb38ee505) Thanks [@duanyytop](https://github.com/duanyytop)! - feat: Add calculateChallenge and buildSignedTx functions
+
 ## 1.0.1
 
 ### Patch Changes
