@@ -23,10 +23,21 @@ import {
 } from '@joyid/common'
 import * as ckbUtils from '@nervosnetwork/ckb-sdk-utils'
 import { Aggregator } from './aggregator'
+import { deserializeWitnessArgs } from './utils'
 
 export * from './verify'
 
-const { addressToScript, blake160, serializeScript } = ckbUtils
+const {
+  PERSONAL,
+  addressToScript,
+  blake160,
+  blake2b,
+  hexToBytes,
+  toUint64Le,
+  serializeScript,
+  rawTransactionToHash,
+  serializeWitnessArgs,
+} = ckbUtils
 
 const appendPrefix = (tokenKey?: string): string | undefined => {
   if (!tokenKey) {
@@ -63,6 +74,7 @@ export const initConfig = (config?: CkbDappConfig): CkbDappConfig => {
 export const getConfig = (): CkbDappConfig => internalDappConfig
 
 // The witnessIndexes represents the positions of the JoyID cells in inputs, the default value is an empty array
+// e.g. If the transaction inputs have two JoyID cells whose positions are 1 and 3(zero-based index), the witnessIndexes should be [1, 3]
 export type SignConfig = CkbDappConfig &
   Pick<PopupConfigOptions, 'timeoutInSeconds' | 'popup'> & {
     witnessIndexes?: number[]
@@ -232,6 +244,104 @@ export const signRawTransaction = async (
   })
 
   return res.tx
+}
+
+const SECP256R1_PUBKEY_SIG_LEN = 129
+// The witnessIndexes represents the positions of the JoyID cells in inputs, the default value is an array containing only 0
+// e.g. If the transaction inputs have two JoyID cells whose positions are 1 and 3(zero-based index), the witnessIndexes should be [1, 3]
+export const calculateChallenge = async (
+  tx: CKBTransaction,
+  witnessIndexes = [0]
+): Promise<string> => {
+  const { witnesses } = tx
+  if (witnesses.length === 0) {
+    throw new Error('Witnesses cannot be empty')
+  }
+
+  if (witnessIndexes.length === 0) {
+    throw new Error('JoyID witnesses can not be empty')
+  }
+
+  const firstWitnessIndex = witnessIndexes[0] ?? 0
+  if (typeof tx.witnesses[firstWitnessIndex] !== 'string') {
+    throw new TypeError(
+      'The first JoyID witness must be serialized hex string of WitnessArgs'
+    )
+  }
+  const transactionHash = rawTransactionToHash(tx)
+  const witnessArgs = deserializeWitnessArgs(tx.witnesses[firstWitnessIndex]!)
+
+  const emptyWitness: CKBComponents.WitnessArgs = {
+    ...witnessArgs,
+    lock: `0x${'00'.repeat(SECP256R1_PUBKEY_SIG_LEN)}`,
+  }
+
+  console.log(console.log(emptyWitness))
+
+  const serializedEmptyWitnessBytes = hexToBytes(
+    serializeWitnessArgs(emptyWitness)
+  )
+  const serializedEmptyWitnessSize = serializedEmptyWitnessBytes.length
+
+  const hasher = blake2b(32, null, null, PERSONAL)
+  hasher.update(hexToBytes(transactionHash))
+  hasher.update(
+    hexToBytes(toUint64Le(`0x${serializedEmptyWitnessSize.toString(16)}`))
+  )
+  hasher.update(serializedEmptyWitnessBytes)
+
+  for (const witnessIndex of witnessIndexes.slice(1)) {
+    const witness = witnesses[witnessIndex]
+    if (witness) {
+      const bytes = hexToBytes(
+        typeof witness === 'string' ? witness : serializeWitnessArgs(witness)
+      )
+      hasher.update(hexToBytes(toUint64Le(`0x${bytes.length.toString(16)}`)))
+      hasher.update(bytes)
+    }
+  }
+
+  if (witnesses.length > tx.inputs.length) {
+    for (const witness of witnesses.slice(tx.inputs.length)) {
+      const bytes = hexToBytes(
+        typeof witness === 'string' ? witness : serializeWitnessArgs(witness)
+      )
+      hasher.update(hexToBytes(toUint64Le(`0x${bytes.length.toString(16)}`)))
+      hasher.update(bytes)
+    }
+  }
+
+  const challenge = `${hasher.digest('hex')}`
+  return challenge
+}
+
+const WITNESS_NATIVE_MODE = '01'
+const WITNESS_SUBKEY_MODE = '02'
+// The witnessIndexes represents the positions of the JoyID cells in inputs, the default value is an array containing only 0
+// e.g. If the transaction inputs have two JoyID cells whose positions are 1 and 3(zero-based index), the witnessIndexes should be [1, 3]
+export const buildSignedTx = (
+  unsignedTx: CKBTransaction,
+  signedData: SignMessageResponseData,
+  witnessIndexes = [0]
+): CKBTransaction => {
+  if (unsignedTx.witnesses.length === 0) {
+    throw new Error('Witnesses length error')
+  }
+  const firstWitnessIndex = witnessIndexes[0] ?? 0
+  const firstWitness = unsignedTx.witnesses[firstWitnessIndex]!
+  const witnessArgs = deserializeWitnessArgs(firstWitness)
+
+  const { message, signature, pubkey, keyType } = signedData
+
+  const mode = keyType === 'sub_key' ? WITNESS_SUBKEY_MODE : WITNESS_NATIVE_MODE
+  witnessArgs.lock = `0x${mode}${pubkey}${signature}${message}`
+
+  const signedWitness = append0x(serializeWitnessArgs(witnessArgs))
+
+  const signedTx = unsignedTx
+  signedTx.witnesses[firstWitnessIndex] = signedWitness
+
+  return signedTx
 }
 
 export const getSubkeyUnlock = async (
