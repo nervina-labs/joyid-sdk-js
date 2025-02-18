@@ -1,5 +1,11 @@
 # @joyid/ckb
 
+## 1.1.1
+
+### Patch Changes
+
+- [#47](https://github.com/nervina-labs/joyid-sdk-js/pull/47) [`9111001`](https://github.com/nervina-labs/joyid-sdk-js/commit/9111001c0b10ae4b5f46e63a74565b6ea0384c4a) Thanks [@yuche](https://github.com/yuche)! - upgrade ckb-sdk-js to 0.109.5
+
 ## 1.1.0
 
 ### Minor Changes
