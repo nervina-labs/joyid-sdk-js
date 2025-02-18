@@ -35,7 +35,7 @@
   ],
   "dependencies": {
     "@joyid/common": "workspace:*",
-    "@nervosnetwork/ckb-sdk-utils": "^0.109.2",
+    "@nervosnetwork/ckb-sdk-utils": "^0.109.5",
     "cross-fetch": "4.0.0",
     "uncrypto": "^0.1.3"
   }
