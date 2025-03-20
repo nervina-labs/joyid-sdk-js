@@ -1,5 +1,12 @@
 # @joyid/bitcoin
 
+## 0.1.6
+
+### Patch Changes
+
+- Updated dependencies [[`dc4203b`](https://github.com/nervina-labs/joyid-sdk-js/commit/dc4203b7a447c9c7d840e0bef17695091124d8a8)]:
+  - @joyid/common@0.2.1
+
 ## 0.1.5
 
 ### Patch Changes
