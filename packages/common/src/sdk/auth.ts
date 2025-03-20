@@ -33,6 +33,7 @@ export const authWithPopup = async (
   )
 
   return runPopup({
+    ...request,
     ...config,
     type: DappRequestType.Auth,
   })
