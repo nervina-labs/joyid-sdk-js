@@ -1,5 +1,11 @@
 # @joyid/common
 
+## 0.2.1
+
+### Patch Changes
+
+- [#50](https://github.com/nervina-labs/joyid-sdk-js/pull/50) [`dc4203b`](https://github.com/nervina-labs/joyid-sdk-js/commit/dc4203b7a447c9c7d840e0bef17695091124d8a8) Thanks [@yuche](https://github.com/yuche)! - include request in auth and signMessage popup configurations
+
 ## 0.2.0
 
 ### Minor Changes
