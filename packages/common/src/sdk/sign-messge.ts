@@ -35,6 +35,7 @@ export const signMessageWithPopup = async <T extends DappRequestType>(
   config.popup.location.href = buildJoyIDSignMessageURL(request, 'popup')
 
   return runPopup({
+    ...request,
     ...config,
     type: DappRequestType.SignMessage,
   })
