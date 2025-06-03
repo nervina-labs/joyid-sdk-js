@@ -10,6 +10,17 @@ import { type RedirectAction } from '../utils'
 
 export const Redirect: Component = () => {
   const [search] = useSearchParams<Record<'action', RedirectAction>>()
+
+  // Helper to build URL with campaign/card_id from localStorage
+  function buildUrl(base: string) {
+    const campaign = localStorage.getItem('campaign') || ''
+    const cardId = localStorage.getItem('card_id') || ''
+    const params = []
+    if (campaign) params.push(`campaign=${encodeURIComponent(campaign)}`)
+    if (cardId) params.push(`card_id=${encodeURIComponent(cardId)}`)
+    return params.length ? `${base}?${params.join('&')}` : base
+  }
+
   const redirectHome = () => {
     let state
     try {
@@ -17,7 +28,7 @@ export const Redirect: Component = () => {
     } catch (error) {
       //
     }
-    return <Navigate href="/home" state={state} />
+    return <Navigate href={buildUrl('/home')} state={state} />
   }
   const redirectSend = () => {
     let state
@@ -26,7 +37,7 @@ export const Redirect: Component = () => {
     } catch (error) {
       //
     }
-    return <Navigate href="/send" state={state} />
+    return <Navigate href={buildUrl('/send')} state={state} />
   }
   const redirectSendErc20 = () => {
     let state
@@ -35,22 +46,18 @@ export const Redirect: Component = () => {
     } catch (error) {
       //
     }
-    return <Navigate href="/send-erc20" state={state} />
+    return <Navigate href={buildUrl('/send-erc20')} state={state} />
   }
   const redirectSignMessage = () => {
     let state
     try {
       state = signMessageCallback()
     } catch (error: any) {
-      // get redirect state from error
       if (error.state) {
-        state = {
-          state: error.state,
-        }
+        state = { state: error.state }
       }
-      //
     }
-    return <Navigate href="/sign-message" state={state} />
+    return <Navigate href={buildUrl('/sign-message')} state={state} />
   }
   const redirectSignTypedData = () => {
     let state
@@ -59,7 +66,7 @@ export const Redirect: Component = () => {
     } catch (error) {
       //
     }
-    return <Navigate href="/sign-typed-data" state={state} />
+    return <Navigate href={buildUrl('/sign-typed-data')} state={state} />
   }
 
   return (
