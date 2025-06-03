@@ -1,5 +1,6 @@
 {
   "name": "joyid-sdk-js",
+  "type": "module",
   "version": "1.0.0",
   "private": true,
   "description": "Monorepo for JoyID JavaScript SDK",
@@ -27,7 +28,6 @@
     "tabWidth": 2,
     "printWidth": 80
   },
-  "type": "module",
   "simple-git-hooks": {
     "pre-commit": "pnpm run format"
   },
