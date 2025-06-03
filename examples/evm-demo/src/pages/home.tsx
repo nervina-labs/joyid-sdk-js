@@ -21,9 +21,8 @@ function useGenerateJWT(campaign: string, ethAddress: string, cardId: string) {
       })
       const data = await res.json()
       if (res.ok) {
-        toast.success('JWT generated: ' + data.token, {
-          position: 'bottom-center',
-        })
+        // Redirect to Google Pay Save to Wallet
+        window.location.href = `https://pay.google.com/gp/v/save/${data.token}`
       } else {
         toast.error('Error: ' + data.error, { position: 'bottom-center' })
       }
