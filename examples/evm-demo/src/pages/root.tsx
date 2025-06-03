@@ -14,20 +14,16 @@ export const Root: Component = () => {
 
   onMount(() => {
     // Get campaign marker from URL
-    let marker = searchParams.campaign
-    let cardId = searchParams.card_id
+    const marker = searchParams.campaign
+    const cardId = searchParams.card_id
     if (marker) {
       setCampaignMarker(marker)
       localStorage.setItem('campaign', marker)
-    } else {
-      setCampaignMarker(localStorage.getItem('campaign') || '')
     }
 
     if (cardId) {
       setCardId(cardId)
       localStorage.setItem('card_id', cardId)
-    } else {
-      setCardId(localStorage.getItem('card_id') || '')
     }
 
     // Initialize with fixed network
@@ -48,9 +44,15 @@ export const Root: Component = () => {
         mode: 'popup',
         ...EthSepolia,
       })
-      navi(
-        `/home?campaign=${encodeURIComponent(campaignMarker())}&cardId=${encodeURIComponent(cardId())}`
-      )
+      let url = '/home'
+      const params = []
+      if (campaignMarker()) params.push(`campaign=${encodeURIComponent(campaignMarker())}`)
+      if (cardId()) params.push(`card_id=${encodeURIComponent(cardId())}`)
+      if (params.length) url += '?' + params.join('&')
+      navi(url)
+      //navi(
+      //  `/home?campaign=${encodeURIComponent(campaignMarker())}&card_id=${encodeURIComponent(cardId())}`
+      //)
       //navi('/home', { state: { campaign: campaignMarker(), cardId: cardId() } })
     } catch (error) {
       console.log(error)

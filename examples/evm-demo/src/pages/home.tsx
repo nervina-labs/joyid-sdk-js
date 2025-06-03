@@ -39,8 +39,9 @@ export const Home: Component = () => {
   const { authData } = useAuthData()
   // Get campaign marker from navigation state (passed from root)
   const [searchParams] = useSearchParams()
-  let campaign = searchParams.campaign || localStorage.getItem('campaign') || ''
-  let cardId = searchParams.card_id || localStorage.getItem('card_id') || ''
+  const campaign =
+    searchParams.campaign || localStorage.getItem('campaign') || ''
+  const cardId = searchParams.card_id || localStorage.getItem('card_id') || ''
   toast.success('Campaign: ' + campaign + ' Card ID: ' + cardId, {
     position: 'bottom-center',
   })
