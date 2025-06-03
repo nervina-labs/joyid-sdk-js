@@ -39,12 +39,25 @@ export const Home: Component = () => {
   const { authData } = useAuthData()
   // Get campaign marker from navigation state (passed from root)
   const [searchParams] = useSearchParams()
-  const campaign =
+  let campaign =
     searchParams.campaign || localStorage.getItem('campaign') || ''
-  const cardId = searchParams.card_id || localStorage.getItem('card_id') || ''
-  toast.success('Campaign: ' + campaign + ' Card ID: ' + cardId, {
+  let cardId = searchParams.card_id || localStorage.getItem('card_id') || ''
+
+  if (campaign) {
+    localStorage.setItem('campaign', campaign)
+    toast.success('Setting Campaign: ' + campaign, {
+      position: 'bottom-center',
+    })
+  }
+
+  if (cardId) {
+    localStorage.setItem('card_id', cardId)
+  }
+
+
+  /*toast.success('Campaign: ' + campaign + ' Card ID: ' + cardId, {
     position: 'bottom-center',
-  })
+  })*/
 
   const generateJWT = useGenerateJWT(campaign, authData.ethAddress, cardId)
 

@@ -19,15 +19,15 @@ export const Root: Component = () => {
     const cardId = searchParams.card_id
     if (marker) {
       setCampaignMarker(marker)
-      localStorage.setItem('campaign', marker)
-      toast.success('Setting Campaign: ' + marker, {
-        position: 'bottom-center',
-      })
+      //localStorage.setItem('campaign', marker)
+      //toast.success('Setting Campaign: ' + marker, {
+      //  position: 'bottom-center',
+      //})
     }
 
     if (cardId) {
       setCardId(cardId)
-      localStorage.setItem('card_id', cardId)
+      //localStorage.setItem('card_id', cardId)
     }
 
     // Initialize with fixed network
