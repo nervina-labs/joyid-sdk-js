@@ -10,7 +10,7 @@
       "es2021",
       "dom"
     ],
-    "module": "esnext",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "noEmit": true,
     "noImplicitAny": true,
