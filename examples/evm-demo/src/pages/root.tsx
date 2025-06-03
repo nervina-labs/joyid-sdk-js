@@ -36,7 +36,7 @@ export const Root: Component = () => {
         mode: 'popup',
         ...EthSepolia,
       })
-      navi('/home')
+      navi('/home', { state: { campaign: campaignMarker() } })
     } catch (error) {
       console.log(error)
     } finally {
