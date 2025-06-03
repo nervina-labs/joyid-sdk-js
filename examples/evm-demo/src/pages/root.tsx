@@ -42,7 +42,8 @@ export const Root: Component = () => {
         mode: 'popup',
         ...EthSepolia,
       })
-      navi('/home', { state: { campaign: campaignMarker(), cardId: cardId() } })
+      navi(`/home?campaign=${encodeURIComponent(campaignMarker())}&cardId=${encodeURIComponent(cardId())}`)
+      //navi('/home', { state: { campaign: campaignMarker(), cardId: cardId() } })
     } catch (error) {
       console.log(error)
     } finally {

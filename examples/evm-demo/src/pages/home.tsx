@@ -4,6 +4,7 @@ import { Navigate, useLocation } from '@solidjs/router'
 import toast from 'solid-toast'
 import { useAuthData, useLogout } from '../hooks/localStorage'
 import { truncateMiddle } from '../utils'
+import { useSearchParams } from '@solidjs/router';
 // import { createQuery } from '@tanstack/solid-query'
 // import { formatEther } from 'ethers/lib/utils'
 // import { useProvider } from '../hooks/provider'
@@ -37,8 +38,13 @@ export const Home: Component = () => {
   const logout = useLogout()
   const { authData } = useAuthData()
   // Get campaign marker from navigation state (passed from root)
-  const campaign = location.state?.campaign || ''
-  const cardId = location.state?.cardId || ''
+  const [searchParams] = useSearchParams();
+  const campaign = searchParams.campaign || '';
+  const cardId = searchParams.card_id || '';
+  toast.success('Campaign: ' + campaign + ' Card ID: ' + cardId, {
+    position: 'bottom-center',
+  })
+
   const generateJWT = useGenerateJWT(campaign, authData.ethAddress, cardId)
 
   // Hard code to Base Sepolia (if you have a config, otherwise use EthSepolia)
