@@ -1,7 +1,7 @@
 // /api/jwtToken.ts
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 //import { GoogleAuth } from 'google-auth-library';
-import jwt from 'jsonwebtoken'
+const jwt = require('jsonwebtoken')
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
