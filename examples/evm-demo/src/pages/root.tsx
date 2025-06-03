@@ -3,6 +3,7 @@ import { Navigate, useNavigate, useSearchParams } from '@solidjs/router'
 import { useAuthData } from '../hooks/localStorage'
 import { connect, initConfig } from '@joyid/evm'
 import { EthSepolia } from '../chains'
+import toast from 'solid-toast'
 
 export const Root: Component = () => {
   const [isLoading, setIsLoading] = createSignal(false)
@@ -19,6 +20,9 @@ export const Root: Component = () => {
     if (marker) {
       setCampaignMarker(marker)
       localStorage.setItem('campaign', marker)
+      toast.success('Setting Campaign: ' + marker, {
+        position: 'bottom-center',
+      })
     }
 
     if (cardId) {
@@ -46,9 +50,10 @@ export const Root: Component = () => {
       })
       let url = '/home'
       const params = []
-      if (campaignMarker()) params.push(`campaign=${encodeURIComponent(campaignMarker())}`)
+      if (campaignMarker())
+        params.push(`campaign=${encodeURIComponent(campaignMarker())}`)
       if (cardId()) params.push(`card_id=${encodeURIComponent(cardId())}`)
-      if (params.length) url += '?' + params.join('&')
+      if (params.length > 0) url += '?' + params.join('&')
       navi(url)
       //navi(
       //  `/home?campaign=${encodeURIComponent(campaignMarker())}&card_id=${encodeURIComponent(cardId())}`
