@@ -4,7 +4,7 @@ import { Navigate, useLocation } from '@solidjs/router'
 import toast from 'solid-toast'
 import { useAuthData, useLogout } from '../hooks/localStorage'
 import { truncateMiddle } from '../utils'
-import { useSearchParams } from '@solidjs/router';
+import { useSearchParams } from '@solidjs/router'
 // import { createQuery } from '@tanstack/solid-query'
 // import { formatEther } from 'ethers/lib/utils'
 // import { useProvider } from '../hooks/provider'
@@ -38,9 +38,9 @@ export const Home: Component = () => {
   const logout = useLogout()
   const { authData } = useAuthData()
   // Get campaign marker from navigation state (passed from root)
-  const [searchParams] = useSearchParams();
-  const campaign = searchParams.campaign || '';
-  const cardId = searchParams.card_id || '';
+  const [searchParams] = useSearchParams()
+  let campaign = searchParams.campaign || localStorage.getItem('campaign') || ''
+  let cardId = searchParams.card_id || localStorage.getItem('card_id') || ''
   toast.success('Campaign: ' + campaign + ' Card ID: ' + cardId, {
     position: 'bottom-center',
   })
