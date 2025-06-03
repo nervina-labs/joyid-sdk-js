@@ -1,8 +1,4 @@
-import {
-  type Component,
-  Show,
-  onMount,
-} from 'solid-js'
+import { type Component, Show, onMount } from 'solid-js'
 import { writeClipboard } from '@solid-primitives/clipboard'
 import { Navigate, useLocation } from '@solidjs/router'
 import toast from 'solid-toast'
@@ -25,7 +21,9 @@ function useGenerateJWT(campaign: string, ethAddress: string, cardId: string) {
       })
       const data = await res.json()
       if (res.ok) {
-        toast.success('JWT generated: ' + data.token, { position: 'bottom-center' })
+        toast.success('JWT generated: ' + data.token, {
+          position: 'bottom-center',
+        })
       } else {
         toast.error('Error: ' + data.error, { position: 'bottom-center' })
       }
@@ -39,7 +37,7 @@ export const Home: Component = () => {
   const location = useLocation()
   const logout = useLogout()
   const { authData } = useAuthData()
-    // Get campaign marker from navigation state (passed from root)
+  // Get campaign marker from navigation state (passed from root)
   const campaign = location.state?.campaign || ''
   const cardId = location.state?.cardId || ''
   const generateJWT = useGenerateJWT(campaign, authData.ethAddress, cardId)
@@ -71,10 +69,7 @@ export const Home: Component = () => {
             </div>
           )}
         </div>
-        <button
-          class="btn btn-wide mt-8 btn-primary"
-          onClick={generateJWT}
-        >
+        <button class="btn btn-wide mt-8 btn-primary" onClick={generateJWT}>
           CLAIM
         </button>
         <button

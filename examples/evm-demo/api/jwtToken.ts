@@ -17,25 +17,25 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   const issuerId = process.env.ISSUER_ID
   const serviceEmail = process.env.SERVICE_EMAIL
 
-  const objectSuffix = `${campaign.replace(/[^\w.-]/g, '_')}`;
-  const loyaltyClassId = `${issuerId}.${cardId}`;
-  const objectId = `${issuerId}.${objectSuffix}.${ethAddress}`;
+  const objectSuffix = `${campaign.replace(/[^\w.-]/g, '_')}`
+  const loyaltyClassId = `${issuerId}.${cardId}`
+  const objectId = `${issuerId}.${objectSuffix}.${ethAddress}`
 
   const cardObject = {
-    'id': objectId,
-    'classId': loyaltyClassId,
-    "state": "active",
-    "accountId": "Appreciator",
-    "accountName": ethAddress,
-    "loyaltyPoints": {
-      "balance": {
-        "string": "1"
+    id: objectId,
+    classId: loyaltyClassId,
+    state: 'active',
+    accountId: 'Appreciator',
+    accountName: ethAddress,
+    loyaltyPoints: {
+      balance: {
+        string: '1',
       },
-      "label": "Points"
+      label: 'Points',
     },
-    "barcode": {
-      "type": "QR_CODE",
-      "value": ethAddress
+    barcode: {
+      type: 'QR_CODE',
+      value: ethAddress,
     },
   }
 
@@ -45,13 +45,11 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     origins: [],
     typ: 'savetowallet',
     payload: {
-      loyaltyObjects: [
-        cardObject
-      ]
-    }
-  };
+      loyaltyObjects: [cardObject],
+    },
+  }
 
-  const token = jwt.sign(claims, privateKey, { algorithm: 'RS256' });
+  const token = jwt.sign(claims, privateKey, { algorithm: 'RS256' })
 
   if (!campaign || !ethAddress) {
     return res.status(400).json({ error: 'Missing campaign or ethAddress' })

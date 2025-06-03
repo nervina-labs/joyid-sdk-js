@@ -23,7 +23,7 @@ export const Root: Component = () => {
     if (cardId) {
       setCardId(cardId)
     }
-    
+
     // Initialize with fixed network
     initConfig({
       network: {
@@ -55,7 +55,9 @@ export const Root: Component = () => {
       <section class="justify-center flex-col flex">
         <div class="text-center mb-8">
           <h2 class="text-2xl font-bold">
-            {campaignMarker() ? `Collect ${campaignMarker()} card` : 'Connect Wallet'}
+            {campaignMarker()
+              ? `Collect ${campaignMarker()} card`
+              : 'Connect Wallet'}
           </h2>
         </div>
         <button
