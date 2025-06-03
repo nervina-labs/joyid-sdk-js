@@ -14,8 +14,8 @@ const App: Component = () => {
   const { authData } = useAuthData()
   createEffect(() => {
     initConfig({
-      name: 'JoyID EVM demo',
-      logo: 'https://fav.farm/🆔',
+      name: 'OpenPasskey Wallet',
+      logo: 'https://smarttokenlabs.com/favicon-32x32.png',
       // optional
       joyidAppURL: JOY_ID_URL,
       rpcURL: authData.rpcURL,
