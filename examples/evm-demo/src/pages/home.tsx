@@ -15,12 +15,23 @@ import { truncateMiddle } from '../utils'
 // import { produce } from 'solid-js/store'
 // import { type connectCallback } from '@joyid/evm'
 
-// Placeholder for JWT generation hook
-function useGenerateJWT() {
-  // You can implement this later
-  return () => {
-    // TODO: Generate JWT here
-    toast('JWT generation not implemented yet', { position: 'bottom-center' })
+function useGenerateJWT(campaign: string, ethAddress: string, cardId: string) {
+  return async () => {
+    try {
+      const res = await fetch('/api/jwtToken', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ campaign, ethAddress, cardId }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        toast.success('JWT generated: ' + data.token, { position: 'bottom-center' })
+      } else {
+        toast.error('Error: ' + data.error, { position: 'bottom-center' })
+      }
+    } catch (err) {
+      toast.error('Network error', { position: 'bottom-center' })
+    }
   }
 }
 
@@ -28,10 +39,10 @@ export const Home: Component = () => {
   const location = useLocation()
   const logout = useLogout()
   const { authData } = useAuthData()
-  const generateJWT = useGenerateJWT()
-
-  // Get campaign marker from navigation state (passed from root)
+    // Get campaign marker from navigation state (passed from root)
   const campaign = location.state?.campaign || ''
+  const cardId = location.state?.cardId || ''
+  const generateJWT = useGenerateJWT(campaign, authData.ethAddress, cardId)
 
   // Hard code to Base Sepolia (if you have a config, otherwise use EthSepolia)
   // const chain = Chains['BaseSepolia']

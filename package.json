@@ -34,6 +34,7 @@
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.5",
+    "@types/jsonwebtoken": "^9.0.9",
     "eslint": "9.4.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-config-unjs": "0.3.2",
@@ -49,5 +50,8 @@
   "packageManager": "pnpm@8.6.1",
   "volta": {
     "node": "18.20.2"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2"
   }
 }

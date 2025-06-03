@@ -10,12 +10,18 @@ export const Root: Component = () => {
   const { setAuthData, authData } = useAuthData()
   const [searchParams] = useSearchParams()
   const [campaignMarker, setCampaignMarker] = createSignal('')
+  const [cardId, setCardId] = createSignal('')
 
   onMount(() => {
     // Get campaign marker from URL
     const marker = searchParams.campaign
+    const cardId = searchParams.card_id
     if (marker) {
       setCampaignMarker(marker)
+    }
+
+    if (cardId) {
+      setCardId(cardId)
     }
     
     // Initialize with fixed network
@@ -36,7 +42,7 @@ export const Root: Component = () => {
         mode: 'popup',
         ...EthSepolia,
       })
-      navi('/home', { state: { campaign: campaignMarker() } })
+      navi('/home', { state: { campaign: campaignMarker(), cardId: cardId() } })
     } catch (error) {
       console.log(error)
     } finally {
