@@ -30,17 +30,33 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.status(200).send(pkpassBuffer)
 }
 
-function copyPassAssetsToTmp(tempDir: string) {
-  const srcDir = path.join(process.cwd(), 'pass-assets')
+async function fetchAssetToTmp(filename: string, destDir: string) {
+    const assetUrl = `https://${process.env.VERCEL_URL}/pass-assets/${filename}`;
+    const res = await fetch(assetUrl);
+    if (!res.ok) throw new Error(`Failed to fetch ${assetUrl}`);
+    const arrayBuffer = await res.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer)
+    fs.writeFileSync(path.join(destDir, filename), buffer)
+}
+
+async function copyPassAssetsToTmp(tempDir: string) {
+    const assetFiles = ['icon.png', 'logo.png', 'icon@3x.png', 'logo@3x.png']; // etc.
+  if (!fs.existsSync(tempDir)) {
+    fs.mkdirSync(tempDir, { recursive: true });
+  }
+  for (const file of assetFiles) {
+    await fetchAssetToTmp(file, tempDir);
+  }
+  /*const srcDir = path.join(process.cwd(), 'pass-assets')
   //const srcDir = path.join(process.cwd(), 'public', 'pass-assets')
   const destDir = `${tempDir}`
 
-  console.log('CWD:', process.cwd());
-console.log('Looking for pass assets in:', srcDir);
-console.log('Directory exists:', fs.existsSync(srcDir));
-if (fs.existsSync(srcDir)) {
-  console.log('Files:', fs.readdirSync(srcDir));
-}
+  console.log('CWD:', process.cwd())
+  console.log('Looking for pass assets in:', srcDir)
+  console.log('Directory exists:', fs.existsSync(srcDir))
+  if (fs.existsSync(srcDir)) {
+    console.log('Files:', fs.readdirSync(srcDir))
+  }
 
   if (!fs.existsSync(destDir)) {
     fs.mkdirSync(destDir, { recursive: true })
@@ -49,7 +65,7 @@ if (fs.existsSync(srcDir)) {
   const files = fs.readdirSync(srcDir)
   for (const file of files) {
     fs.copyFileSync(path.join(srcDir, file), path.join(destDir, file))
-  }
+  }*/
 }
 
 async function createApplePass(
