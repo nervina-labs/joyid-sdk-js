@@ -19,15 +19,10 @@ export const Root: Component = () => {
     const cardId = searchParams.card_id
     if (marker) {
       setCampaignMarker(marker)
-      //localStorage.setItem('campaign', marker)
-      //toast.success('Setting Campaign: ' + marker, {
-      //  position: 'bottom-center',
-      //})
     }
 
     if (cardId) {
       setCardId(cardId)
-      //localStorage.setItem('card_id', cardId)
     }
 
     // Initialize with fixed network
@@ -55,14 +50,29 @@ export const Root: Component = () => {
       if (cardId()) params.push(`card_id=${encodeURIComponent(cardId())}`)
       if (params.length > 0) url += '?' + params.join('&')
       navi(url)
-      //navi(
-      //  `/home?campaign=${encodeURIComponent(campaignMarker())}&card_id=${encodeURIComponent(cardId())}`
-      //)
-      //navi('/home', { state: { campaign: campaignMarker(), cardId: cardId() } })
     } catch (error) {
       console.log(error)
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  // Test params
+  const testCampaign = 'Coffee Collective'
+  const testEthAddress = '0x1234567890abcdef1234567890abcdef12345678'
+  const testCardId = 'coffee_master_x'
+
+  const generateJWT = useGenerateJWT(testCampaign, testEthAddress, testCardId)
+  const downloadPkpass = useDownloadPkpass(testCampaign, testEthAddress, testCardId)
+
+  const handleTestPass = () => {
+    const os = getMobileOS()
+    if (os === 'android') {
+      generateJWT()
+    } else if (os === 'ios') {
+      downloadPkpass()
+    } else {
+      toast.error('Unsupported device', { position: 'bottom-center' })
     }
   }
 
@@ -82,7 +92,72 @@ export const Root: Component = () => {
           onClick={onConnect}>
           Connect
         </button>
+        <button
+          class="btn btn-wide mt-8 btn-info"
+          onClick={handleTestPass}
+        >
+          Download Test Pass
+        </button>
       </section>
     </Show>
   )
+}
+
+function useGenerateJWT(campaign: string, ethAddress: string, cardId: string) {
+  return async () => {
+    try {
+      const res = await fetch('/api/jwtToken', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ campaign, ethAddress, cardId }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        window.location.href = `https://pay.google.com/gp/v/save/${data.token}`
+      } else {
+        toast.error('Error: ' + data.error, { position: 'bottom-center' })
+      }
+    } catch (err) {
+      toast.error('Network error', { position: 'bottom-center' })
+    }
+  }
+}
+
+function useDownloadPkpass(campaign: string, ethAddress: string, cardId: string) {
+  return async () => {
+    try {
+      const res = await fetch('/api/generatePkpass', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ campaign, ethAddress, cardId }),
+      })
+      if (!res.ok) {
+        const data = await res.json()
+        toast.error('Error: ' + data.error, { position: 'bottom-center' })
+        return
+      }
+      const blob = await res.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'card.pkpass'
+      document.body.append(a)
+      a.click()
+      a.remove()
+      window.URL.revokeObjectURL(url)
+    } catch (err) {
+      toast.error('Network error', { position: 'bottom-center' })
+    }
+  }
+}
+
+function getMobileOS() {
+  const userAgent = window.navigator.userAgent || ''
+  if (/android/i.test(userAgent)) {
+    return 'android'
+  }
+  if (/iPad|iPhone|iPod/.test(userAgent)) {
+    return 'ios'
+  }
+  return 'other'
 }
