@@ -131,7 +131,7 @@ async function createApplePass(
   // Now generate the pass
   const passFull = await PKPass.from(
     {
-      model: './tmp/temp.pass', // folder with pass.json and images
+      model: tempDir,
       certificates: {
         wwdr: wwdr,
         signerCert: signerCert,
