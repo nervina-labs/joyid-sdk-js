@@ -31,8 +31,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 }
 
 function copyPassAssetsToTmp(tempDir: string) {
-  const srcDir = path.join(process.cwd(), 'public', 'pass-assets')
+  const srcDir = path.join(process.cwd(), 'pass-assets')
+  //const srcDir = path.join(process.cwd(), 'public', 'pass-assets')
   const destDir = `${tempDir}`
+
+  console.log('CWD:', process.cwd());
+console.log('Looking for pass assets in:', srcDir);
+console.log('Directory exists:', fs.existsSync(srcDir));
+if (fs.existsSync(srcDir)) {
+  console.log('Files:', fs.readdirSync(srcDir));
+}
 
   if (!fs.existsSync(destDir)) {
     fs.mkdirSync(destDir, { recursive: true })
