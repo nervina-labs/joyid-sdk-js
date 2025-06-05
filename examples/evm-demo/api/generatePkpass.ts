@@ -31,21 +31,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 }
 
 async function fetchAssetToTmp(filename: string, destDir: string) {
-    const assetUrl = `https://${process.env.VERCEL_URL}/pass-assets/${filename}`;
-    const res = await fetch(assetUrl);
-    if (!res.ok) throw new Error(`Failed to fetch ${assetUrl}`);
-    const arrayBuffer = await res.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer)
-    fs.writeFileSync(path.join(destDir, filename), buffer)
+  const assetUrl = `https://${process.env.VERCEL_URL}/pass-assets/${filename}`
+  const res = await fetch(assetUrl)
+  if (!res.ok) throw new Error(`Failed to fetch ${assetUrl}`)
+  const arrayBuffer = await res.arrayBuffer()
+  const buffer = Buffer.from(arrayBuffer)
+  fs.writeFileSync(path.join(destDir, filename), buffer)
 }
 
 async function copyPassAssetsToTmp(tempDir: string) {
-    const assetFiles = ['icon.png', 'logo.png', 'icon@3x.png', 'logo@3x.png']; // etc.
+  const assetFiles = ['icon.png', 'logo.png', 'icon@3x.png', 'logo@3x.png'] // etc.
   if (!fs.existsSync(tempDir)) {
-    fs.mkdirSync(tempDir, { recursive: true });
+    fs.mkdirSync(tempDir, { recursive: true })
   }
   for (const file of assetFiles) {
-    await fetchAssetToTmp(file, tempDir);
+    await fetchAssetToTmp(file, tempDir)
   }
   /*const srcDir = path.join(process.cwd(), 'pass-assets')
   //const srcDir = path.join(process.cwd(), 'public', 'pass-assets')
@@ -131,7 +131,7 @@ async function createApplePass(
   // Now generate the pass
   const passFull = await PKPass.from(
     {
-      model: './temp.pass', // folder with pass.json and images
+      model: './tmp/temp.pass', // folder with pass.json and images
       certificates: {
         wwdr: wwdr,
         signerCert: signerCert,
