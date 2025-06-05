@@ -31,7 +31,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 }
 
 function copyPassAssetsToTmp(tempDir: string) {
-  const srcDir = path.join(process.cwd(), 'static', 'pass-assets')
+  const srcDir = path.join(process.cwd(), 'public', 'pass-assets');
   const destDir = `${tempDir}`
 
   if (!fs.existsSync(destDir)) {

@@ -33,7 +33,11 @@ function useGenerateJWT(campaign: string, ethAddress: string, cardId: string) {
   }
 }
 
-function useDownloadPkpass(campaign: string, ethAddress: string, cardId: string) {
+function useDownloadPkpass(
+  campaign: string,
+  ethAddress: string,
+  cardId: string
+) {
   return async () => {
     try {
       // Call your backend to generate and return the .pkpass file
@@ -41,36 +45,36 @@ function useDownloadPkpass(campaign: string, ethAddress: string, cardId: string)
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ campaign, ethAddress, cardId }),
-      });
+      })
       if (!res.ok) {
-        const data = await res.json();
-        toast.error('Error: ' + data.error, { position: 'bottom-center' });
-        return;
+        const data = await res.json()
+        toast.error('Error: ' + data.error, { position: 'bottom-center' })
+        return
       }
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'card.pkpass';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
+      const blob = await res.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'card.pkpass'
+      document.body.append(a)
+      a.click()
+      a.remove()
+      window.URL.revokeObjectURL(url)
     } catch (err) {
-      toast.error('Network error', { position: 'bottom-center' });
+      toast.error('Network error', { position: 'bottom-center' })
     }
   }
 }
 
 function getMobileOS() {
-  const userAgent = window.navigator.userAgent || (window as any).opera;
+  const userAgent = window.navigator.userAgent || (window as any).opera
   if (/android/i.test(userAgent)) {
-    return 'android';
+    return 'android'
   }
   if (/iPad|iPhone|iPod/.test(userAgent)) {
-    return 'ios';
+    return 'ios'
   }
-  return 'other';
+  return 'other'
 }
 
 export const Home: Component = () => {
@@ -92,18 +96,22 @@ export const Home: Component = () => {
   }
 
   const generateJWT = useGenerateJWT(campaign, authData.ethAddress, cardId)
-  const downloadPkpass = useDownloadPkpass(campaign, authData.ethAddress, cardId)
+  const downloadPkpass = useDownloadPkpass(
+    campaign,
+    authData.ethAddress,
+    cardId
+  )
 
   const handleClaim = () => {
-    const os = getMobileOS();
+    const os = getMobileOS()
     if (os === 'android') {
-      generateJWT();
+      generateJWT()
     } else if (os === 'ios') {
-      downloadPkpass();
+      downloadPkpass()
     } else {
-      toast.error('Unsupported device', { position: 'bottom-center' });
+      toast.error('Unsupported device', { position: 'bottom-center' })
     }
-  };
+  }
 
   // Hard code to Base Sepolia (if you have a config, otherwise use EthSepolia)
   // const chain = Chains['BaseSepolia']
