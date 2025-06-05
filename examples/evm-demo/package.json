@@ -27,6 +27,7 @@
     "@tanstack/solid-query": "^4.29.1",
     "daisyui": "^2.51.5",
     "ethers": "5.7.0",
+    "passkit-generator": "^3.4.0",
     "solid-js": "1.7.3",
     "solid-toast": "^0.5.0"
   }
