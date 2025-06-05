@@ -40,7 +40,7 @@ async function fetchAssetToTmp(filename: string, destDir: string) {
 }
 
 async function copyPassAssetsToTmp(tempDir: string) {
-  const assetFiles = ['icon.png', 'logo.png', 'icon@3x.png', 'logo@3x.png'] // etc.
+  const assetFiles = ['icon.png', 'logo.png', 'icon@2x.png', 'icon@3x.png', 'logo@2x.png', 'logo@3x.png'] // etc.
   if (!fs.existsSync(tempDir)) {
     fs.mkdirSync(tempDir, { recursive: true })
   }
