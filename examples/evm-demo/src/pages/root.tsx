@@ -63,7 +63,11 @@ export const Root: Component = () => {
   const testCardId = 'coffee_master_x'
 
   const generateJWT = useGenerateJWT(testCampaign, testEthAddress, testCardId)
-  const downloadPkpass = useDownloadPkpass(testCampaign, testEthAddress, testCardId)
+  const downloadPkpass = useDownloadPkpass(
+    testCampaign,
+    testEthAddress,
+    testCardId
+  )
 
   const handleTestPass = () => {
     const os = getMobileOS()
@@ -92,10 +96,7 @@ export const Root: Component = () => {
           onClick={onConnect}>
           Connect
         </button>
-        <button
-          class="btn btn-wide mt-8 btn-info"
-          onClick={handleTestPass}
-        >
+        <button class="btn btn-wide mt-8 btn-info" onClick={handleTestPass}>
           Download Test Pass
         </button>
       </section>
@@ -123,7 +124,11 @@ function useGenerateJWT(campaign: string, ethAddress: string, cardId: string) {
   }
 }
 
-function useDownloadPkpass(campaign: string, ethAddress: string, cardId: string) {
+function useDownloadPkpass(
+  campaign: string,
+  ethAddress: string,
+  cardId: string
+) {
   return async () => {
     try {
       const res = await fetch('/api/generatePkpass', {
