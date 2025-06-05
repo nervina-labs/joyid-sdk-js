@@ -33,33 +33,77 @@ function useGenerateJWT(campaign: string, ethAddress: string, cardId: string) {
   }
 }
 
+function useDownloadPkpass(campaign: string, ethAddress: string, cardId: string) {
+  return async () => {
+    try {
+      // Call your backend to generate and return the .pkpass file
+      const res = await fetch('/api/generatePkpass', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ campaign, ethAddress, cardId }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        toast.error('Error: ' + data.error, { position: 'bottom-center' });
+        return;
+      }
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'card.pkpass';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      toast.error('Network error', { position: 'bottom-center' });
+    }
+  }
+}
+
+function getMobileOS() {
+  const userAgent = window.navigator.userAgent || (window as any).opera;
+  if (/android/i.test(userAgent)) {
+    return 'android';
+  }
+  if (/iPad|iPhone|iPod/.test(userAgent)) {
+    return 'ios';
+  }
+  return 'other';
+}
+
 export const Home: Component = () => {
   const location = useLocation()
   const logout = useLogout()
   const { authData } = useAuthData()
   // Get campaign marker from navigation state (passed from root)
   const [searchParams] = useSearchParams()
-  let campaign =
+  const campaign =
     searchParams.campaign || localStorage.getItem('campaign') || ''
-  let cardId = searchParams.card_id || localStorage.getItem('card_id') || ''
+  const cardId = searchParams.card_id || localStorage.getItem('card_id') || ''
 
   if (campaign) {
     localStorage.setItem('campaign', campaign)
-    toast.success('Setting Campaign: ' + campaign, {
-      position: 'bottom-center',
-    })
   }
 
   if (cardId) {
     localStorage.setItem('card_id', cardId)
   }
 
-
-  /*toast.success('Campaign: ' + campaign + ' Card ID: ' + cardId, {
-    position: 'bottom-center',
-  })*/
-
   const generateJWT = useGenerateJWT(campaign, authData.ethAddress, cardId)
+  const downloadPkpass = useDownloadPkpass(campaign, authData.ethAddress, cardId)
+
+  const handleClaim = () => {
+    const os = getMobileOS();
+    if (os === 'android') {
+      generateJWT();
+    } else if (os === 'ios') {
+      downloadPkpass();
+    } else {
+      toast.error('Unsupported device', { position: 'bottom-center' });
+    }
+  };
 
   // Hard code to Base Sepolia (if you have a config, otherwise use EthSepolia)
   // const chain = Chains['BaseSepolia']
@@ -88,7 +132,7 @@ export const Home: Component = () => {
             </div>
           )}
         </div>
-        <button class="btn btn-wide mt-8 btn-primary" onClick={generateJWT}>
+        <button class="btn btn-wide mt-8 btn-primary" onClick={handleClaim}>
           CLAIM
         </button>
         <button
