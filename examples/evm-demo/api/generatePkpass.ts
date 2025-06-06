@@ -51,13 +51,13 @@ async function copyPassAssetsToTmp(tempDir: string) {
     'logo@2x.png',
     'logo@3x.png',
   ]
-  console.log('process.cwd():', process.cwd())
-const srcDir = path.join(process.cwd(), 'pass-assets')
-console.log('Looking for assets in:', srcDir)
-console.log('Directory exists:', fs.existsSync(srcDir))
-if (fs.existsSync(srcDir)) {
-  console.log('Files in asset dir:', fs.readdirSync(srcDir))
-}
+  console.log('process.cwd():', __dirname)
+  const srcDir = path.join(__dirname, 'pass-assets')
+  console.log('Looking for assets in:', srcDir)
+  console.log('Directory exists:', fs.existsSync(srcDir))
+  if (fs.existsSync(srcDir)) {
+    console.log('Files in asset dir:', fs.readdirSync(srcDir))
+  }
   // Path to the monorepo root assets directory
   //const srcDir = path.join(process.cwd(), '..', '..', 'pass-assets')
   if (!fs.existsSync(tempDir)) {
