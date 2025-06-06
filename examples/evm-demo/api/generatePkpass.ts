@@ -40,22 +40,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 //   fs.writeFileSync(path.join(destDir, filename), buffer)
 // }
 
-async function fetchAssetToTmp(url: string, destPath: string) {
-    return new Promise((resolve, reject) => {
-      const file = fs.createWriteStream(destPath);
-      https.get(url, (response: any) => {
-        response.pipe(file);
+async function fetchAssetToTmp(filename: string, destPath: string) {
+  return new Promise((resolve, reject) => {
+    const assetUrl = `https://${process.env.VERCEL_URL}/pass-assets/${filename}`
+    const file = fs.createWriteStream(path.join(destPath, filename))
+    https
+      .get(assetUrl, (response: any) => {
+        response.pipe(file)
         file.on('finish', () => {
-          file.close(resolve);
-        });
+          file.close(resolve)
+        })
         file.on('error', (err: any) => {
-          fs.unlink(destPath, () => reject(err));
-        });
-      }).on('error', (err: any) => {
-        fs.unlink(destPath, () => reject(err));
-      });
-    });
-  }
+          fs.unlink(destPath, () => reject(err))
+        })
+      })
+      .on('error', (err: any) => {
+        fs.unlink(destPath, () => reject(err))
+      })
+  })
+}
 
 async function copyPassAssetsToTmp(tempDir: string) {
   const assetFiles = [
