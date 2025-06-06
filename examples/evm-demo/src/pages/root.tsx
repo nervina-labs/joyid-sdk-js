@@ -96,9 +96,9 @@ export const Root: Component = () => {
           onClick={onConnect}>
           Connect
         </button>
-        <button class="btn btn-wide mt-8 btn-info" onClick={handleTestPass}>
+        {/* <button class="btn btn-wide mt-8 btn-info" onClick={handleTestPass}>
           Download Test Pass
-        </button>
+        </button> */}
       </section>
     </Show>
   )
@@ -124,81 +124,34 @@ function useGenerateJWT(campaign: string, ethAddress: string, cardId: string) {
   }
 }
 
-/*function useDownloadPkpass(
+
+function useDownloadPkpass(
   campaign: string,
   ethAddress: string,
   cardId: string
 ) {
   return async () => {
-    try {
-      const res = await fetch('/api/generatePkpass', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ campaign, ethAddress, cardId }),
-      })
-      if (!res.ok) {
-        // Try to parse error as JSON, fallback to text
-        let errorMsg = 'Unknown error'
-        try {
-          const data = await res.json()
-          errorMsg = data.error || errorMsg
-        } catch {
-          errorMsg = await res.text()
-        }
-        toast.error('Error: ' + errorMsg, { position: 'bottom-center' })
-        return
-      }
+    // For iOS/Safari, do a direct POST navigation
+    const form = document.createElement('form')
+    form.method = 'POST'
+    form.action = '/api/generatePkpass'
+    form.style.display = 'none'
 
-      // get the file size
-      const fileSize = res.headers.get('content-length')
-      console.log('File size:', fileSize)
-
-      // Get the file as a blob
-      const blob = await res.blob()
-      // Create a temporary URL for the blob
-      const url = window.URL.createObjectURL(blob)
-      // Create a link and trigger download
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'card.pkpass'
-      document.body.append(a)
-      a.click()
-      a.remove()
-      window.URL.revokeObjectURL(url)
-    } catch (err) {
-      toast.error('Network error', { position: 'bottom-center' })
+    const addField = (name: string, value: string) => {
+      const input = document.createElement('input')
+      input.type = 'hidden'
+      input.name = name
+      input.value = value
+      form.append(input)
     }
-  }
-}*/
+    addField('campaign', campaign)
+    addField('ethAddress', ethAddress)
+    addField('cardId', cardId)
 
-function useDownloadPkpass(campaign: string, ethAddress: string, cardId: string) {
-  return async () => {
-    const os = getMobileOS()
-    if (os === 'ios') {
-      // For iOS/Safari, do a direct POST navigation
-      const form = document.createElement('form')
-      form.method = 'POST'
-      form.action = '/api/generatePkpass'
-      form.style.display = 'none'
-
-      const addField = (name: string, value: string) => {
-        const input = document.createElement('input')
-        input.type = 'hidden'
-        input.name = name
-        input.value = value
-        form.appendChild(input)
-      }
-      addField('campaign', campaign)
-      addField('ethAddress', ethAddress)
-      addField('cardId', cardId)
-
-      document.body.appendChild(form)
-      form.submit()
-      document.body.removeChild(form)
-      return
-    }
-
-    // ...existing blob download logic for other browsers...
+    document.body.append(form)
+    form.submit()
+    form.remove()
+    return
   }
 }
 

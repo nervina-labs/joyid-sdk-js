@@ -39,35 +39,32 @@ function useDownloadPkpass(
   cardId: string
 ) {
   return async () => {
-    try {
-      // Call your backend to generate and return the .pkpass file
-      const res = await fetch('/api/generatePkpass', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ campaign, ethAddress, cardId }),
-      })
-      if (!res.ok) {
-        const data = await res.json()
-        toast.error('Error: ' + data.error, { position: 'bottom-center' })
-        return
-      }
-      const blob = await res.blob()
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'card.pkpass'
-      document.body.append(a)
-      a.click()
-      a.remove()
-      window.URL.revokeObjectURL(url)
-    } catch (err) {
-      toast.error('Network error', { position: 'bottom-center' })
+    // For iOS/Safari, do a direct POST navigation
+    const form = document.createElement('form')
+    form.method = 'POST'
+    form.action = '/api/generatePkpass'
+    form.style.display = 'none'
+
+    const addField = (name: string, value: string) => {
+      const input = document.createElement('input')
+      input.type = 'hidden'
+      input.name = name
+      input.value = value
+      form.append(input)
     }
+    addField('campaign', campaign)
+    addField('ethAddress', ethAddress)
+    addField('cardId', cardId)
+
+    document.body.append(form)
+    form.submit()
+    form.remove()
+    return
   }
 }
 
 function getMobileOS() {
-  const userAgent = window.navigator.userAgent || (window as any).opera
+  const userAgent = window.navigator.userAgent || ''
   if (/android/i.test(userAgent)) {
     return 'android'
   }
