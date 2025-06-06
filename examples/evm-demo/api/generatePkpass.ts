@@ -25,6 +25,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Read the .pkpass file as a buffer
   const pkpassBuffer = fs.readFileSync(pkpassPath)
 
+  console.log('PKPass buffer length:', pkpassBuffer.length)
+
   // Set headers for file download
   res.setHeader('Content-Type', 'application/vnd.apple.pkpass')
   res.setHeader('Content-Disposition', 'attachment; filename="card.pkpass"')
