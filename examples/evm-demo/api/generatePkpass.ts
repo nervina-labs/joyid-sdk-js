@@ -43,29 +43,36 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 // }
 
 async function copyPassAssetsToTmp(tempDir: string) {
-    const assetFiles = [
-      'icon.png',
-      'logo.png',
-      'icon@2x.png',
-      'icon@3x.png',
-      'logo@2x.png',
-      'logo@3x.png',
-    ]
-    // Path to the monorepo root assets directory
-    const srcDir = path.join(process.cwd(), '..', '..', 'pass-assets')
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true })
-    }
-    for (const file of assetFiles) {
-      const src = path.join(srcDir, file)
-      const dest = path.join(tempDir, file)
-      if (fs.existsSync(src)) {
-        fs.copyFileSync(src, dest)
-      } else {
-        throw new Error(`Missing asset: ${src}`)
-      }
+  const assetFiles = [
+    'icon.png',
+    'logo.png',
+    'icon@2x.png',
+    'icon@3x.png',
+    'logo@2x.png',
+    'logo@3x.png',
+  ]
+  console.log('process.cwd():', process.cwd())
+const srcDir = path.join(process.cwd(), 'pass-assets')
+console.log('Looking for assets in:', srcDir)
+console.log('Directory exists:', fs.existsSync(srcDir))
+if (fs.existsSync(srcDir)) {
+  console.log('Files in asset dir:', fs.readdirSync(srcDir))
+}
+  // Path to the monorepo root assets directory
+  //const srcDir = path.join(process.cwd(), '..', '..', 'pass-assets')
+  if (!fs.existsSync(tempDir)) {
+    fs.mkdirSync(tempDir, { recursive: true })
+  }
+  for (const file of assetFiles) {
+    const src = path.join(srcDir, file)
+    const dest = path.join(tempDir, file)
+    if (fs.existsSync(src)) {
+      fs.copyFileSync(src, dest)
+    } else {
+      throw new Error(`Missing asset: ${src}`)
     }
   }
+}
 
 /*async function fetchAssetToTmp(filename: string, destPath: string) {
     return new Promise((resolve, reject) => {
