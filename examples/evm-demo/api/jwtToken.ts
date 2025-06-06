@@ -20,6 +20,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   const objectSuffix = `${campaign.replace(/[^\w.-]/g, '_')}`
   const loyaltyClassId = `${issuerId}.${cardId}`
   const objectId = `${issuerId}.${objectSuffix}.${ethAddress}`
+  const qrcodeData = `${cardId}-${ethAddress}`
 
   const cardObject = {
     id: objectId,
@@ -29,13 +30,13 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     accountName: ethAddress,
     loyaltyPoints: {
       balance: {
-        string: '1',
+        string: '0',
       },
       label: 'Points',
     },
     barcode: {
       type: 'QR_CODE',
-      value: ethAddress,
+      value: qrcodeData,
     },
   }
 
