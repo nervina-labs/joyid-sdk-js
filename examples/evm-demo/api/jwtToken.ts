@@ -27,7 +27,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     classId: loyaltyClassId,
     state: 'active',
     accountId: 'Appreciator',
-    accountName: ethAddress,
+    accountName: qrcodeData,
     loyaltyPoints: {
       balance: {
         string: '0',
@@ -37,6 +37,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     barcode: {
       type: 'QR_CODE',
       value: qrcodeData,
+      alternateText: "Scan",
     },
   }
 
