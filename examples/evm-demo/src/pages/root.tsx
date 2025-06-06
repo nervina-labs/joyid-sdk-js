@@ -135,23 +135,33 @@ function useDownloadPkpass(
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ campaign, ethAddress, cardId }),
-      })
+      });
       if (!res.ok) {
-        const data = await res.json()
-        toast.error('Error: ' + data.error, { position: 'bottom-center' })
-        return
+        // Try to parse error as JSON, fallback to text
+        let errorMsg = 'Unknown error';
+        try {
+          const data = await res.json();
+          errorMsg = data.error || errorMsg;
+        } catch {
+          errorMsg = await res.text();
+        }
+        toast.error('Error: ' + errorMsg, { position: 'bottom-center' });
+        return;
       }
-      const blob = await res.blob()
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'card.pkpass'
-      document.body.append(a)
-      a.click()
-      a.remove()
-      window.URL.revokeObjectURL(url)
+      // Get the file as a blob
+      const blob = await res.blob();
+      // Create a temporary URL for the blob
+      const url = window.URL.createObjectURL(blob);
+      // Create a link and trigger download
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'card.pkpass';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
     } catch (err) {
-      toast.error('Network error', { position: 'bottom-center' })
+      toast.error('Network error', { position: 'bottom-center' });
     }
   }
 }
