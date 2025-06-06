@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import fs from 'node:fs'
 import { PKPass } from 'passkit-generator'
 import path from 'node:path'
-import https from 'node:https'
+//import https from 'node:https'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
@@ -42,27 +42,58 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 //   fs.writeFileSync(path.join(destDir, filename), buffer)
 // }
 
-async function fetchAssetToTmp(filename: string, destPath: string) {
-  return new Promise((resolve, reject) => {
-    const assetUrl = `https://${process.env.VERCEL_URL}/pass-assets/${filename}`
-    const file = fs.createWriteStream(path.join(destPath, filename))
-    https
-      .get(assetUrl, (response: any) => {
-        response.pipe(file)
-        file.on('finish', () => {
-          file.close(resolve)
-        })
-        file.on('error', (err: any) => {
-          fs.unlink(destPath, () => reject(err))
-        })
-      })
-      .on('error', (err: any) => {
-        fs.unlink(destPath, () => reject(err))
-      })
-  })
-}
-
 async function copyPassAssetsToTmp(tempDir: string) {
+    const assetFiles = [
+      'icon.png',
+      'logo.png',
+      'icon@2x.png',
+      'icon@3x.png',
+      'logo@2x.png',
+      'logo@3x.png',
+    ]
+    // Path to the monorepo root assets directory
+    const srcDir = path.join(process.cwd(), '..', '..', 'pass-assets')
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true })
+    }
+    for (const file of assetFiles) {
+      const src = path.join(srcDir, file)
+      const dest = path.join(tempDir, file)
+      if (fs.existsSync(src)) {
+        fs.copyFileSync(src, dest)
+      } else {
+        throw new Error(`Missing asset: ${src}`)
+      }
+    }
+  }
+
+/*async function fetchAssetToTmp(filename: string, destPath: string) {
+    return new Promise((resolve, reject) => {
+      const assetUrl = `https://${process.env.VERCEL_URL}/pass-assets/${filename}`
+      const filePath = path.join(destPath, filename)
+      const file = fs.createWriteStream(filePath)
+      https
+        .get(assetUrl, (response: any) => {
+          if (response.statusCode !== 200) {
+            // Don't write the file, just reject
+            reject(new Error(`Failed to fetch ${assetUrl}: ${response.statusCode}`))
+            return
+          }
+          response.pipe(file)
+          file.on('finish', () => {
+            file.close(resolve)
+          })
+          file.on('error', (err: any) => {
+            fs.unlink(filePath, () => reject(err))
+          })
+        })
+        .on('error', (err: any) => {
+          fs.unlink(filePath, () => reject(err))
+        })
+    })
+  }*/
+
+/*async function copyPassAssetsToTmp(tempDir: string) {
   const assetFiles = [
     'icon.png',
     'logo.png',
@@ -95,8 +126,8 @@ async function copyPassAssetsToTmp(tempDir: string) {
     const files = fs.readdirSync(srcDir)
     for (const file of files) {
       fs.copyFileSync(path.join(srcDir, file), path.join(destDir, file))
-    }*/
-}
+    }
+}*/
 
 async function createApplePass(
   campaign: string,
