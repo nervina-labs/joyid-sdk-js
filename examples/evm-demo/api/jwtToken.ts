@@ -13,13 +13,14 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'No private key set' })
   }
 
+  //body: JSON.stringify({ campaign, ethAddress, cardId }),
   const { campaign, ethAddress, cardId } = req.body
   const issuerId = process.env.ISSUER_ID
   const serviceEmail = process.env.SERVICE_EMAIL
 
-  const objectSuffix = `${campaign.replace(/[^\w.-]/g, '_')}`
+  //const objectSuffix = `${campaign.replace(/[^\w.-]/g, '_')}`
   const loyaltyClassId = `${issuerId}.${cardId}`
-  const objectId = `${issuerId}.${objectSuffix}.2.${ethAddress}`
+  const objectId = `${issuerId}.${cardId}.2.${ethAddress}`
   const qrcodeData = `${cardId}-${ethAddress}`
 
   const cardObject = {
@@ -51,7 +52,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     },
   }
 
-  console.log('ObjectID', objectId);
+  console.log('ObjectID', objectId)
 
   const token = jwt.sign(claims, privateKey, { algorithm: 'RS256' })
 
