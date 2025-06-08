@@ -51,6 +51,8 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     },
   }
 
+  console.log('ObjectID', objectId);
+
   const token = jwt.sign(claims, privateKey, { algorithm: 'RS256' })
 
   if (!campaign || !ethAddress) {
