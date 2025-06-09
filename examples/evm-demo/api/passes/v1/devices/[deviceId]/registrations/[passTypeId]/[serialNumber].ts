@@ -1,4 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
+import { storeRegistration } from '../../../../../../../src/db'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Log the request method and path for debugging
@@ -21,23 +22,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Push token is required' })
     }
 
-    // TODO: Store the registration in your database
-    // {
-    //   deviceId,
-    //   passTypeId,
-    //   serialNumber,
-    //   pushToken,
-    // }
+    try {
+      // Store the registration in the database
+      storeRegistration(
+        serialNumber as string,
+        deviceId as string,
+        pushToken,
+        passTypeId as string
+      )
 
-    console.log('Registration received:', {
-      deviceId,
-      passTypeId,
-      serialNumber,
-      pushToken,
-    })
+      console.log('Registration stored:', {
+        deviceId,
+        passTypeId,
+        serialNumber,
+        pushToken,
+      })
 
-    // Return 201 Created as per Apple's specification
-    return res.status(201).json({})
+      // Return 201 Created as per Apple's specification
+      return res.status(201).json({})
+    } catch (error) {
+      console.error('Error storing registration:', error)
+      return res.status(500).json({ error: 'Failed to store registration' })
+    }
   }
 
   // Return 405 for non-POST methods
