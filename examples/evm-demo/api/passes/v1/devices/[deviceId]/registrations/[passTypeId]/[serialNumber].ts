@@ -3,27 +3,42 @@ import { VercelRequest, VercelResponse } from '@vercel/node'
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { deviceId, passTypeId, serialNumber } = req.query
 
-  console.log('deviceId', deviceId)
-  console.log('passTypeId', passTypeId)
-  console.log('serialNumber', serialNumber)
-
-  // Handle registration logic here
-  if (req.method === 'POST') {
-    // Example: store deviceId, passTypeId, serialNumber, and pushToken from req.body
-    const { pushToken } = req.body
-    // Store these in your database as needed
-
-    console.log('pushToken', pushToken)
-
-    return res
-      .status(201)
-      .json({ message: 'Device registered for push updates' })
+  // Validate required parameters
+  if (!deviceId || !passTypeId || !serialNumber) {
+    return res.status(400).json({ error: 'Missing required parameters' })
   }
 
-  // Handle other methods as needed
-  res.status(405).json({ error: 'Method not allowed Test2' })
-}
+  // Handle registration
+  if (req.method === 'POST') {
+    const { pushToken } = req.body
 
+    // Validate push token
+    if (!pushToken) {
+      return res.status(400).json({ error: 'Push token is required' })
+    }
+
+    // TODO: Store the registration in your database
+    // {
+    //   deviceId,
+    //   passTypeId,
+    //   serialNumber,
+    //   pushToken
+    // }
+
+    console.log('Registration received:', {
+      deviceId,
+      passTypeId,
+      serialNumber,
+      pushToken
+    })
+
+    // Return 201 Created as per Apple's specification
+    return res.status(201).json({})
+  }
+
+  // Return 405 for non-POST methods
+  return res.status(405).json({ error: 'Method not allowed' })
+}
 
 /*
 // /api/passes/v1/devices/[...params].ts
