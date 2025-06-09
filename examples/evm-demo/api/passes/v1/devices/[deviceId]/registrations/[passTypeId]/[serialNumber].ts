@@ -1,6 +1,10 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Log the request method and path for debugging
+  console.log('Request method:', req.method)
+  console.log('Request path:', req.url)
+
   const { deviceId, passTypeId, serialNumber } = req.query
 
   // Validate required parameters
@@ -22,14 +26,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     //   deviceId,
     //   passTypeId,
     //   serialNumber,
-    //   pushToken
+    //   pushToken,
     // }
 
     console.log('Registration received:', {
       deviceId,
       passTypeId,
       serialNumber,
-      pushToken
+      pushToken,
     })
 
     // Return 201 Created as per Apple's specification
