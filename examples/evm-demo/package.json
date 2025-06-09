@@ -17,8 +17,7 @@
     "tailwindcss": "^3.3.1",
     "typescript": "5",
     "vite-plugin-node-polyfills": "^0.8.1",
-    "vite-plugin-solid": "^2.5.0",
-    "@types/better-sqlite3": "7.6.10"
+    "vite-plugin-solid": "^2.5.0"
   },
   "dependencies": {
     "@joyid/evm": "workspace:*",
@@ -32,6 +31,6 @@
     "solid-js": "1.7.3",
     "solid-toast": "^0.5.0",
     "apn": "2.2.0",
-    "better-sqlite3": "11.10.0"
+    "@vercel/edge-config": "1.4.0"
   }
 }
