@@ -58,9 +58,9 @@ export const Root: Component = () => {
   }
 
   // Test params
-  const testCampaign = 'Coffee Collective'
-  const testEthAddress = '0x1234567890abcdef1234567890abcdef12345678'
-  const testCardId = 'coffee_master_x'
+  const testCampaign = 'Open Passkey'
+  const testEthAddress = '0x1234567890abcdef1234567890abcdef12345679'
+  const testCardId = 'open_passkey'
 
   const generateJWT = useGenerateJWT(testCampaign, testEthAddress, testCardId)
   const downloadPkpass = useDownloadPkpass(
@@ -96,9 +96,11 @@ export const Root: Component = () => {
           onClick={onConnect}>
           Connect
         </button>
-        { <button class="btn btn-wide mt-8 btn-info" onClick={handleTestPass}>
-          Download Test Pass
-        </button> }
+        {
+          <button class="btn btn-wide mt-8 btn-info" onClick={handleTestPass}>
+            Download Test Pass
+          </button>
+        }
       </section>
     </Show>
   )
