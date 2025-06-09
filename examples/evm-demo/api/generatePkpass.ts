@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { createApplePass, servePass } from '../src/passkit'
+import { storeCampaign } from '../src/db'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
@@ -26,8 +27,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ethAddress,
     cardId,
     tempDir,
-    "0"
+    '0'
   )
+
+  const uid = `${cardId}-${ethAddress}`
+
+  //now write to database
+  storeCampaign(uid, campaign);
 
   await servePass(pkpassPath, tempDir, res)
 }
