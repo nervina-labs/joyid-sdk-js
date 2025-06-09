@@ -29,11 +29,6 @@ try {
   db = new Database(dbPath)
   console.log('Database connection successful')
 
-  //drop tables if they exist
-  db.exec(`
-    DROP TABLE IF EXISTS device_registrations
-  `)
-
   // Create tables if they don't exist
   db.exec(`
     CREATE TABLE IF NOT EXISTS device_registrations (
@@ -119,6 +114,6 @@ export function getCardDetails(serialNumber: string): CardDetails | null {
     pushToken: result.push_token,
     passTypeId: result.pass_type_id,
     createdAt: result.created_at,
-    updatedAt: result.updated_at
+    updatedAt: result.updated_at,
   }
 }
