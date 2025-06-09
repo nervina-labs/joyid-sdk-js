@@ -1,27 +1,17 @@
-import { VercelRequest, VercelResponse } from '@vercel/node'
-import { useRouter } from 'next/router'
+import type { VercelRequest, VercelResponse } from '@vercel/node'
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Log everything about the request
-  console.log('Catch-all route hit!')
+export default function handler(req: VercelRequest, res: VercelResponse) {
+  const { slug } = req.query
+  
+  console.log('Dynamic route hit!')
+  console.log('Slug:', slug)
   console.log('Method:', req.method)
   console.log('URL:', req.url)
-  console.log('Query:', req.query)
-  console.log('Body:', req.body)
-  console.log('Headers:', req.headers)
 
-  const router = useRouter();
-
-  const slug = router.query.slug;
-
-  console.log('slug', slug);
-
-  // Forward to the actual handler
   return res.status(200).json({
-    message: 'Catch-all route hit',
+    message: 'Dynamic route working',
+    slug: slug,
     method: req.method,
     url: req.url,
-    query: req.query,
-    body: req.body,
   })
 }
