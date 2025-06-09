@@ -55,7 +55,7 @@ try {
 // Prepare statements
 const insertCampaign = db.prepare(`
   INSERT INTO device_registrations (serial_number, campaign)
-  VALUES (@serial_number, @campaign)
+  VALUES (@serialNumber, @campaign)
   ON CONFLICT(serial_number) DO UPDATE SET
     campaign = @campaign,
     updated_at = CURRENT_TIMESTAMP
@@ -106,7 +106,19 @@ export function storeRegistration(
   })
 }
 
+// How to convert the interface?
 export function getCardDetails(serialNumber: string): CardDetails | null {
   const result = getRegistration.get(serialNumber)
-  return result || null
+  if (!result) return null
+
+  // Map database columns to interface properties
+  return {
+    serialNumber: result.serial_number,
+    campaign: result.campaign,
+    deviceId: result.device_id,
+    pushToken: result.push_token,
+    passTypeId: result.pass_type_id,
+    createdAt: result.created_at,
+    updatedAt: result.updated_at
+  }
 }
