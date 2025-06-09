@@ -16,9 +16,35 @@ export interface CardDetails {
 export async function testEdgeConfigConnection(): Promise<boolean> {
   try {
     const testKey = 'test'
-    await config.set(testKey, 'connection')
+    // Write using REST API
+    const response = await fetch(`${process.env.EDGE_CONFIG}/items`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        items: [{ key: testKey, value: 'connection' }],
+      }),
+    })
+    
+    if (!response.ok) {
+      throw new Error('Failed to set test value')
+    }
+
+    // Read using Edge Config client
     const result = await config.get(testKey)
-    await config.delete(testKey)
+    
+    // Delete using REST API
+    await fetch(`${process.env.EDGE_CONFIG}/items`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        items: [{ key: testKey, value: null }],
+      }),
+    })
+
     return result === 'connection'
   } catch (error) {
     console.error('Edge Config connection test failed:', error)
@@ -41,7 +67,19 @@ export async function storeCampaign(
     createdAt: existing?.createdAt || new Date().toISOString(),
   }
 
-  await config.set(key, data)
+  const response = await fetch(`${process.env.EDGE_CONFIG}/items`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      items: [{ key, value: data }],
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to store campaign data')
+  }
 }
 
 export async function storeRegistration(
@@ -63,7 +101,19 @@ export async function storeRegistration(
     createdAt: existing?.createdAt || new Date().toISOString(),
   }
 
-  await config.set(key, data)
+  const response = await fetch(`${process.env.EDGE_CONFIG}/items`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      items: [{ key, value: data }],
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to store registration data')
+  }
 }
 
 export async function getCardDetails(
