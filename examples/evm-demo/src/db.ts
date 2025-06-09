@@ -26,14 +26,14 @@ export async function testEdgeConfigConnection(): Promise<boolean> {
         items: [{ key: testKey, value: 'connection' }],
       }),
     })
-    
+
     if (!response.ok) {
       throw new Error('Failed to set test value')
     }
 
     // Read using Edge Config client
     const result = await config.get(testKey)
-    
+
     // Delete using REST API
     await fetch(`${process.env.EDGE_CONFIG}/items`, {
       method: 'PATCH',
@@ -126,7 +126,7 @@ export async function getCardDetails(
     const result = await config.get(key)
     console.log('Query result:', result)
 
-    if (!result) {
+    if (!result || result === undefined) {
       // List all cards for debugging
       const allKeys = await config.list()
       console.log('All keys:', allKeys)
