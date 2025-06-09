@@ -67,7 +67,7 @@ const insertRegistration = db.prepare(`
 `)
 
 const getRegistration = db.prepare(`
-  SELECT * FROM device_registrations WHERE serial_number = @serialNumber
+  SELECT * FROM device_registrations WHERE serial_number = ?
 `)
 
 export interface CardDetails {
@@ -103,18 +103,17 @@ export function storeRegistration(
 
 // How to convert the interface?
 export function getCardDetails(serialNumber: string): CardDetails | null {
+  console.log('Searching for serial number:', serialNumber)
   const result = getRegistration.get(serialNumber)
-  console.log('result:', result)
+  console.log('Query result:', result)
   if (!result) {
-
     //display full table contents
-    const result = db.prepare(`
+    const allResults = db.prepare(`
       SELECT * FROM device_registrations
     `).all()
-    console.log('result of full table:', result)
-
+    console.log('All records in table:', allResults)
     return null
-  } 
+  }
 
   // Map database columns to interface properties
   return {
