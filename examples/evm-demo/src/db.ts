@@ -1,10 +1,28 @@
 import { sql } from '@vercel/postgres'
 import Database from 'better-sqlite3'
 import path from 'node:path'
+import fs from 'node:fs'
 
 // Initialize database in /tmp directory for serverless environment
 const dbPath = path.join('/tmp', 'devices.db')
 console.log('Attempting to create database at:', dbPath)
+
+// Ensure /tmp directory exists and is writable
+try {
+  if (!fs.existsSync('/tmp')) {
+    console.log('Creating /tmp directory')
+    fs.mkdirSync('/tmp', { recursive: true })
+  }
+  
+  // Test write permissions
+  const testFile = path.join('/tmp', 'test.txt')
+  fs.writeFileSync(testFile, 'test')
+  fs.unlinkSync(testFile)
+  console.log('Write permissions confirmed')
+} catch (error) {
+  console.error('Directory setup error:', error)
+  throw error
+}
 
 let db: Database.Database
 try {
