@@ -96,9 +96,9 @@ export const Root: Component = () => {
           onClick={onConnect}>
           Connect
         </button>
-        {/* <button class="btn btn-wide mt-8 btn-info" onClick={handleTestPass}>
+        { <button class="btn btn-wide mt-8 btn-info" onClick={handleTestPass}>
           Download Test Pass
-        </button> */}
+        </button> }
       </section>
     </Show>
   )
@@ -123,7 +123,6 @@ function useGenerateJWT(campaign: string, ethAddress: string, cardId: string) {
     }
   }
 }
-
 
 function useDownloadPkpass(
   campaign: string,
