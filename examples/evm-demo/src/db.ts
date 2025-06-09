@@ -16,9 +16,9 @@ export interface CardDetails {
 export async function testEdgeConfigConnection(): Promise<boolean> {
   try {
     const testKey = 'test'
-    await config.set(testKey, 'connection')
+    await config.setAll({ [testKey]: 'connection' })
     const result = await config.get(testKey)
-    await config.delete(testKey)
+    await config.setAll({ [testKey]: null })
     return result === 'connection'
   } catch (error) {
     console.error('Edge Config connection test failed:', error)
@@ -41,7 +41,7 @@ export async function storeCampaign(
     createdAt: existing?.createdAt || new Date().toISOString(),
   }
 
-  await config.set(key, data)
+  await config.setAll({ [key]: data })
 }
 
 export async function storeRegistration(
@@ -63,7 +63,7 @@ export async function storeRegistration(
     createdAt: existing?.createdAt || new Date().toISOString(),
   }
 
-  await config.set(key, data)
+  await config.setAll({ [key]: data })
 }
 
 export async function getCardDetails(
