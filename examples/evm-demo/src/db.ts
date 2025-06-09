@@ -13,7 +13,7 @@ try {
     console.log('Creating /tmp directory')
     fs.mkdirSync('/tmp', { recursive: true })
   }
-  
+
   // Test write permissions
   const testFile = path.join('/tmp', 'test.txt')
   fs.writeFileSync(testFile, 'test')
@@ -29,14 +29,19 @@ try {
   db = new Database(dbPath)
   console.log('Database connection successful')
 
+  //drop tables if they exist
+  db.exec(`
+    DROP TABLE IF EXISTS device_registrations
+  `)
+
   // Create tables if they don't exist
   db.exec(`
     CREATE TABLE IF NOT EXISTS device_registrations (
       serial_number TEXT PRIMARY KEY,
-      device_id TEXT NOT NULL,
-      push_token TEXT NOT NULL,
-      pass_type_id TEXT NOT NULL,
-      campaign TEXT NOT NULL,
+      device_id TEXT,
+      push_token TEXT,
+      pass_type_id TEXT,
+      campaign TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
