@@ -1,22 +1,35 @@
+import { sql } from '@vercel/postgres'
 import Database from 'better-sqlite3'
-import path from 'path'
+import path from 'node:path'
 
-// Initialize database
-const db = new Database(path.join(process.cwd(), 'devices.db'))
+// Initialize database in /tmp directory for serverless environment
+const dbPath = path.join('/tmp', 'devices.db')
+console.log('Attempting to create database at:', dbPath)
 
-// Create tables if they don't exist
-db.exec(`
-  CREATE TABLE IF NOT EXISTS device_registrations (
-    serial_number TEXT PRIMARY KEY,
-    device_id TEXT NOT NULL,
-    push_token TEXT NOT NULL,
-    pass_type_id TEXT NOT NULL,
-    campaign TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  )
-`)
+let db: Database.Database
+try {
+  db = new Database(dbPath)
+  console.log('Database connection successful')
 
+  // Create tables if they don't exist
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS device_registrations (
+      serial_number TEXT PRIMARY KEY,
+      device_id TEXT NOT NULL,
+      push_token TEXT NOT NULL,
+      pass_type_id TEXT NOT NULL,
+      campaign TEXT NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `)
+  console.log('Tables created successfully')
+} catch (error) {
+  console.error('Database initialization error:', error)
+  throw error
+}
+
+// Prepare statements
 const insertCampaign = db.prepare(`
   INSERT INTO device_registrations (serial_number, campaign)
   VALUES (@serial_number, @campaign)
@@ -25,7 +38,6 @@ const insertCampaign = db.prepare(`
     updated_at = CURRENT_TIMESTAMP
 `)
 
-// Prepare statements
 const insertRegistration = db.prepare(`
   INSERT INTO device_registrations (serial_number, device_id, push_token, pass_type_id)
   VALUES (@serialNumber, @deviceId, @pushToken, @passTypeId)
@@ -74,4 +86,4 @@ export function storeRegistration(
 export function getCardDetails(serialNumber: string): CardDetails | null {
   const result = getRegistration.get(serialNumber)
   return result || null
-} 
+}
