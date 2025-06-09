@@ -20,7 +20,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
 
   //const objectSuffix = `${campaign.replace(/[^\w.-]/g, '_')}`
   const loyaltyClassId = `${issuerId}.${cardId}`
-  const objectId = `${issuerId}.${cardId}.2.${ethAddress}`
+  const objectId = `${issuerId}.${cardId}.${ethAddress}`
   const qrcodeData = `${cardId}-${ethAddress}`
 
   const cardObject = {

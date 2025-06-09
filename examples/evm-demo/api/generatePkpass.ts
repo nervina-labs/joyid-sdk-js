@@ -110,6 +110,8 @@ async function createApplePass(
     organizationName: `${campaign}`,
     passTypeIdentifier: 'pass.com.stl-example.coffee-loyalty-1',
     serialNumber: uid,
+    webServiceURL: "https://openpasskeywallet-ckb-demo.vercel.app/api/passes/",
+    authenticationToken: process.env.APPLE_UID_TOKEN,
     teamIdentifier: 'LRAW5PL536',
     storeCard: {
       primaryFields: [
