@@ -59,7 +59,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       )
 
       // servePass will send the response, so we don't need to send another one
-      await servePass(pkpassPath, tempDir, res)
+      return await servePass(pkpassPath, tempDir, res)
     } catch (error) {
       console.error('Error serving pass:', error)
       // Only send error response if headers haven't been sent yet

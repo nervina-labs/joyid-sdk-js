@@ -9,10 +9,13 @@ export interface PassDetails {
   campaign: string
 }
 
-export function parseSerialNumber(serialNumber: string, campaign: string): PassDetails {
+export function parseSerialNumber(
+  serialNumber: string,
+  campaign: string
+): PassDetails {
   const ethAddress = serialNumber.split('-')[1]
   const cardId = serialNumber.split('-')[0]
-  
+
   console.log('ethAddress:', ethAddress)
   console.log('cardId:', cardId)
   console.log('campaign:', campaign)
@@ -49,9 +52,6 @@ export async function copyPassAssetsToTmp(tempDir: string) {
       throw new Error(`Missing asset: ${src}`)
     }
   }
-}
-
-export function preparePassBuffer(passDetails: PassDetails, balance: string): Buffer {
 }
 
 export async function createApplePass(
@@ -153,7 +153,11 @@ export async function createApplePass(
   return outPath
 }
 
-export async function servePass(pkpassPath: string, tempDir: string, res: VercelResponse) {
+export async function servePass(
+  pkpassPath: string,
+  tempDir: string,
+  res: VercelResponse
+) {
   // Read the .pkpass file as a buffer
   const pkpassBuffer = fs.readFileSync(pkpassPath)
 
@@ -176,4 +180,4 @@ export async function servePass(pkpassPath: string, tempDir: string, res: Vercel
   })
 
   res.status(200).send(pkpassBuffer)
-} 
+}
