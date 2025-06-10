@@ -67,6 +67,8 @@ export async function storeCampaign(
   const key = `card_${serialNumber}`
   const existing = await config.get(key)
 
+  console.log('Existing record (Campaign):', existing) 
+
   const data = {
     ...existing,
     serialNumber,
@@ -74,6 +76,8 @@ export async function storeCampaign(
     updatedAt: new Date().toISOString(),
     createdAt: existing?.createdAt || new Date().toISOString(),
   }
+
+  console.log('Data (Campaign):', data)
 
   // Log token info (without exposing the full token)
   console.log('Token info:', {
@@ -115,6 +119,10 @@ export async function storeCampaign(
       `Failed to store campaign data: ${response.status} ${response.statusText}`
     )
   }
+
+  //attempt to get the record again
+  const existing2 = await config.get(key)
+  console.log('Existing record (Campaign) 2:', existing2)
 }
 
 export async function storeRegistration(
@@ -124,10 +132,10 @@ export async function storeRegistration(
   passTypeId: string
 ): Promise<void> {
   const key = `card_${serialNumber}`
-  
+
   // First check if the record exists
   const existing = await config.get(key)
-  console.log('Existing record:', existing)
+  console.log('Existing record (Registration):', existing)
 
   const data = {
     ...existing,
