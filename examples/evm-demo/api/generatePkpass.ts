@@ -33,7 +33,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const uid = `${cardId}-${ethAddress}`
 
   //now write to database
-  storeCampaign(uid, campaign);
+  await storeCampaign(uid, campaign)
 
   await servePass(pkpassPath, tempDir, res)
 }

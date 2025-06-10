@@ -96,9 +96,11 @@ export async function storeCampaign(
       statusText: response.statusText,
       body: errorBody,
       key,
-      data
+      data,
     })
-    throw new Error(`Failed to store campaign data: ${response.status} ${response.statusText}`)
+    throw new Error(
+      `Failed to store campaign data: ${response.status} ${response.statusText}`
+    )
   }
 }
 
@@ -142,9 +144,11 @@ export async function storeRegistration(
       statusText: response.statusText,
       body: errorBody,
       key,
-      data
+      data,
     })
-    throw new Error(`Failed to store registration data: ${response.status} ${response.statusText}`)
+    throw new Error(
+      `Failed to store registration data: ${response.status} ${response.statusText}`
+    )
   }
 }
 
@@ -175,9 +179,7 @@ export async function getCardDetails(
   }
 }
 
-export async function deleteCardDetails(
-  serialNumber: string
-): Promise<void> {
+export async function deleteCardDetails(serialNumber: string): Promise<void> {
   const key = `card:${serialNumber}`
   const response = await fetch(
     `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`,
@@ -199,8 +201,10 @@ export async function deleteCardDetails(
       status: response.status,
       statusText: response.statusText,
       body: errorBody,
-      key
+      key,
     })
-    throw new Error(`Failed to delete card details: ${response.status} ${response.statusText}`)
+    throw new Error(
+      `Failed to delete card details: ${response.status} ${response.statusText}`
+    )
   }
 }

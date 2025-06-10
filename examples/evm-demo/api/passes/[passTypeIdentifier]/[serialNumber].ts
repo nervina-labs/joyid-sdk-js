@@ -58,10 +58,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         balance.toString()
       )
 
+      // servePass will send the response, so we don't need to send another one
       await servePass(pkpassPath, tempDir, res)
     } catch (error) {
-      console.error('Error storing registration:', error)
-      return res.status(500).json({ error: 'Failed to store registration' })
+      console.error('Error serving pass:', error)
+      // Only send error response if headers haven't been sent yet
+      if (!res.headersSent) {
+        return res.status(500).json({ error: 'Failed to serve pass' })
+      }
     }
   }
 

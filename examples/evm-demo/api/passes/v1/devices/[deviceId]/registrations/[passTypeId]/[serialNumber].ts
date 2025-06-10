@@ -1,5 +1,9 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
-import { getCardDetails, storeRegistration, deleteCardDetails } from '../../../../../../../src/db'
+import {
+  getCardDetails,
+  storeRegistration,
+  deleteCardDetails,
+} from '../../../../../../../src/db'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Log the request method and path for debugging
@@ -24,7 +28,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     try {
       // Store the registration in the database
-      storeRegistration(
+      await storeRegistration(
         serialNumber as string,
         deviceId as string,
         pushToken,
@@ -51,15 +55,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     try {
       // Get current card details
       const cardDetails = await getCardDetails(serialNumber as string)
-      console.log("Card details for deletion:", cardDetails)
-      
+      console.log('Card details for deletion:', cardDetails)
+
       if (!cardDetails) {
         return res.status(404).json({ error: 'Pass not found' })
       }
 
       //can we simply delete the card details from the db?
       const deleteResult = await deleteCardDetails(serialNumber as string)
-      console.log("Delete result:", deleteResult)
+      console.log('Delete result:', deleteResult)
 
       // Return 200 OK as per Apple's specification
       return res.status(200).json({})
