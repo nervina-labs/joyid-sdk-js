@@ -124,7 +124,10 @@ export async function storeRegistration(
   passTypeId: string
 ): Promise<void> {
   const key = `card_${serialNumber}`
+  
+  // First check if the record exists
   const existing = await config.get(key)
+  console.log('Existing record:', existing)
 
   const data = {
     ...existing,
@@ -136,6 +139,7 @@ export async function storeRegistration(
     createdAt: existing?.createdAt || new Date().toISOString(),
   }
 
+  // Always use update operation since we're merging with existing data
   const response = await fetch(
     `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items?teamId=team_ryJ4XZuu7YrC0TunT5S2QwiZ`,
     {
@@ -149,7 +153,7 @@ export async function storeRegistration(
           {
             key,
             value: data,
-            operation: existing ? 'update' : 'create',
+            operation: 'update', // Always use update since we're merging data
           },
         ],
       }),
@@ -164,6 +168,7 @@ export async function storeRegistration(
       body: errorBody,
       key,
       data,
+      existing,
     })
     throw new Error(
       `Failed to store registration data: ${response.status} ${response.statusText}`
