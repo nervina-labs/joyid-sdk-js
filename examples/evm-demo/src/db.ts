@@ -79,7 +79,7 @@ export async function storeCampaign(
   console.log('Token info:', {
     hasToken: !!process.env.VERCEL_API_TOKEN,
     tokenLength: process.env.VERCEL_API_TOKEN?.length,
-    tokenPrefix: process.env.VERCEL_API_TOKEN?.substring(0, 4)
+    tokenPrefix: process.env.VERCEL_API_TOKEN?.slice(0, 4),
   })
 
   const response = await fetch(
@@ -87,7 +87,7 @@ export async function storeCampaign(
     {
       method: 'PATCH',
       headers: {
-        'Authorization': `Bearer ${process.env.VERCEL_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.VERCEL_API_TOKEN}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -198,7 +198,7 @@ export async function getCardDetails(
   }
 }
 
-export async function deleteCardDetails(serialNumber: string): Promise<void> {
+export async function deleteCardDetails(serialNumber: string): Promise<boolean> {
   const key = `card_${serialNumber}`
   const response = await fetch(
     `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`,
@@ -220,16 +220,16 @@ export async function deleteCardDetails(serialNumber: string): Promise<void> {
     }
   )
 
+  // delete success not critical, continue on error
   if (!response.ok) {
     const errorBody = await response.text()
-    console.error('Failed to delete card details:', {
+    console.log('Failed to delete card details:', {
       status: response.status,
       statusText: response.statusText,
       body: errorBody,
       key,
     })
-    throw new Error(
-      `Failed to delete card details: ${response.status} ${response.statusText}`
-    )
   }
+
+  return response.ok
 }
