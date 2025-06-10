@@ -75,20 +75,29 @@ export async function storeCampaign(
     createdAt: existing?.createdAt || new Date().toISOString(),
   }
 
+  // Log token info (without exposing the full token)
+  console.log('Token info:', {
+    hasToken: !!process.env.VERCEL_API_TOKEN,
+    tokenLength: process.env.VERCEL_API_TOKEN?.length,
+    tokenPrefix: process.env.VERCEL_API_TOKEN?.substring(0, 4)
+  })
+
   const response = await fetch(
     `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`,
     {
       method: 'PATCH',
       headers: {
-        Authorization: `Bearer ${process.env.VERCEL_API_TOKEN}`,
+        'Authorization': `Bearer ${process.env.VERCEL_API_TOKEN}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        items: [{ 
-          key, 
-          value: data,
-          operation: existing ? 'update' : 'create'
-        }],
+        items: [
+          {
+            key,
+            value: data,
+            operation: existing ? 'update' : 'create',
+          },
+        ],
       }),
     }
   )
@@ -136,11 +145,13 @@ export async function storeRegistration(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        items: [{ 
-          key, 
-          value: data,
-          operation: existing ? 'update' : 'create'
-        }],
+        items: [
+          {
+            key,
+            value: data,
+            operation: existing ? 'update' : 'create',
+          },
+        ],
       }),
     }
   )
@@ -198,11 +209,13 @@ export async function deleteCardDetails(serialNumber: string): Promise<void> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        items: [{ 
-          key, 
-          value: null,
-          operation: 'delete'
-        }],
+        items: [
+          {
+            key,
+            value: null,
+            operation: 'delete',
+          },
+        ],
       }),
     }
   )
