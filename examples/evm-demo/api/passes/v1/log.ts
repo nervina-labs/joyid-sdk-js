@@ -8,9 +8,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     query: req.query,
     headers: req.headers,
     body: req.body,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   })
 
   // Always return 200 OK to Apple
   return res.status(200).json({})
-} 
+}

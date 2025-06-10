@@ -34,12 +34,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         serialNumber,
         cardDetails: {
           ...cardDetails,
-          pushToken: cardDetails.pushToken ? cardDetails.pushToken.slice(0, 10) + '...' : undefined
-        }
+          pushToken: cardDetails.pushToken
+            ? cardDetails.pushToken.slice(0, 10) + '...'
+            : undefined,
+        },
       })
 
       // Return 501 Not Implemented until we implement .pkpass generation
-      return res.status(501).json({ error: 'Pass generation not yet implemented' })
+      return res
+        .status(501)
+        .json({ error: 'Pass generation not yet implemented' })
     } catch (error) {
       console.error('Error serving pass:', error)
       return res.status(500).json({ error: 'Failed to serve pass' })
