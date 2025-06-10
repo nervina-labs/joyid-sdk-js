@@ -105,7 +105,9 @@ export async function storeCampaign(
     }
   )
 
-  if (!response.ok) {
+  if (response.ok) {
+    console.log('Campaign data stored successfully', response.status)
+  } else {
     const errorBody = await response.text()
     console.error('Failed to store campaign data:', {
       status: response.status,
@@ -118,25 +120,6 @@ export async function storeCampaign(
       `Failed to store campaign data: ${response.status} ${response.statusText}`
     )
   }
-
-  // Wait for eventual consistency with retries
-  let retries = 3
-  let existing2 = null
-  while (retries > 0) {
-    // Wait 1 second before checking
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    existing2 = await config.get(key)
-    console.log(`Existing record (Campaign) attempt ${4-retries}:`, existing2)
-    
-    if (existing2 !== undefined) {
-      break
-    }
-    retries--
-  }
-
-  if (!existing2) {
-    console.warn('Warning: Could not verify write after retries')
-  }
 }
 
 export async function storeRegistration(
@@ -146,7 +129,7 @@ export async function storeRegistration(
   passTypeId: string
 ): Promise<void> {
   const key = `card_${serialNumber}`
-  
+
   // First check if the record exists
   const existing = await config.get(key)
   console.log('Existing record (Registration):', existing)
