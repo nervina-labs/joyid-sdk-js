@@ -1,4 +1,4 @@
-import { createClient } from '@vercel/edge-config'
+import { createClient, getAll } from '@vercel/edge-config'
 
 const config = createClient(process.env.EDGE_CONFIG)
 
@@ -16,28 +16,30 @@ export interface CardDetails {
 export async function testEdgeConfigConnection(): Promise<boolean> {
   try {
     const testKey = 'test'
-    // Write using REST API
-    const response = await fetch(`${process.env.EDGE_CONFIG}/items`, {
+    // Write using Vercel REST API
+    const response = await fetch(`https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`, {
       method: 'PATCH',
       headers: {
+        'Authorization': `Bearer ${process.env.VERCEL_API_TOKEN}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         items: [{ key: testKey, value: 'connection' }],
       }),
     })
-
+    
     if (!response.ok) {
       throw new Error('Failed to set test value')
     }
 
     // Read using Edge Config client
     const result = await config.get(testKey)
-
-    // Delete using REST API
-    await fetch(`${process.env.EDGE_CONFIG}/items`, {
+    
+    // Delete using Vercel REST API
+    await fetch(`https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`, {
       method: 'PATCH',
       headers: {
+        'Authorization': `Bearer ${process.env.VERCEL_API_TOKEN}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -67,9 +69,10 @@ export async function storeCampaign(
     createdAt: existing?.createdAt || new Date().toISOString(),
   }
 
-  const response = await fetch(`${process.env.EDGE_CONFIG}/items`, {
+  const response = await fetch(`https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`, {
     method: 'PATCH',
     headers: {
+      'Authorization': `Bearer ${process.env.VERCEL_API_TOKEN}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -101,9 +104,10 @@ export async function storeRegistration(
     createdAt: existing?.createdAt || new Date().toISOString(),
   }
 
-  const response = await fetch(`${process.env.EDGE_CONFIG}/items`, {
+  const response = await fetch(`https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`, {
     method: 'PATCH',
     headers: {
+      'Authorization': `Bearer ${process.env.VERCEL_API_TOKEN}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -128,8 +132,8 @@ export async function getCardDetails(
 
     if (!result || result === undefined) {
       // List all cards for debugging
-      const allKeys = await config.list()
-      console.log('All keys:', allKeys)
+      const allItems = await getAll()
+      console.log('All items:', allItems)
       return null
     }
 
