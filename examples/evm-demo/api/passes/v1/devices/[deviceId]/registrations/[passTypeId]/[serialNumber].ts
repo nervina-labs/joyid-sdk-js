@@ -15,18 +15,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     query: req.query,
     headers: req.headers,
     body: req.body,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   })
 
   // Validate required parameters
   if (!deviceId || !passTypeId || !serialNumber) {
-    console.error('Missing required parameters:', { deviceId, passTypeId, serialNumber })
+    console.error('Missing required parameters:', {
+      deviceId,
+      passTypeId,
+      serialNumber,
+    })
     return res.status(400).json({ error: 'Missing required parameters' })
   }
 
   try {
     switch (req.method) {
-      case 'GET':
+      case 'GET': {
         // Serve the pass file
         const cardDetails = await getCardDetails(serialNumber as string)
         if (!cardDetails) {
@@ -48,8 +52,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res
           .status(501)
           .json({ error: 'Pass generation not yet implemented' })
+      }
 
-      case 'POST':
+      case 'POST': {
         // Register the pass
         const { pushToken } = req.body
         if (!pushToken) {
@@ -72,8 +77,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         })
 
         return res.status(201).json({})
+      }
 
-      case 'DELETE':
+      case 'DELETE': {
         // Unregister the pass
         await deleteCardDetails(serialNumber as string)
 
@@ -84,10 +90,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         })
 
         return res.status(200).json({})
+      }
 
-      default:
+      default: {
         console.error('Method not allowed:', req.method)
         return res.status(405).json({ error: 'Method not allowed' })
+      }
     }
   } catch (error) {
     console.error('Error handling pass registration:', error)

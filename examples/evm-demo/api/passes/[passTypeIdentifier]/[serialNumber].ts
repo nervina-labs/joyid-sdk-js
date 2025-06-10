@@ -10,8 +10,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Log the request method and path for debugging
   console.log('Request method:', req.method)
   console.log('Request path:', req.url)
+  console.log('Request query:', req.query)
+  console.log('Request params:', req.params)
 
-  const { passTypeIdentifier, serialNumber } = req.query
+  // Get parameters from either path or query
+  const passTypeIdentifier = req.query.passTypeIdentifier || req.params.passTypeIdentifier
+  const serialNumber = req.query.serialNumber || req.params.serialNumber
 
   // Validate required parameters
   if (!passTypeIdentifier || !serialNumber) {
