@@ -15,4 +15,4 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Return 404 for now - we'll handle the actual routing in the specific handlers
   return res.status(404).json({ error: 'Not found' })
-} 
+}
