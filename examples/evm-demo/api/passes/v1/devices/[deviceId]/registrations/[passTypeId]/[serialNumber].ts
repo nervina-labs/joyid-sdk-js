@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
-import { storeRegistration } from '../../../../../../../src/db'
+import { getCardDetails, storeRegistration, deleteCardDetails } from '../../../../../../../src/db'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Log the request method and path for debugging
@@ -43,6 +43,29 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     } catch (error) {
       console.error('Error storing registration:', error)
       return res.status(500).json({ error: 'Failed to store registration' })
+    }
+  }
+
+  // Handle unregistration (when user removes pass from wallet)
+  if (req.method === 'DELETE') {
+    try {
+      // Get current card details
+      const cardDetails = await getCardDetails(serialNumber as string)
+      console.log("Card details for deletion:", cardDetails)
+      
+      if (!cardDetails) {
+        return res.status(404).json({ error: 'Pass not found' })
+      }
+
+      //can we simply delete the card details from the db?
+      const deleteResult = await deleteCardDetails(serialNumber as string)
+      console.log("Delete result:", deleteResult)
+
+      // Return 200 OK as per Apple's specification
+      return res.status(200).json({})
+    } catch (error) {
+      console.error('Error removing registration:', error)
+      return res.status(500).json({ error: 'Failed to remove registration' })
     }
   }
 

@@ -28,7 +28,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     //fetch pass details from db
-    const passDetails: CardDetails | null = getCardDetails(serialNumber)
+    const passDetails: CardDetails | null = await getCardDetails(serialNumber)
 
     if (!passDetails) {
       return res.status(404).json({ error: 'Pass details not found' })
