@@ -67,10 +67,9 @@ export async function storeCampaign(
   const key = `card_${serialNumber}`
   const existing = await config.get(key)
 
-  console.log('Existing record (Campaign):', existing) 
+  console.log('Existing record (Campaign):', existing)
 
   const data = {
-    ...existing,
     serialNumber,
     campaign,
     updatedAt: new Date().toISOString(),
@@ -99,7 +98,7 @@ export async function storeCampaign(
           {
             key,
             value: data,
-            operation: existing ? 'update' : 'create',
+            operation: 'create', // Always use create for campaign data
           },
         ],
       }),
@@ -120,9 +119,24 @@ export async function storeCampaign(
     )
   }
 
-  //attempt to get the record again
-  const existing2 = await config.get(key)
-  console.log('Existing record (Campaign) 2:', existing2)
+  // Wait for eventual consistency with retries
+  let retries = 3
+  let existing2 = null
+  while (retries > 0) {
+    // Wait 1 second before checking
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    existing2 = await config.get(key)
+    console.log(`Existing record (Campaign) attempt ${4-retries}:`, existing2)
+    
+    if (existing2 !== undefined) {
+      break
+    }
+    retries--
+  }
+
+  if (!existing2) {
+    console.warn('Warning: Could not verify write after retries')
+  }
 }
 
 export async function storeRegistration(
@@ -132,10 +146,14 @@ export async function storeRegistration(
   passTypeId: string
 ): Promise<void> {
   const key = `card_${serialNumber}`
-
+  
   // First check if the record exists
   const existing = await config.get(key)
   console.log('Existing record (Registration):', existing)
+
+  if (!existing) {
+    throw new Error('Cannot update registration: Campaign record not found')
+  }
 
   const data = {
     ...existing,
@@ -144,10 +162,10 @@ export async function storeRegistration(
     pushToken,
     passTypeId,
     updatedAt: new Date().toISOString(),
-    createdAt: existing?.createdAt || new Date().toISOString(),
+    createdAt: existing.createdAt, // Use existing createdAt
   }
 
-  // Always use update operation since we're merging with existing data
+  // Always use update operation since we know the record exists
   const response = await fetch(
     `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items?teamId=team_ryJ4XZuu7YrC0TunT5S2QwiZ`,
     {
@@ -161,7 +179,7 @@ export async function storeRegistration(
           {
             key,
             value: data,
-            operation: 'update', // Always use update since we're merging data
+            operation: 'update', // Always use update since we know it exists
           },
         ],
       }),
