@@ -6,107 +6,93 @@ import {
 } from '../../../../../../../src/db'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Log the request method and path for debugging
-  console.log('Request method:', req.method)
-  console.log('Request path:', req.url)
-
   const { deviceId, passTypeId, serialNumber } = req.query
+
+  // Log everything about the request
+  console.log('Pass Registration Request:', {
+    method: req.method,
+    path: req.url,
+    query: req.query,
+    headers: req.headers,
+    body: req.body,
+    timestamp: new Date().toISOString()
+  })
 
   // Validate required parameters
   if (!deviceId || !passTypeId || !serialNumber) {
+    console.error('Missing required parameters:', { deviceId, passTypeId, serialNumber })
     return res.status(400).json({ error: 'Missing required parameters' })
   }
 
-  // Handle GET request for pass file
-  if (req.method === 'GET') {
-    try {
-      // Get card details to verify it exists
-      const cardDetails = await getCardDetails(serialNumber as string)
-      if (!cardDetails) {
-        console.log('Pass not found:', { passTypeId, serialNumber })
-        return res.status(404).json({ error: 'Pass not found' })
-      }
+  try {
+    switch (req.method) {
+      case 'GET':
+        // Serve the pass file
+        const cardDetails = await getCardDetails(serialNumber as string)
+        if (!cardDetails) {
+          console.error('Pass not found:', { serialNumber })
+          return res.status(404).json({ error: 'Pass not found' })
+        }
 
-      // TODO: Generate and serve the .pkpass file
-      // For now, return a placeholder response
-      console.log('Pass found, would serve .pkpass file:', {
-        passTypeId,
-        serialNumber,
-        cardDetails: {
-          ...cardDetails,
-          pushToken: cardDetails.pushToken
-            ? cardDetails.pushToken.slice(0, 10) + '...'
-            : undefined,
-        },
-      })
+        console.log('Found pass:', {
+          serialNumber,
+          cardDetails: {
+            ...cardDetails,
+            pushToken: cardDetails.pushToken
+              ? cardDetails.pushToken.slice(0, 10) + '...'
+              : undefined,
+          },
+        })
 
-      // Return 501 Not Implemented until we implement .pkpass generation
-      return res
-        .status(501)
-        .json({ error: 'Pass generation not yet implemented' })
-    } catch (error) {
-      console.error('Error serving pass:', error)
-      return res.status(500).json({ error: 'Failed to serve pass' })
+        // Return 501 Not Implemented until we implement .pkpass generation
+        return res
+          .status(501)
+          .json({ error: 'Pass generation not yet implemented' })
+
+      case 'POST':
+        // Register the pass
+        const { pushToken } = req.body
+        if (!pushToken) {
+          console.error('Missing pushToken in request body')
+          return res.status(400).json({ error: 'Missing pushToken' })
+        }
+
+        await storeRegistration(
+          serialNumber as string,
+          deviceId as string,
+          pushToken,
+          passTypeId as string
+        )
+
+        console.log('Pass registered successfully:', {
+          deviceId,
+          passTypeId,
+          serialNumber,
+          pushToken: pushToken.slice(0, 10) + '...',
+        })
+
+        return res.status(201).json({})
+
+      case 'DELETE':
+        // Unregister the pass
+        await deleteCardDetails(serialNumber as string)
+
+        console.log('Pass unregistered successfully:', {
+          deviceId,
+          passTypeId,
+          serialNumber,
+        })
+
+        return res.status(200).json({})
+
+      default:
+        console.error('Method not allowed:', req.method)
+        return res.status(405).json({ error: 'Method not allowed' })
     }
+  } catch (error) {
+    console.error('Error handling pass registration:', error)
+    return res.status(500).json({ error: 'Internal server error' })
   }
-
-  // Handle registration
-  if (req.method === 'POST') {
-    const { pushToken } = req.body
-
-    // Validate push token
-    if (!pushToken) {
-      return res.status(400).json({ error: 'Push token is required' })
-    }
-
-    try {
-      await storeRegistration(
-        serialNumber as string,
-        deviceId as string,
-        pushToken,
-        passTypeId as string
-      )
-      console.log('Registration stored successfully:', {
-        deviceId,
-        passTypeId,
-        serialNumber,
-        pushToken,
-      })
-
-      // Return 201 Created as per Apple's specification
-      return res.status(201).json({})
-    } catch (error: any) {
-      console.error('Error storing registration:', error)
-      // Return 500 to Apple - they will retry
-      return res.status(500).json({ error: 'Failed to store registration' })
-    }
-  }
-
-  // Handle unregistration (when user removes pass from wallet)
-  if (req.method === 'DELETE') {
-    try {
-      // Get current card details
-      const cardDetails = await getCardDetails(serialNumber as string)
-      console.log('Card details for deletion:', cardDetails)
-
-      if (!cardDetails) {
-        return res.status(404).json({ error: 'Pass not found' })
-      }
-
-      //can we simply delete the card details from the db?
-      const deleteResult = await deleteCardDetails(serialNumber as string)
-      console.log('Delete result:', deleteResult)
-
-      // Return 200 OK as per Apple's specification
-      return res.status(200).json({})
-    } catch (error) {
-      console.error('Error removing registration:', error)
-      return res.status(500).json({ error: 'Failed to remove registration' })
-    }
-  }
-
-  // Return 405 for non-POST methods
-  return res.status(405).json({ error: 'Method not allowed' })
 }
 
 /*
