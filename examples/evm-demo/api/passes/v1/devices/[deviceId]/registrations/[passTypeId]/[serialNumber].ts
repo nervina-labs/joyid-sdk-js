@@ -27,20 +27,63 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     try {
-      // Store the registration in the database
-      await storeRegistration(
-        serialNumber as string,
-        deviceId as string,
-        pushToken,
-        passTypeId as string
-      )
-
-      console.log('Registration stored:', {
-        deviceId,
-        passTypeId,
-        serialNumber,
-        pushToken,
-      })
+      // Try immediate registration first
+      try {
+        await storeRegistration(
+          serialNumber as string,
+          deviceId as string,
+          pushToken,
+          passTypeId as string
+        )
+        console.log('Registration stored immediately:', {
+          deviceId,
+          passTypeId,
+          serialNumber,
+          pushToken,
+        })
+      } catch (error: any) {
+        // If immediate registration fails with "record not found", try with retries
+        if (error.message.includes('Campaign record not found')) {
+          console.log('Campaign record not found, starting retry loop...')
+          let retries = 10 // Try up to 10 times
+          
+          while (retries > 0) {
+            try {
+              await storeRegistration(
+                serialNumber as string,
+                deviceId as string,
+                pushToken,
+                passTypeId as string
+              )
+              console.log(`Registration stored successfully after retry: ${11-retries}`, {
+                deviceId,
+                passTypeId,
+                serialNumber,
+              })
+              break // Success, exit the loop
+            } catch (retryError: any) {
+              console.log(`Registration attempt ${11-retries} failed:`, retryError.message)
+              
+              // If it's not a "record not found" error, fail immediately
+              if (!retryError.message.includes('Campaign record not found')) {
+                console.error('Fatal error during registration retry:', retryError)
+                throw retryError
+              }
+              
+              // Wait 2 seconds before retrying
+              await new Promise(resolve => setTimeout(resolve, 2000))
+              retries--
+            }
+          }
+          
+          if (retries === 0) {
+            console.error('Failed to register after all retries')
+          }
+        } else {
+          // For other errors, fail immediately
+          throw error
+        }
+      }
 
       // Return 201 Created as per Apple's specification
       return res.status(201).json({})
