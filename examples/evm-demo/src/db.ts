@@ -83,7 +83,7 @@ export async function storeCampaign(
   })
 
   const response = await fetch(
-    `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`,
+    `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items?teamId=james-projects-5bb3b1aa`,
     {
       method: 'PATCH',
       headers: {
@@ -137,7 +137,7 @@ export async function storeRegistration(
   }
 
   const response = await fetch(
-    `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`,
+    `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items?teamId=james-projects-5bb3b1aa`,
     {
       method: 'PATCH',
       headers: {
@@ -198,10 +198,12 @@ export async function getCardDetails(
   }
 }
 
-export async function deleteCardDetails(serialNumber: string): Promise<boolean> {
+export async function deleteCardDetails(
+  serialNumber: string
+): Promise<boolean> {
   const key = `card_${serialNumber}`
   const response = await fetch(
-    `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`,
+    `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items?teamId=james-projects-5bb3b1aa`,
     {
       method: 'PATCH',
       headers: {
