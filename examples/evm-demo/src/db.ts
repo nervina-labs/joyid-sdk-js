@@ -2,6 +2,23 @@ import { createClient, getAll } from '@vercel/edge-config'
 
 const config = createClient(process.env.EDGE_CONFIG)
 
+// Simple cache for recent registrations
+const registrationCache = new Map<
+  string,
+  { pushToken: string; campaign: string; passTypeId: string; timestamp: number }
+>()
+const CACHE_TTL = 10 * 60 * 1000 // 10 minutes
+
+// Clean up old cache entries
+function cleanupCache() {
+  const now = Date.now()
+  for (const [key, value] of registrationCache.entries()) {
+    if (now - value.timestamp > CACHE_TTL) {
+      registrationCache.delete(key)
+    }
+  }
+}
+
 export interface CardDetails {
   serialNumber: string
   campaign: string
@@ -67,6 +84,14 @@ export async function storeCampaign(
   const key = `card_${serialNumber}`
   const existing = await config.get(key)
 
+  //first, store the campaign in the cache
+  registrationCache.set(serialNumber, {
+    campaign,
+    pushToken: '',
+    passTypeId: '',
+    timestamp: Date.now(),
+  })
+
   console.log('Existing record (Campaign):', existing)
 
   const data = {
@@ -130,22 +155,44 @@ export async function storeRegistration(
 ): Promise<void> {
   const key = `card_${serialNumber}`
 
+  //first fetch the campaign from the cache
+  const campaign = registrationCache.get(serialNumber)?.campaign
+
+  //now, update cache with push token
+  registrationCache.set(serialNumber, {
+    campaign: campaign || '',
+    pushToken,
+    passTypeId,
+    timestamp: Date.now(),
+  })
+
   // First check if the record exists
   const existing = await config.get(key)
   console.log('Existing record (Registration):', existing)
 
-  if (!existing) {
-    throw new Error('Cannot update registration: Campaign record not found')
+  let record = existing
+  if (record === undefined) {
+    // Wait 5 seconds and try one more time
+    console.log('Campaign record not found, waiting 5 seconds before retry...')
+    await new Promise((resolve) => setTimeout(resolve, 5000))
+
+    const retryExisting = await config.get(key)
+    if (retryExisting === undefined) {
+      throw new Error(
+        'Cannot update registration: Campaign record not found, allow retry later'
+      )
+    }
+    record = retryExisting
   }
 
   const data = {
-    ...existing,
+    ...record,
     serialNumber,
     deviceId,
     pushToken,
     passTypeId,
     updatedAt: new Date().toISOString(),
-    createdAt: existing.createdAt, // Use existing createdAt
+    createdAt: record.createdAt, // Use existing createdAt
   }
 
   // Always use update operation since we know the record exists
@@ -177,7 +224,7 @@ export async function storeRegistration(
       body: errorBody,
       key,
       data,
-      existing,
+      existing: record,
     })
     throw new Error(
       `Failed to store registration data: ${response.status} ${response.statusText}`
@@ -192,16 +239,35 @@ export async function getCardDetails(
   const key = `card_${serialNumber}`
 
   try {
+    // Check cache first
+    cleanupCache() // Clean up old entries
+
     const result = await config.get(key)
     console.log('Query result:', result)
 
-    if (!result || result === undefined) {
+    if (result === undefined) {
       // List all cards for debugging
       const allItems = await getAll()
       console.log('All items:', allItems)
       console.log('All items type:', typeof allItems)
       console.log('All items keys:', Object.keys(allItems))
       console.log('All items values:', Object.values(allItems))
+
+      // use cached data if available
+      const cached = registrationCache.get(serialNumber)
+      if (cached) {
+        console.log('Found in cache:', cached)
+        return {
+          serialNumber,
+          campaign: cached.campaign,
+          deviceId: '',
+          pushToken: cached.pushToken,
+          passTypeId: cached.passTypeId,
+          createdAt: new Date(cached.timestamp).toISOString(),
+          updatedAt: new Date(cached.timestamp).toISOString(),
+        }
+      }
+
       return null
     }
 
@@ -246,6 +312,9 @@ export async function deleteCardDetails(
       key,
     })
   }
+
+  // Remove from cache if it exists
+  registrationCache.delete(serialNumber)
 
   return response.ok
 }
