@@ -64,7 +64,7 @@ export async function storeCampaign(
   serialNumber: string,
   campaign: string
 ): Promise<void> {
-  const key = `card:${serialNumber}`
+  const key = `card_${serialNumber}`
   const existing = await config.get(key)
 
   const data = {
@@ -110,7 +110,7 @@ export async function storeRegistration(
   pushToken: string,
   passTypeId: string
 ): Promise<void> {
-  const key = `card:${serialNumber}`
+  const key = `card_${serialNumber}`
   const existing = await config.get(key)
 
   const data = {
@@ -156,7 +156,7 @@ export async function getCardDetails(
   serialNumber: string
 ): Promise<CardDetails | null> {
   console.log('Searching for serial number:', serialNumber)
-  const key = `card:${serialNumber}`
+  const key = `card_${serialNumber}`
 
   try {
     const result = await config.get(key)
@@ -180,7 +180,7 @@ export async function getCardDetails(
 }
 
 export async function deleteCardDetails(serialNumber: string): Promise<void> {
-  const key = `card:${serialNumber}`
+  const key = `card_${serialNumber}`
   const response = await fetch(
     `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`,
     {
