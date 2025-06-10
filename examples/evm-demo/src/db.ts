@@ -84,7 +84,11 @@ export async function storeCampaign(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        items: [{ key, value: data }],
+        items: [{ 
+          key, 
+          value: data,
+          operation: existing ? 'update' : 'create'
+        }],
       }),
     }
   )
@@ -132,7 +136,11 @@ export async function storeRegistration(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        items: [{ key, value: data }],
+        items: [{ 
+          key, 
+          value: data,
+          operation: existing ? 'update' : 'create'
+        }],
       }),
     }
   )
@@ -190,7 +198,11 @@ export async function deleteCardDetails(serialNumber: string): Promise<void> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        items: [{ key, value: null }],
+        items: [{ 
+          key, 
+          value: null,
+          operation: 'delete'
+        }],
       }),
     }
   )
