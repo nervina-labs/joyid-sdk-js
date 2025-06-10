@@ -19,7 +19,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // Handle request for pass update
-  if (req.method === 'POST') {
+  if (req.method === 'GET') {
     const { pushToken } = req.body
 
     // Validate push token

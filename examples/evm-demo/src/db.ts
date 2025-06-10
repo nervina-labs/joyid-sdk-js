@@ -239,7 +239,6 @@ export async function getCardDetails(
   const key = `card_${serialNumber}`
 
   try {
-    // Check cache first
     cleanupCache() // Clean up old entries
 
     const result = await config.get(key)
@@ -270,6 +269,9 @@ export async function getCardDetails(
 
       return null
     }
+
+    // remove from cache, don't care if it doesn't exist
+    registrationCache.delete(serialNumber)
 
     return result as CardDetails
   } catch (error) {

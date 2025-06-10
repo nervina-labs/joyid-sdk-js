@@ -59,7 +59,7 @@ export const Root: Component = () => {
 
   // Test params
   const testCampaign = 'Open Passkey'
-  const testEthAddress = '0x1234567890abcdef1234567890abcdef12345679'
+  const testEthAddress = '0x1234567890abcdef1234567890abcdef12345670'
   const testCardId = 'open_passkey'
 
   const generateJWT = useGenerateJWT(testCampaign, testEthAddress, testCardId)

@@ -107,6 +107,8 @@ export async function createApplePass(
     logoText: `${campaign}`,
   }
 
+  console.log('pass:', pass)
+
   //now store the json to /temp directory
   fs.writeFileSync(passJsonPath, JSON.stringify(pass, null, 2))
 

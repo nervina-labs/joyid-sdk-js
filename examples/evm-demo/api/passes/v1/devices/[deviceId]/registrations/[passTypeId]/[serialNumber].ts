@@ -17,6 +17,35 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Missing required parameters' })
   }
 
+  // Handle GET request for pass file
+  if (req.method === 'GET') {
+    try {
+      // Get card details to verify it exists
+      const cardDetails = await getCardDetails(serialNumber as string)
+      if (!cardDetails) {
+        console.log('Pass not found:', { passTypeId, serialNumber })
+        return res.status(404).json({ error: 'Pass not found' })
+      }
+
+      // TODO: Generate and serve the .pkpass file
+      // For now, return a placeholder response
+      console.log('Pass found, would serve .pkpass file:', {
+        passTypeId,
+        serialNumber,
+        cardDetails: {
+          ...cardDetails,
+          pushToken: cardDetails.pushToken ? cardDetails.pushToken.slice(0, 10) + '...' : undefined
+        }
+      })
+
+      // Return 501 Not Implemented until we implement .pkpass generation
+      return res.status(501).json({ error: 'Pass generation not yet implemented' })
+    } catch (error) {
+      console.error('Error serving pass:', error)
+      return res.status(500).json({ error: 'Failed to serve pass' })
+    }
+  }
+
   // Handle registration
   if (req.method === 'POST') {
     const { pushToken } = req.body
