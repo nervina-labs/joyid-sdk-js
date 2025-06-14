@@ -63,9 +63,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-  };
+  }
   if (process.env.API_KEY) {
-    headers['x-stl-key'] = process.env.API_KEY;
+    headers['x-stl-key'] = process.env.API_KEY
   }
 
   const response = await fetch(
@@ -73,7 +73,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     {
       method: 'POST',
       body: JSON.stringify(passPayload),
-      headers
+      headers,
     }
   )
   const data = await response.json()
