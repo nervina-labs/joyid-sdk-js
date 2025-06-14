@@ -61,11 +61,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   console.log(`Pass Payload: ${JSON.stringify(passPayload)}`)
 
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  if (process.env.API_KEY) {
+    headers['x-stl-key'] = process.env.API_KEY;
+  }
+
   const response = await fetch(
     'https://54-88-67-169.sslip.io:3005/wallet-passes',
     {
       method: 'POST',
       body: JSON.stringify(passPayload),
+      headers
     }
   )
   const data = await response.json()
