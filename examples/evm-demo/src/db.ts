@@ -9,12 +9,23 @@ const registrationCache = new Map<
 >()
 const CACHE_TTL = 10 * 60 * 1000 // 10 minutes
 
+const cardCache = new Map<
+  string,
+  { id: string; fileURL: string; timestamp: number }
+>()
+
 // Clean up old cache entries
 function cleanupCache() {
   const now = Date.now()
   for (const [key, value] of registrationCache.entries()) {
     if (now - value.timestamp > CACHE_TTL) {
       registrationCache.delete(key)
+    }
+  }
+
+  for (const [key, value] of cardCache.entries()) {
+    if (now - value.timestamp > CACHE_TTL) {
+      cardCache.delete(key)
     }
   }
 }
@@ -27,6 +38,12 @@ export interface CardDetails {
   passTypeId: string
   createdAt: string
   updatedAt: string
+}
+
+export interface CardCache {
+  id: string
+  fileURL: string
+  timestamp: number
 }
 
 // Test Edge Config connection
@@ -145,6 +162,83 @@ export async function storeCampaign(
       `Failed to store campaign data: ${response.status} ${response.statusText}`
     )
   }
+}
+
+//storePass(id, result.id, result.platform, result.fileURL);
+
+export async function storePass(
+  id: string,
+  passId: string,
+  platform: string,
+  fileURL: string
+): Promise<void> {
+  const key = `card_${id}`
+  const existing = await config.get(key)
+
+  //first, store the campaign in the cache
+  cardCache.set(id, {
+    id,
+    fileURL,
+    timestamp: Date.now(),
+  })
+
+  console.log('Existing record (Campaign):', existing)
+
+  const data = {
+    passId,
+    platform,
+    fileURL,
+    createdAt: existing?.createdAt || new Date().toISOString(),
+  }
+
+  console.log('Data (Card):', data)
+
+  // Log token info (without exposing the full token)
+  /*console.log('Token info:', {
+      hasToken: !!process.env.VERCEL_API_TOKEN,
+      tokenLength: process.env.VERCEL_API_TOKEN?.length,
+      tokenPrefix: process.env.VERCEL_API_TOKEN?.slice(0, 4),
+    })*/
+
+  const response = await fetch(
+    `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items?teamId=team_ryJ4XZuu7YrC0TunT5S2QwiZ`,
+    {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${process.env.VERCEL_API_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        items: [
+          {
+            key,
+            value: data,
+            operation: 'create', // Always use create for campaign data
+          },
+        ],
+      }),
+    }
+  )
+
+  if (response.ok) {
+    console.log('Card data stored successfully', response.status)
+  } else {
+    const errorBody = await response.text()
+    console.error('Failed to store card data:', {
+      status: response.status,
+      statusText: response.statusText,
+      body: errorBody,
+      key,
+      data,
+    })
+    throw new Error(
+      `Failed to store card data: ${response.status} ${response.statusText}`
+    )
+  }
+}
+
+export async function getPass(id: string): Promise<CardCache | null> {
+  return cardCache.get(id)
 }
 
 export async function storeRegistration(

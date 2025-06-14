@@ -12,21 +12,83 @@ import { useSearchParams } from '@solidjs/router'
 // import { produce } from 'solid-js/store'
 // import { type connectCallback } from '@joyid/evm'
 
+//construct a pass JSON
+
 function useGenerateJWT(campaign: string, ethAddress: string, cardId: string) {
   return async () => {
     try {
+      const externalId = `${cardId}-${ethAddress}`
+
+      // Start listening for the SSE event BEFORE triggering the backend
+      const evtSource = new EventSource(
+        `/api/wallet-pass-callback?id=${externalId}`
+      )
+
+      evtSource.addEventListener('message', (event) => {
+        try {
+          const data = JSON.parse(event.data)
+          console.log('SSE message:', data)
+          if (data.fileURL) {
+            // Redirect to the pass URL
+            window.location.href = data.fileURL
+            evtSource.close() // Clean up
+          }
+        } catch (err) {
+          console.error('Error parsing SSE data:', err)
+        }
+      })
+
+      evtSource.addEventListener('error', (event) => {
+        console.error('SSE error:', event)
+        evtSource.close()
+      })
+
+      // Now trigger the backend to start the pass creation process
       const res = await fetch('/api/jwtToken', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ campaign, ethAddress, cardId }),
       })
-      const data = await res.json()
+
       if (res.ok) {
-        // Redirect to Google Pay Save to Wallet
-        window.location.href = `https://pay.google.com/gp/v/save/${data.token}`
-      } else {
-        toast.error('Error: ' + data.error, { position: 'bottom-center' })
+        toast.success('Pass created successfully, please wait', {
+          position: 'bottom-center',
+        })
       }
+      if (!res.ok) {
+        toast.error('Error: ' + res.statusText, { position: 'bottom-center' })
+        return
+      }
+      // I need the backend to handle creating the pass object and sending it. I have an API endpoint for this.
+      // The endpoint is at /api/jwtToken, POST (campaign, ethAddress, cardId)
+
+      // call the endpoint to create the pass object
+      // const res = await fetch('/api/jwtToken', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({campaign, ethAddress, cardId}),
+      // })
+
+      // const data = await res.json()
+      // if (res.ok) {
+
+      //   // now we need to setup the SSE connection to the callback URL
+      //   const eventSource = new EventSource(data.callbackUrl)
+      //   eventSource.onmessage = (event) => {
+      //     console.log('SSE message:', event.data)
+      //   }
+      //   eventSource.onerror = (event) => {
+      //     console.error('SSE error:', event)
+      //   }
+      //   eventSource.onopen = () => {
+      //     console.log('SSE connection opened')
+      //   }
+      //   eventSource.onclose = () => {
+      //     console.log('SSE connection closed')
+      //   }
+      // } else {
+      //   toast.error('Error: ' + data.error, { position: 'bottom-center' })
+      // }
     } catch (err) {
       toast.error('Network error', { position: 'bottom-center' })
     }
@@ -72,6 +134,15 @@ function getMobileOS() {
     return 'ios'
   }
   return 'other'
+}
+
+async function createPassAndListen(
+  campaign: string,
+  ethAddress: string,
+  cardId: string
+) {
+  // Construct the externalId (should match what your backend expects)
+  // Optionally, show a loading indicator while waiting for the SSE event
 }
 
 export const Home: Component = () => {
