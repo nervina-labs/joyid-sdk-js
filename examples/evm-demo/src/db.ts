@@ -193,12 +193,10 @@ export async function storePass(
 
   console.log('Data (Card):', data)
 
-  // Log token info (without exposing the full token)
-  /*console.log('Token info:', {
-      hasToken: !!process.env.VERCEL_API_TOKEN,
-      tokenLength: process.env.VERCEL_API_TOKEN?.length,
-      tokenPrefix: process.env.VERCEL_API_TOKEN?.slice(0, 4),
-    })*/
+  if (existing) {
+    // do not overwrite the passId and platform
+    return
+  }
 
   const response = await fetch(
     `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items?teamId=team_ryJ4XZuu7YrC0TunT5S2QwiZ`,
@@ -238,7 +236,45 @@ export async function storePass(
 }
 
 export async function getPass(id: string): Promise<CardCache | null> {
-  return cardCache.get(id)
+  console.log('Searching for card:', id)
+  const key = `card_${id}`
+
+  try {
+    cleanupCache() // Clean up old entries
+
+    const result = await config.get(key)
+    console.log('Query result:', result)
+
+    if (result === undefined) {
+      // List all cards for debugging
+      const allItems = await getAll()
+      /*console.log('All items:', allItems)
+            console.log('All items type:', typeof allItems)
+            console.log('All items keys:', Object.keys(allItems))
+            console.log('All items values:', Object.values(allItems))*/
+
+      // use cached data if available
+      const cached = cardCache.get(id)
+      if (cached) {
+        console.log('Found in cache:', cached)
+        return {
+          id,
+          fileURL: cached.fileURL,
+          timestamp: cached.timestamp,
+        }
+      }
+
+      return null
+    }
+
+    // remove from cache, don't care if it doesn't exist
+    cardCache.delete(id)
+
+    return result as CardCache
+  } catch (error) {
+    console.error('Error fetching card:', error)
+    return null
+  }
 }
 
 export async function storeRegistration(
