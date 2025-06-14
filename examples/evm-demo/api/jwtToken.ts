@@ -1,14 +1,77 @@
 // /api/jwtToken.ts
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 //import { GoogleAuth } from 'google-auth-library';
-import jwt from 'jsonwebtoken'
+//import jwt from 'jsonwebtoken'
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const privateKey = process.env.JWT_PRIVATE_KEY
+  // this function now just calls an API service to create a pass
+  // the remote API will call the wallet-pass-callback API to store the pass
+  const { campaign, ethAddress, cardId } = req.body
+
+  //need a database of cardId to templateId
+  const templateId = 'fa19039a-7e3e-45ed-af60-c1b319b054cb'
+
+  // need to design the pass payload here
+  const passPayload = {
+    id: `${cardId}-${ethAddress}`,
+    callbackUrl: `${process.env.ROOT_URL}/api/wallet-pass-callback`,
+    params: {
+      templateId: templateId,
+      platform: 'google',
+      barcode: {
+        redirect: {
+          url: 'https://openpasskeywallet-ckb-demo.vercel.app',
+        },
+        altText: `${campaign}`,
+      },
+      externalId: `${cardId}-${ethAddress}`,
+      pass: {
+        logo: {
+          sourceUri: {
+            uri: 'https://pub-17883891749c4dd484fccf6780697b62.r2.dev/metadataemp/passkey-modified.png',
+          },
+        },
+        hexBackgroundColor: '#E1AD01',
+        cardTitle: {
+          defaultValue: {
+            language: 'en',
+            value: `${campaign} Demo`,
+          },
+        },
+        header: {
+          defaultValue: {
+            language: 'en',
+            value: `${campaign} Demo`,
+          },
+        },
+        textModulesData: [
+          {
+            id: 'points',
+            header: 'Points',
+            body: '0',
+          },
+        ],
+      },
+    },
+  }
+
+  console.log(`Pass Payload: ${JSON.stringify(passPayload)}`)
+
+  const response = await fetch(
+    'https://54-88-67-169.sslip.io:3005/wallet-passes',
+    {
+      method: 'POST',
+      body: JSON.stringify(passPayload),
+    }
+  )
+  const data = await response.json()
+  res.status(200).json(data)
+
+  /*const privateKey = process.env.JWT_PRIVATE_KEY
   if (!privateKey) {
     return res.status(500).json({ error: 'No private key set' })
   }
@@ -60,5 +123,5 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Missing campaign or ethAddress' })
   }
 
-  res.status(200).json({ token })
+  res.status(200).json({ token })*/
 }
