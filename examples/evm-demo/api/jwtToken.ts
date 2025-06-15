@@ -14,6 +14,43 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   //need a database of cardId to templateId
   const templateId = 'fa19039a-7e3e-45ed-af60-c1b319b054cb'
+  /*
+  {
+    "id": "general_loyalty_1-0x41f2a931F0e3cc70f329B9c5530b604DEd209540",
+    "callbackUrl": "https://openpasskeywallet-ckb-demo.vercel.app/api/wallet-pass-callback",
+    "params": {
+        "templateId": "fa19039a-7e3e-45ed-af60-c1b319b054cb",
+        "platform": "google",
+        "barcode": {
+            "redirect": {
+                "url": "https://openpasskeywallet-ckb-demo.vercel.app"
+            },
+            "altText": "Open Passkey"
+        },
+        "externalId": "general_loyalty_1-0x41f2a931F0e3cc70f329B9c5530b604DEd209540",
+        "pass": {
+            "logo": {
+                "sourceUri": {
+                    "uri": "https://pub-17883891749c4dd484fccf6780697b62.r2.dev/metadataemp/passkey-modified.png"
+                }
+            },
+            "hexBackgroundColor": "#E1AD01",
+            "cardTitle": {
+                "defaultValue": {
+                    "language": "en",
+                    "value": "Open Passkey Demo"
+                }
+            },
+            "header": {
+                "defaultValue": {
+                    "language": "en",
+                    "value": "Open Passkey Demo"
+                }
+            }
+        }
+    }
+}
+  */
 
   // need to design the pass payload here
   const passPayload = {
@@ -48,22 +85,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             value: `${campaign} Demo`,
           },
         },
-        textModulesData: [
-          {
-            id: 'points',
-            header: 'Points',
-            body: '0',
-          },
-        ],
       },
     },
   }
 
   console.log(`Pass Payload: ${JSON.stringify(passPayload)}`)
 
-  const myHeaders = new Headers();
-  myHeaders.append("x-stl-key", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9qZWN0IjoiT3BlbktleSBEZW1vIiwiaWF0IjoxNzQ5Nzk5MzQ5fQ.AGsNrwiPbKphCIiN9yBpSZsQbUdP1Mucyib2baNsKwk");
-  myHeaders.append("Content-Type", "application/json");
+  const myHeaders = new Headers()
+  myHeaders.append(
+    'x-stl-key',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9qZWN0IjoiT3BlbktleSBEZW1vIiwiaWF0IjoxNzQ5Nzk5MzQ5fQ.AGsNrwiPbKphCIiN9yBpSZsQbUdP1Mucyib2baNsKwk'
+  )
+  myHeaders.append('Content-Type', 'application/json')
 
   const response = await fetch(
     'https://54-88-67-169.sslip.io:3005/wallet-passes',
