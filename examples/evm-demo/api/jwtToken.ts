@@ -94,7 +94,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const myHeaders = new Headers()
   myHeaders.append(
     'x-stl-key',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9qZWN0IjoiT3BlbktleSBEZW1vIiwiaWF0IjoxNzQ5Nzk5MzQ5fQ.AGsNrwiPbKphCIiN9yBpSZsQbUdP1Mucyib2baNsKwk'
+    `${process.env.X_STL_KEY}`
   )
   myHeaders.append('Content-Type', 'application/json')
 
