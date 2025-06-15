@@ -13,37 +13,43 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { cardName, cardId, points } = req.body
 
   // we need to fetch the UID from the cardId
-  const card = await getPass(cardId);
+  const card = await getPass(cardId)
 
   if (!card) {
     return res.status(404).json({ error: 'Card not found' })
   }
 
+  console.log(`Card fetched: ${JSON.stringify(card)}`)
+
   // form the payload
   const passPayload = {
-    "id": card.id,
-    "params": {
-      "message": {
-        "header": `${cardName}`,
-        "body": "Token Received",
-        "id": "tokens_received",
-        "message_type": "TEXT_AND_NOTIFY"
+    id: card.passId,
+    params: {
+      message: {
+        header: `${cardName}`,
+        body: 'Token Received',
+        id: 'tokens_received',
+        message_type: 'TEXT_AND_NOTIFY',
       },
-      "pass": {
-            "logo": {
-                "sourceUri": {
-                    "uri": "https://pub-17883891749c4dd484fccf6780697b62.r2.dev/metadataemp/passkey-modified.png"
-                }
-            },
-            "loyaltyPoints": {
-                "balance": {
-                    "string": `${points}`
-                },
-            "label": "Points"
-            }  
-        }
-    }
+      pass: {
+        logo: {
+          sourceUri: {
+            uri: 'https://pub-17883891749c4dd484fccf6780697b62.r2.dev/metadataemp/passkey-modified.png',
+          },
+        },
+        loyaltyPoints: {
+          balance: {
+            string: `${points}`,
+          },
+          label: 'Points',
+        },
+      },
+    },
   }
+
+  /*
+  {"params":{"message":{"header":"Open Passkey","body":"Token Received","id":"tokens_received","message_type":"TEXT_AND_NOTIFY"},"pass":{"logo":{"sourceUri":{"uri":"https://pub-17883891749c4dd484fccf6780697b62.r2.dev/metadataemp/passkey-modified.png"}},"loyaltyPoints":{"balance":{"string":"16"},"label":"Points"}}}}
+  */
 
   console.log(`Pass Payload: ${JSON.stringify(passPayload)}`)
 

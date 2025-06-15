@@ -11,7 +11,7 @@ const CACHE_TTL = 10 * 60 * 1000 // 10 minutes
 
 const cardCache = new Map<
   string,
-  { id: string; fileURL: string; timestamp: number }
+  { passId: string; fileURL: string; timestamp: number }
 >()
 
 // Clean up old cache entries
@@ -41,7 +41,7 @@ export interface CardDetails {
 }
 
 export interface CardCache {
-  id: string
+  passId: string
   fileURL: string
   timestamp: number
 }
@@ -177,7 +177,7 @@ export async function storePass(
 
   //first, store the campaign in the cache
   cardCache.set(id, {
-    id: passId,
+    passId,
     fileURL,
     timestamp: Date.now(),
   })
@@ -258,7 +258,7 @@ export async function getPass(id: string): Promise<CardCache | null> {
       if (cached) {
         console.log('Found in cache:', cached)
         return {
-          id,
+          passId: cached.passId,
           fileURL: cached.fileURL,
           timestamp: cached.timestamp,
         }
