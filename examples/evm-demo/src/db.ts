@@ -177,7 +177,7 @@ export async function storePass(
 
   //first, store the campaign in the cache
   cardCache.set(id, {
-    id,
+    id: passId,
     fileURL,
     timestamp: Date.now(),
   })
