@@ -86,8 +86,6 @@ export const Root: Component = () => {
     testCardId2
   )
 
-
-
   const handleTestPass = () => {
     const os = getMobileOS()
     if (os === 'android') {
@@ -111,13 +109,14 @@ export const Root: Component = () => {
   }
 
   const handleTestPass3 = () => {
+    console.log('handleTestPass3');
     const os = getMobileOS()
-    var platform = 'google'
+    let platform = 'google'
     if (os === 'ios') {
       platform = 'apple'
     }
 
-    generatePass(testCampaign, testEthAddress3, testCardId3, platform);
+    generatePass(testCampaign, testEthAddress3, testCardId3, platform)
   }
 
   return (
@@ -151,11 +150,17 @@ export const Root: Component = () => {
   )
 }
 
-
-function generatePass(campaign: string, ethAddress: string, cardId: string, platform: string) {
+function generatePass(
+  campaign: string,
+  ethAddress: string,
+  cardId: string,
+  platform: string
+) {
   return async () => {
     try {
       const externalId = `${cardId}-${ethAddress}`
+
+      console.log(`External ID: ${externalId}`);
 
       // Start listening for the SSE event BEFORE triggering the backend
       const evtSource = new EventSource(
@@ -181,7 +186,10 @@ function generatePass(campaign: string, ethAddress: string, cardId: string, plat
         evtSource.close()
       })
 
-      const url = platform === 'google' ? '/api/jwtToken' : '/api/generatePkpass';
+      const url =
+        platform === 'google' ? '/api/jwtToken' : '/api/generatePkpass'
+
+      console.log(`URL: ${url}`);
 
       // Now trigger the backend to start the pass creation process
       const res = await fetch(url, {
@@ -204,7 +212,6 @@ function generatePass(campaign: string, ethAddress: string, cardId: string, plat
     }
   }
 }
-
 
 function useGenerateJWT(campaign: string, ethAddress: string, cardId: string) {
   return async () => {

@@ -14,7 +14,12 @@ import { useSearchParams } from '@solidjs/router'
 
 //construct a pass JSON
 
-function generatePass(campaign: string, ethAddress: string, cardId: string, platform: string) {
+function generatePass(
+  campaign: string,
+  ethAddress: string,
+  cardId: string,
+  platform: string
+) {
   return async () => {
     try {
       const externalId = `${cardId}-${ethAddress}`
@@ -43,7 +48,8 @@ function generatePass(campaign: string, ethAddress: string, cardId: string, plat
         evtSource.close()
       })
 
-      const url = platform === 'google' ? '/api/jwtToken' : '/api/generatePkpass';
+      const url =
+        platform === 'google' ? '/api/jwtToken' : '/api/generatePkpass'
 
       // Now trigger the backend to start the pass creation process
       const res = await fetch(url, {
@@ -137,12 +143,12 @@ export const Home: Component = () => {
 
   const handleClaim = () => {
     const os = getMobileOS()
-    var platform = 'google'
+    let platform = 'google'
     if (os === 'ios') {
       platform = 'apple'
     }
 
-    generatePass(campaign, authData.ethAddress, cardId, platform);
+    generatePass(campaign, authData.ethAddress, cardId, platform)
   }
 
   // Hard code to Base Sepolia (if you have a config, otherwise use EthSepolia)
