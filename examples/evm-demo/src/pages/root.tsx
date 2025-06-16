@@ -86,6 +86,20 @@ export const Root: Component = () => {
     testCardId2
   )
 
+  const downloadPkpass3 = generatePass(
+    testCampaign,
+    testEthAddress3,
+    testCardId3,
+    'apple'
+  )
+
+  const generateJWT3 = generatePass(
+    testCampaign,
+    testEthAddress3,
+    testCardId3,
+    'google'
+  )
+
   const handleTestPass = () => {
     const os = getMobileOS()
     if (os === 'android') {
@@ -109,14 +123,15 @@ export const Root: Component = () => {
   }
 
   const handleTestPass3 = () => {
-    console.log('handleTestPass3');
+    console.log('handleTestPass3')
     const os = getMobileOS()
-    let platform = 'google'
-    if (os === 'ios') {
-      platform = 'apple'
+    if (os === 'android') {
+      generateJWT3()
+    } else if (os === 'ios') {
+      downloadPkpass3()
+    } else {
+      toast.error('Unsupported device', { position: 'bottom-center' })
     }
-
-    generatePass(testCampaign, testEthAddress3, testCardId3, platform)
   }
 
   return (
@@ -160,7 +175,7 @@ function generatePass(
     try {
       const externalId = `${cardId}-${ethAddress}`
 
-      console.log(`External ID: ${externalId}`);
+      console.log(`External ID: ${externalId}`)
 
       // Start listening for the SSE event BEFORE triggering the backend
       const evtSource = new EventSource(
@@ -189,7 +204,7 @@ function generatePass(
       const url =
         platform === 'google' ? '/api/jwtToken' : '/api/generatePkpass'
 
-      console.log(`URL: ${url}`);
+      console.log(`URL: ${url}`)
 
       // Now trigger the backend to start the pass creation process
       const res = await fetch(url, {
