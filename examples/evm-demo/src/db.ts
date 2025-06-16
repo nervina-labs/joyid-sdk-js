@@ -9,9 +9,16 @@ const registrationCache = new Map<
 >()
 const CACHE_TTL = 10 * 60 * 1000 // 10 minutes
 
+export interface CardCache {
+    passId: string
+    fileURL: string
+    timestamp: number
+    platform: string
+  }
+
 const cardCache = new Map<
   string,
-  { passId: string; fileURL: string; timestamp: number }
+  CardCache
 >()
 
 // Clean up old cache entries
@@ -40,11 +47,7 @@ export interface CardDetails {
   updatedAt: string
 }
 
-export interface CardCache {
-  passId: string
-  fileURL: string
-  timestamp: number
-}
+
 
 // Test Edge Config connection
 export async function testEdgeConfigConnection(): Promise<boolean> {
@@ -180,6 +183,7 @@ export async function storePass(
     passId,
     fileURL,
     timestamp: Date.now(),
+    platform,
   })
 
   console.log('Existing record (Campaign):', existing)
@@ -247,21 +251,17 @@ export async function getPass(id: string): Promise<CardCache | null> {
 
     if (result === undefined) {
       // List all cards for debugging
-      const allItems = await getAll()
-      /*console.log('All items:', allItems)
-            console.log('All items type:', typeof allItems)
-            console.log('All items keys:', Object.keys(allItems))
-            console.log('All items values:', Object.values(allItems))*/
+    //   const allItems = await getAll()
+    //   /*console.log('All items:', allItems)
+    //         console.log('All items type:', typeof allItems)
+    //         console.log('All items keys:', Object.keys(allItems))
+    //         console.log('All items values:', Object.values(allItems))*/
 
       // use cached data if available
       const cached = cardCache.get(id)
       if (cached) {
         console.log('Found in cache:', cached)
-        return {
-          passId: cached.passId,
-          fileURL: cached.fileURL,
-          timestamp: cached.timestamp,
-        }
+        return cached;
       }
 
       return null

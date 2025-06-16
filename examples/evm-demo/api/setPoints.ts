@@ -1,6 +1,6 @@
 // /api/jwtToken.ts
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { getPass } from '../src/db'
+import { getPass, CardCache } from '../src/db'
 //import { GoogleAuth } from 'google-auth-library';
 //import jwt from 'jsonwebtoken'
 
@@ -20,7 +20,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   console.log(`Card fetched: ${JSON.stringify(card)}`)
+  //switch google/apple
+  const platform = card.platform
+  var data = null;
+  if (platform === 'google') {
+    // google
+    data = await setGooglePoints(card, points, cardName);
+  } else if (platform === 'apple') {
+    // apple
+    data = await setApplePoints(card, points, cardName, cardId);
+  } else {
+    return res.status(400).json({ error: 'Invalid platform' })
+  }
 
+  if (data) {
+    return res.status(200).json(data)
+  } else {
+    return res.status(400).json({ error: 'Failed to set points' })
+  }
+}
+
+
+async function setGooglePoints(card: CardCache, points: number, cardName: string): Promise<any> {
+  console.log(`Setting Google points: ${card.passId} ${points}`)
+  
   // form the payload
   const passPayload = {
     id: card.passId,
@@ -66,6 +89,62 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       redirect: 'follow',
     }
   )
-  const data = await response.json()
-  res.status(200).json(data)
+  return response.json()
+}
+
+async function setApplePoints(card: CardCache, points: number, cardName: string, cardId: string): Promise<any> {
+  console.log(`Setting Apple points: ${card.passId} ${points}`)
+  
+  // form the payload
+  const passPayload = {
+    "id": card.passId,
+    "params": {
+      "pass": {
+        "backFields": [
+          {
+            "key": "note",
+            "value": "Update1"
+          },
+          {
+            "key": "website",
+            "label": "Link",
+            "attributedValue": "Update2",
+            "value": `${process.env.ROOT_URL}/home?campaign=${cardName}&card_id=${cardId}`
+          },
+          {
+            "key": "notification",
+            "label": "Token received",
+            "value": "Token received",
+            "changeMessage": "%@",
+            "textAlignment": "PKTextAlignmentNatural"
+          }
+        ],
+        "secondaryFields": [
+            {
+              "key": "points",
+              "textAlignment": "PKTextAlignmentLeft",
+              "label": "Points",
+              "value": `${points}`
+            }
+          ]
+      }
+    }
+  }
+
+  console.log(`Pass Payload: ${JSON.stringify(passPayload)}`)
+
+  const myHeaders = new Headers()
+  myHeaders.append('x-stl-key', `${process.env.X_STL_KEY}`)
+  myHeaders.append('Content-Type', 'application/json')
+
+  const response = await fetch(
+    'https://54-88-67-169.sslip.io:3005/wallet-passes',
+    {
+      method: 'PUT',
+      body: JSON.stringify(passPayload),
+      headers: myHeaders,
+      redirect: 'follow',
+    }
+  )
+  return response.json()
 }
