@@ -192,9 +192,15 @@ export async function storePass(
 
   console.log('Data (Card):', data)
 
+  var operation = 'create';
+
   if (existing) {
-    // do not overwrite the passId and platform
-    return
+    if (data.passId && data.platform && data.fileURL) {
+        console.log('Updating card data');
+      operation = 'update';
+    } else {
+        return;
+    }
   }
 
   const response = await fetch(
@@ -210,7 +216,7 @@ export async function storePass(
           {
             key,
             value: data,
-            operation: 'create', // Always use create for campaign data
+            operation: operation, 
           },
         ],
       }),
