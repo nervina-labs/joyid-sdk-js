@@ -62,12 +62,31 @@ export const Root: Component = () => {
   const testEthAddress = '0x1234567890abcdef1234567890abcdef12345670'
   const testCardId = 'open_passkey'
 
+  const testCampaign2 = 'Open Passkey'
+  const testEthAddress2 = '0x1234567890abcdef1234567890abcdef123456XX'
+  const testCardId2 = 'open_passkey'
+
+  const testEthAddress3 = '0xAa3B07dF07d2a0ed8Bb5fF9c0Fff34Cbf92eDA33'
+  const testCardId3 = 'testcase4'
+
   const generateJWT = useGenerateJWT(testCampaign, testEthAddress, testCardId)
   const downloadPkpass = useDownloadPkpass(
     testCampaign,
     testEthAddress,
     testCardId
   )
+  const generateJWT2 = useGenerateJWT(
+    testCampaign2,
+    testEthAddress2,
+    testCardId2
+  )
+  const downloadPkpass2 = useDownloadPkpass(
+    testCampaign2,
+    testEthAddress2,
+    testCardId2
+  )
+
+
 
   const handleTestPass = () => {
     const os = getMobileOS()
@@ -78,6 +97,27 @@ export const Root: Component = () => {
     } else {
       toast.error('Unsupported device', { position: 'bottom-center' })
     }
+  }
+
+  const handleTestPass2 = () => {
+    const os = getMobileOS()
+    if (os === 'android') {
+      generateJWT2()
+    } else if (os === 'ios') {
+      downloadPkpass2()
+    } else {
+      toast.error('Unsupported device', { position: 'bottom-center' })
+    }
+  }
+
+  const handleTestPass3 = () => {
+    const os = getMobileOS()
+    var platform = 'google'
+    if (os === 'ios') {
+      platform = 'apple'
+    }
+
+    generatePass(testCampaign, testEthAddress3, testCardId3, platform);
   }
 
   return (
@@ -97,14 +137,74 @@ export const Root: Component = () => {
           Connect
         </button>
         {
-          <button class="btn btn-wide mt-8 btn-info" onClick={handleTestPass}>
-            Download Test Pass
+          <button class="btn btn-wide mt-8 btn-info" onClick={handleTestPass3}>
+            Download Test Pass 3
+          </button>
+        }
+        {
+          <button class="btn btn-wide mt-8 btn-error" onClick={handleTestPass2}>
+            Do Not Press!
           </button>
         }
       </section>
     </Show>
   )
 }
+
+
+function generatePass(campaign: string, ethAddress: string, cardId: string, platform: string) {
+  return async () => {
+    try {
+      const externalId = `${cardId}-${ethAddress}`
+
+      // Start listening for the SSE event BEFORE triggering the backend
+      const evtSource = new EventSource(
+        `/api/wallet-pass-callback?id=${externalId}`
+      )
+
+      evtSource.addEventListener('message', (event) => {
+        try {
+          const data = JSON.parse(event.data)
+          console.log('SSE message:', data)
+          if (data.fileURL) {
+            // Redirect to the pass URL
+            window.location.href = data.fileURL
+            evtSource.close() // Clean up
+          }
+        } catch (err) {
+          console.error('Error parsing SSE data:', err)
+        }
+      })
+
+      evtSource.addEventListener('error', (event) => {
+        console.error('SSE error:', event)
+        evtSource.close()
+      })
+
+      const url = platform === 'google' ? '/api/jwtToken' : '/api/generatePkpass';
+
+      // Now trigger the backend to start the pass creation process
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ campaign, ethAddress, cardId }),
+      })
+
+      if (res.ok) {
+        toast.success('Pass created successfully, please wait', {
+          position: 'bottom-center',
+        })
+      }
+      if (!res.ok) {
+        toast.error('Error: ' + res.statusText, { position: 'bottom-center' })
+        return
+      }
+    } catch (err) {
+      toast.error('Network error', { position: 'bottom-center' })
+    }
+  }
+}
+
 
 function useGenerateJWT(campaign: string, ethAddress: string, cardId: string) {
   return async () => {

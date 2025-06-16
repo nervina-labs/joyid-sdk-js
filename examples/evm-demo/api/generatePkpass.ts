@@ -18,48 +18,48 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const passPayload = {
     id: `${cardId}-${ethAddress}`,
     callbackUrl: `${process.env.ROOT_URL}/api/wallet-pass-callback`,
-    "params": {
-      "templateId": templateId,
-      "platform": "apple",
-      "barcode": {
-        "redirect": {
-          "url": `${process.env.ROOT_URL}`
+    params: {
+      templateId: templateId,
+      platform: 'apple',
+      barcode: {
+        redirect: {
+          url: `${process.env.ROOT_URL}`,
         },
-        "altText": `${campaign}`
+        altText: `${campaign}`,
       },
-      "externalId": `${cardId}-${ethAddress}`,
-      "pass": {
-        "description": `${campaign} Demo`,
-        "backFields": [
+      externalId: `${cardId}-${ethAddress}`,
+      pass: {
+        description: `${campaign} Demo`,
+        backFields: [
           {
-            "key": "website",
-            "label": "Link",
-            "attributedValue": "Website",
-            "value": `${process.env.ROOT_URL}/home?campaign=${campaign}&card_id=${cardId}`
-          }
+            key: 'website',
+            label: 'Link',
+            attributedValue: 'Website',
+            value: `${process.env.ROOT_URL}/home?campaign=${campaign}&card_id=${cardId}`,
+          },
         ],
-        "secondaryFields": [
+        secondaryFields: [
           {
-            "key": "points",
-            "textAlignment": "PKTextAlignmentLeft",
-            "label": "Points",
-            "value": "0"
-          }
+            key: 'points',
+            textAlignment: 'PKTextAlignmentLeft',
+            label: 'Points',
+            value: '0',
+          },
         ],
-        "auxiliaryFields": [
+        auxiliaryFields: [
           {
-            "key": "tier",
-            "label": "Tier",
-            "value": "Appreciator"
+            key: 'tier',
+            label: 'Tier',
+            value: 'Appreciator',
           },
           {
-            "key": "userAddr",
-            "label": "Member Address",
-            "value": `${ethAddress}`
-          }
-        ]
-      }
-    }
+            key: 'userAddr',
+            label: 'Member Address',
+            value: `${ethAddress}`,
+          },
+        ],
+      },
+    },
   }
 
   console.log(`Pass Payload: ${JSON.stringify(passPayload)}`)
@@ -79,5 +79,4 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   )
   const data = await response.json()
   res.status(200).json(data)
-
 }

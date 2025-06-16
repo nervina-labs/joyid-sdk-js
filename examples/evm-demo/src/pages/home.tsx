@@ -14,7 +14,7 @@ import { useSearchParams } from '@solidjs/router'
 
 //construct a pass JSON
 
-function useGenerateJWT(campaign: string, ethAddress: string, cardId: string) {
+function generatePass(campaign: string, ethAddress: string, cardId: string, platform: string) {
   return async () => {
     try {
       const externalId = `${cardId}-${ethAddress}`
@@ -43,8 +43,10 @@ function useGenerateJWT(campaign: string, ethAddress: string, cardId: string) {
         evtSource.close()
       })
 
+      const url = platform === 'google' ? '/api/jwtToken' : '/api/generatePkpass';
+
       // Now trigger the backend to start the pass creation process
-      const res = await fetch('/api/jwtToken', {
+      const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ campaign, ethAddress, cardId }),
@@ -59,36 +61,6 @@ function useGenerateJWT(campaign: string, ethAddress: string, cardId: string) {
         toast.error('Error: ' + res.statusText, { position: 'bottom-center' })
         return
       }
-      // I need the backend to handle creating the pass object and sending it. I have an API endpoint for this.
-      // The endpoint is at /api/jwtToken, POST (campaign, ethAddress, cardId)
-
-      // call the endpoint to create the pass object
-      // const res = await fetch('/api/jwtToken', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({campaign, ethAddress, cardId}),
-      // })
-
-      // const data = await res.json()
-      // if (res.ok) {
-
-      //   // now we need to setup the SSE connection to the callback URL
-      //   const eventSource = new EventSource(data.callbackUrl)
-      //   eventSource.onmessage = (event) => {
-      //     console.log('SSE message:', event.data)
-      //   }
-      //   eventSource.onerror = (event) => {
-      //     console.error('SSE error:', event)
-      //   }
-      //   eventSource.onopen = () => {
-      //     console.log('SSE connection opened')
-      //   }
-      //   eventSource.onclose = () => {
-      //     console.log('SSE connection closed')
-      //   }
-      // } else {
-      //   toast.error('Error: ' + data.error, { position: 'bottom-center' })
-      // }
     } catch (err) {
       toast.error('Network error', { position: 'bottom-center' })
     }
@@ -163,22 +135,14 @@ export const Home: Component = () => {
     localStorage.setItem('card_id', cardId)
   }
 
-  const generateJWT = useGenerateJWT(campaign, authData.ethAddress, cardId)
-  const downloadPkpass = useDownloadPkpass(
-    campaign,
-    authData.ethAddress,
-    cardId
-  )
-
   const handleClaim = () => {
     const os = getMobileOS()
-    if (os === 'android') {
-      generateJWT()
-    } else if (os === 'ios') {
-      downloadPkpass()
-    } else {
-      toast.error('Unsupported device', { position: 'bottom-center' })
+    var platform = 'google'
+    if (os === 'ios') {
+      platform = 'apple'
     }
+
+    generatePass(campaign, authData.ethAddress, cardId, platform);
   }
 
   // Hard code to Base Sepolia (if you have a config, otherwise use EthSepolia)
