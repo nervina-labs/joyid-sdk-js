@@ -10,16 +10,13 @@ const registrationCache = new Map<
 const CACHE_TTL = 10 * 60 * 1000 // 10 minutes
 
 export interface CardCache {
-    passId: string
-    fileURL: string
-    timestamp: number
-    platform: string
-  }
+  passId: string
+  fileURL: string
+  timestamp: number
+  platform: string
+}
 
-const cardCache = new Map<
-  string,
-  CardCache
->()
+const cardCache = new Map<string, CardCache>()
 
 // Clean up old cache entries
 function cleanupCache() {
@@ -46,8 +43,6 @@ export interface CardDetails {
   createdAt: string
   updatedAt: string
 }
-
-
 
 // Test Edge Config connection
 export async function testEdgeConfigConnection(): Promise<boolean> {
@@ -251,17 +246,17 @@ export async function getPass(id: string): Promise<CardCache | null> {
 
     if (result === undefined) {
       // List all cards for debugging
-    //   const allItems = await getAll()
-    //   /*console.log('All items:', allItems)
-    //         console.log('All items type:', typeof allItems)
-    //         console.log('All items keys:', Object.keys(allItems))
-    //         console.log('All items values:', Object.values(allItems))*/
+      //   const allItems = await getAll()
+      //   /*console.log('All items:', allItems)
+      //         console.log('All items type:', typeof allItems)
+      //         console.log('All items keys:', Object.keys(allItems))
+      //         console.log('All items values:', Object.values(allItems))*/
 
       // use cached data if available
       const cached = cardCache.get(id)
       if (cached) {
         console.log('Found in cache:', cached)
-        return cached;
+        return cached
       }
 
       return null

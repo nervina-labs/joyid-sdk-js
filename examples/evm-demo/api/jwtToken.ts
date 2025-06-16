@@ -92,10 +92,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   console.log(`Pass Payload: ${JSON.stringify(passPayload)}`)
 
   const myHeaders = new Headers()
-  myHeaders.append(
-    'x-stl-key',
-    `${process.env.X_STL_KEY}`
-  )
+  myHeaders.append('x-stl-key', `${process.env.X_STL_KEY}`)
   myHeaders.append('Content-Type', 'application/json')
 
   const response = await fetch(

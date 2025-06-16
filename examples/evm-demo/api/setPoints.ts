@@ -22,28 +22,29 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   console.log(`Card fetched: ${JSON.stringify(card)}`)
   //switch google/apple
   const platform = card.platform
-  var data = null;
+  let data = null
   if (platform === 'google') {
     // google
-    data = await setGooglePoints(card, points, cardName);
+    data = await setGooglePoints(card, points, cardName)
   } else if (platform === 'apple') {
     // apple
-    data = await setApplePoints(card, points, cardName, cardId);
+    data = await setApplePoints(card, points, cardName, cardId)
   } else {
     return res.status(400).json({ error: 'Invalid platform' })
   }
 
-  if (data) {
-    return res.status(200).json(data)
-  } else {
-    return res.status(400).json({ error: 'Failed to set points' })
-  }
+  return data
+    ? res.status(200).json(data)
+    : res.status(400).json({ error: 'Failed to set points' })
 }
 
-
-async function setGooglePoints(card: CardCache, points: number, cardName: string): Promise<any> {
+async function setGooglePoints(
+  card: CardCache,
+  points: number,
+  cardName: string
+): Promise<any> {
   console.log(`Setting Google points: ${card.passId} ${points}`)
-  
+
   // form the payload
   const passPayload = {
     id: card.passId,
@@ -52,7 +53,7 @@ async function setGooglePoints(card: CardCache, points: number, cardName: string
         header: `${cardName}`,
         body: 'Token Received',
         id: 'tokens_received',
-        message_type: 'TEXT_AND_NOTIFY',
+        message_type: 'TEXT',
       },
       pass: {
         logo: {
@@ -92,43 +93,48 @@ async function setGooglePoints(card: CardCache, points: number, cardName: string
   return response.json()
 }
 
-async function setApplePoints(card: CardCache, points: number, cardName: string, cardId: string): Promise<any> {
+async function setApplePoints(
+  card: CardCache,
+  points: number,
+  cardName: string,
+  cardId: string
+): Promise<any> {
   console.log(`Setting Apple points: ${card.passId} ${points}`)
-  
+
   // form the payload
   const passPayload = {
-    "id": card.passId,
-    "params": {
-      "pass": {
-        "backFields": [
+    id: card.passId,
+    params: {
+      pass: {
+        backFields: [
           {
-            "key": "note",
-            "value": "Update1"
+            key: 'note',
+            value: 'Update1',
           },
           {
-            "key": "website",
-            "label": "Link",
-            "attributedValue": "Update2",
-            "value": `${process.env.ROOT_URL}/home?campaign=${cardName}&card_id=${cardId}`
+            key: 'website',
+            label: 'Link',
+            attributedValue: 'Update2',
+            value: `${process.env.ROOT_URL}/home?campaign=${cardName}&card_id=${cardId}`,
           },
           {
-            "key": "notification",
-            "label": "Token received",
-            "value": "Token received",
-            "changeMessage": "%@",
-            "textAlignment": "PKTextAlignmentNatural"
-          }
+            key: 'notification',
+            label: 'Token received',
+            value: 'Token received',
+            changeMessage: '%@',
+            textAlignment: 'PKTextAlignmentNatural',
+          },
         ],
-        "secondaryFields": [
-            {
-              "key": "points",
-              "textAlignment": "PKTextAlignmentLeft",
-              "label": "Points",
-              "value": `${points}`
-            }
-          ]
-      }
-    }
+        secondaryFields: [
+          {
+            key: 'points',
+            textAlignment: 'PKTextAlignmentLeft',
+            label: 'Points',
+            value: `${points}`,
+          },
+        ],
+      },
+    },
   }
 
   console.log(`Pass Payload: ${JSON.stringify(passPayload)}`)
