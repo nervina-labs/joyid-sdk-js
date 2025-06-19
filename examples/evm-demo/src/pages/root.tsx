@@ -150,16 +150,6 @@ export const Root: Component = () => {
           onClick={onConnect}>
           Connect
         </button>
-        {
-          <button class="btn btn-wide mt-8 btn-info" onClick={handleTestPass3}>
-            Download Test Pass 3
-          </button>
-        }
-        {
-          <button class="btn btn-wide mt-8 btn-error" onClick={handleTestPass2}>
-            Do Not Press!
-          </button>
-        }
       </section>
     </Show>
   )
