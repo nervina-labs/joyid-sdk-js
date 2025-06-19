@@ -27,7 +27,7 @@ export default function MerchantCreate() {
     <form class="flex flex-col items-center mt-16" onSubmit={handleNext}>
       <h2 class="text-2xl mb-4">Create Project</h2>
       <input
-        class="input input-bordered mb-2"
+        class="input input-bordered mb-2 w-64"
         type="text"
         placeholder="Project Name"
         value={projectName()}

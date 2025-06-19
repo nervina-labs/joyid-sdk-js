@@ -20,7 +20,12 @@ export default function MerchantLogin() {
       localStorage.setItem('merchantLoggedIn', '1')
       navi('/merchant/create')
     } else {
-      setError(data.message || 'Invalid username or password')
+      // if data.message is JSON then show 'invalid username or password'
+      if (typeof data.message === 'string' && data.message.length > 0) {
+        setError(data.message)
+      } else {
+        setError('Invalid username or password')
+      }
     }
   }
 
