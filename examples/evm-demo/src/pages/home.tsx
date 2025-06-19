@@ -14,7 +14,12 @@ import { useSearchParams } from '@solidjs/router'
 
 //construct a pass JSON
 
-function generatePass(campaign: string, ethAddress: string, cardId: string, platform: string) {
+function generatePass(
+  campaign: string,
+  ethAddress: string,
+  cardId: string,
+  platform: string
+) {
   return async () => {
     try {
       const externalId = `${cardId}-${ethAddress}`
@@ -43,7 +48,8 @@ function generatePass(campaign: string, ethAddress: string, cardId: string, plat
         evtSource.close()
       })
 
-      const url = platform === 'google' ? '/api/jwtToken' : '/api/generatePkpass';
+      const url =
+        platform === 'google' ? '/api/jwtToken' : '/api/generatePkpass'
 
       // Now trigger the backend to start the pass creation process
       const res = await fetch(url, {
@@ -135,7 +141,12 @@ export const Home: Component = () => {
     localStorage.setItem('card_id', cardId)
   }
 
-  const getAndroidPass = generatePass(campaign, authData.ethAddress, cardId, 'google')
+  const getAndroidPass = generatePass(
+    campaign,
+    authData.ethAddress,
+    cardId,
+    'google'
+  )
   const getiOSPass = generatePass(
     campaign,
     authData.ethAddress,

@@ -84,15 +84,12 @@ async function setGooglePoints(
     myHeaders.append('Authorization', `Bearer ${process.env.BEARER_TOKEN}`)
   }
 
-  const response = await fetch(
-    `${process.env.WALLET_PASS_URL}/wallet-passes`,
-    {
-      method: 'PUT',
-      body: JSON.stringify(passPayload),
-      headers: myHeaders,
-      redirect: 'follow',
-    }
-  )
+  const response = await fetch(`${process.env.WALLET_PASS_URL}/wallet-passes`, {
+    method: 'PUT',
+    body: JSON.stringify(passPayload),
+    headers: myHeaders,
+    redirect: 'follow',
+  })
   return response.json()
 }
 
@@ -149,14 +146,11 @@ async function setApplePoints(
     myHeaders.append('Authorization', `Bearer ${process.env.BEARER_TOKEN}`)
   }
 
-  const response = await fetch(
-    `${process.env.WALLET_PASS_URL}/wallet-passes`,
-    {
-      method: 'PUT',
-      body: JSON.stringify(passPayload),
-      headers: myHeaders,
-      redirect: 'follow',
-    }
-  )
+  const response = await fetch(`${process.env.WALLET_PASS_URL}/wallet-passes`, {
+    method: 'PUT',
+    body: JSON.stringify(passPayload),
+    headers: myHeaders,
+    redirect: 'follow',
+  })
   return response.json()
 }

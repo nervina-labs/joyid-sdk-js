@@ -18,7 +18,7 @@ export const Redirect: Component = () => {
     const params = []
     if (campaign) params.push(`campaign=${encodeURIComponent(campaign)}`)
     if (cardId) params.push(`card_id=${encodeURIComponent(cardId)}`)
-    return params.length ? `${base}?${params.join('&')}` : base
+    return params.length > 0 ? `${base}?${params.join('&')}` : base
   }
 
   const redirectHome = () => {

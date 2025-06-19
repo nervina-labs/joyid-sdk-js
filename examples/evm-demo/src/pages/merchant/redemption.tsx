@@ -16,10 +16,12 @@ export default function MerchantRedemption() {
         class="textarea textarea-bordered mb-4"
         placeholder="Enter redemption instructions or data"
         value={redemptionData()}
-        onInput={e => setRedemptionData(e.currentTarget.value)}
+        onInput={(e) => setRedemptionData(e.currentTarget.value)}
         required
       />
-      <button class="btn btn-primary" type="submit">Save</button>
+      <button class="btn btn-primary" type="submit">
+        Save
+      </button>
     </form>
   )
 }

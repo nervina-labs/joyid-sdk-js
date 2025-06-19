@@ -98,15 +98,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     myHeaders.append('Authorization', `Bearer ${process.env.BEARER_TOKEN}`)
   }
 
-  const response = await fetch(
-    `${process.env.WALLET_PASS_URL}/wallet-passes`,
-    {
-      method: 'POST',
-      body: JSON.stringify(passPayload),
-      headers: myHeaders,
-      redirect: 'follow',
-    }
-  )
+  const response = await fetch(`${process.env.WALLET_PASS_URL}/wallet-passes`, {
+    method: 'POST',
+    body: JSON.stringify(passPayload),
+    headers: myHeaders,
+    redirect: 'follow',
+  })
   const data = await response.json()
   res.status(200).json(data)
 

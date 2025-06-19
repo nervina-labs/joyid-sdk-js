@@ -32,7 +32,7 @@ export default function MerchantLogin() {
         type="text"
         placeholder="Username"
         value={username()}
-        onInput={e => setUsername(e.currentTarget.value)}
+        onInput={(e) => setUsername(e.currentTarget.value)}
         required
       />
       <input
@@ -40,10 +40,12 @@ export default function MerchantLogin() {
         type="password"
         placeholder="Password"
         value={password()}
-        onInput={e => setPassword(e.currentTarget.value)}
+        onInput={(e) => setPassword(e.currentTarget.value)}
         required
       />
-      <button class="btn btn-primary mb-2" type="submit">Login</button>
+      <button class="btn btn-primary mb-2" type="submit">
+        Login
+      </button>
       {error() && <div class="text-red-500">{error()}</div>}
     </form>
   )
