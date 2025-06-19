@@ -192,14 +192,14 @@ export async function storePass(
 
   console.log('Data (Card):', data)
 
-  var operation = 'create';
+  let operation = 'create'
 
   if (existing) {
     if (data.passId && data.platform && data.fileURL) {
-        console.log('Updating card data');
-      operation = 'update';
+      console.log('Updating card data')
+      operation = 'update'
     } else {
-        return;
+      return
     }
   }
 
@@ -216,7 +216,7 @@ export async function storePass(
           {
             key,
             value: data,
-            operation: operation, 
+            operation: operation,
           },
         ],
       }),

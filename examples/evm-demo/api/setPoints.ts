@@ -80,9 +80,12 @@ async function setGooglePoints(
   const myHeaders = new Headers()
   myHeaders.append('x-stl-key', `${process.env.X_STL_KEY}`)
   myHeaders.append('Content-Type', 'application/json')
+  if (process.env.BEARER_TOKEN) {
+    myHeaders.append('Authorization', `Bearer ${process.env.BEARER_TOKEN}`)
+  }
 
   const response = await fetch(
-    'https://54-88-67-169.sslip.io:3005/wallet-passes',
+    `${process.env.WALLET_PASS_URL}/wallet-passes`,
     {
       method: 'PUT',
       body: JSON.stringify(passPayload),
@@ -142,9 +145,12 @@ async function setApplePoints(
   const myHeaders = new Headers()
   myHeaders.append('x-stl-key', `${process.env.X_STL_KEY}`)
   myHeaders.append('Content-Type', 'application/json')
+  if (process.env.BEARER_TOKEN) {
+    myHeaders.append('Authorization', `Bearer ${process.env.BEARER_TOKEN}`)
+  }
 
   const response = await fetch(
-    'https://54-88-67-169.sslip.io:3005/wallet-passes',
+    `${process.env.WALLET_PASS_URL}/wallet-passes`,
     {
       method: 'PUT',
       body: JSON.stringify(passPayload),

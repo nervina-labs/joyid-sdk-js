@@ -67,9 +67,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const myHeaders = new Headers()
   myHeaders.append('x-stl-key', `${process.env.X_STL_KEY}`)
   myHeaders.append('Content-Type', 'application/json')
+  if (process.env.BEARER_TOKEN) {
+    myHeaders.append('Authorization', `Bearer ${process.env.BEARER_TOKEN}`)
+  }
 
   const response = await fetch(
-    'https://54-88-67-169.sslip.io:3005/wallet-passes',
+    `${process.env.WALLET_PASS_URL}/wallet-passes`,
     {
       method: 'POST',
       body: JSON.stringify(passPayload),
