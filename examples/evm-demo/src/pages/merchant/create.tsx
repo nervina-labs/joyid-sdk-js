@@ -1,6 +1,7 @@
 import { createSignal, onMount } from 'solid-js'
 import { useNavigate } from '@solidjs/router'
-import ColorPicker from 'solid-color-picker'
+import { DefaultColorPicker } from '@thednp/solid-color-picker'
+import '@thednp/solid-color-picker/style.css'
 
 export default function MerchantCreate() {
   const [projectName, setProjectName] = createSignal('')
@@ -35,7 +36,7 @@ export default function MerchantCreate() {
       />
       <label class="mb-2">Card Colour:</label>
       <div class="mb-4">
-        <ColorPicker color={cardColor()} onChange={setCardColor} />
+        <DefaultColorPicker value={cardColor()} onChange={setCardColor} />
       </div>
       <button class="btn btn-primary" type="submit">
         Next

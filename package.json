@@ -53,6 +53,7 @@
   "dependencies": {
     "jsonwebtoken": "^9.0.2",
     "passkit-generator": "^3.4.0",
-    "google-auth-library": ">=5.9.2"
+    "google-auth-library": ">=5.9.2",
+    "@thednp/solid-color-picker": "^0.0.14"
   }
 }
