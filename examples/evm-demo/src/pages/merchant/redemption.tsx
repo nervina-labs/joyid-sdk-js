@@ -7,8 +7,12 @@ export default function MerchantRedemption() {
 
   onMount(() => {
     if (typeof window !== 'undefined') {
-      setProjectName(localStorage.getItem('merchantProjectName') || '')
-      setCardColor(localStorage.getItem('merchantCardColor') || '#E1AD01')
+      const project = localStorage.getItem('merchantProjectName')
+      const color = localStorage.getItem('merchantCardColor')
+      console.log('Reading from localStorage:', { project, color })
+
+      setProjectName(project || '1')
+      setCardColor(color || '#E1AD01')
     }
   })
 
@@ -21,8 +25,16 @@ export default function MerchantRedemption() {
   return (
     <form class="flex flex-col items-center mt-16" onSubmit={handleSave}>
       <h2 class="text-2xl mb-4">Redemption Data</h2>
-      <div class="mb-2">Project Name: <span class="font-bold">{projectName()}</span></div>
-      <div class="mb-4 flex items-center">Card Colour: <span class="inline-block w-6 h-6 rounded ml-2" style={{ 'background-color': cardColor() }}></span> <span class="ml-2">{cardColor()}</span></div>
+      <div class="mb-2">
+        Project Name: <span class="font-bold">{projectName()}</span>
+      </div>
+      <div class="mb-4 flex items-center">
+        Card Colour:{' '}
+        <span
+          class="inline-block w-6 h-6 rounded ml-2"
+          style={{ 'background-color': cardColor() }}></span>{' '}
+        <span class="ml-2">{cardColor()}</span>
+      </div>
       <textarea
         class="textarea textarea-bordered mb-4"
         placeholder="Enter redemption instructions or data"

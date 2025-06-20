@@ -19,7 +19,12 @@ export default function MerchantCreate() {
 
   const handleNext = (e: Event) => {
     e.preventDefault()
+    const project = projectName()
+    const color = cardColor()
+    console.log('Saving to localStorage:', { project, color })
     // Save to state or backend as needed
+    localStorage.setItem('merchantProjectName', project)
+    localStorage.setItem('merchantCardColor', color)
     navi('/merchant/redemption')
   }
 
