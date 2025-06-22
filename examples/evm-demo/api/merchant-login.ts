@@ -15,9 +15,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const headers = new Headers()
     headers.append('Content-Type', 'application/json')
-    /*if (process.env.X_STL_KEY) {
-      headers.append('x-stl-key', process.env.X_STL_KEY)
-    }*/
     if (process.env.BEARER_TOKEN) {
       headers.append('Authorization', `Bearer ${process.env.BEARER_TOKEN}`)
     }

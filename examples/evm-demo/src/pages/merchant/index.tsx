@@ -18,6 +18,7 @@ export default function MerchantLogin() {
     const data = await res.json().catch(() => ({}))
     if (res.ok && data.success) {
       localStorage.setItem('merchantLoggedIn', '1')
+      localStorage.setItem('merchantUsername', username())
       navi('/merchant/create')
     } else {
       // if data.message is JSON then show 'invalid username or password'

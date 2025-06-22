@@ -16,10 +16,36 @@ export default function MerchantRedemption() {
     }
   })
 
-  const handleSave = (e: Event) => {
+  const handleSave = async (e: Event) => {
     e.preventDefault()
-    // Save redemption data to backend
-    alert('Redemption data saved!')
+
+    const username = localStorage.getItem('merchantUsername')
+    if (!username) {
+      alert('Error: Not logged in. Cannot get username.')
+      return
+    }
+
+    const res = await fetch('/api/merchant-project-create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        projectName: projectName(),
+        username: username,
+      }),
+    })
+
+    const data = await res.json()
+
+    if (data.success) {
+      console.log('Project and Issuer created successfully:', data)
+      alert(
+        `Project created! Issuer ID: ${data.issuerId}, Collector ID: ${data.collectorId}`
+      )
+      // You can now proceed to the next step
+    } else {
+      console.error('Failed to create project:', data.message)
+      alert(`Error: ${data.message}`)
+    }
   }
 
   return (

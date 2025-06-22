@@ -97,7 +97,9 @@ export async function storeCampaign(
   campaign: string
 ): Promise<void> {
   const key = `card_${serialNumber}`
-  const existing = await config.get(key)
+  const existing = (await config.get(key)) as
+    | { createdAt?: string }
+    | undefined
 
   //first, store the campaign in the cache
   registrationCache.set(serialNumber, {
@@ -171,7 +173,9 @@ export async function storePass(
   fileURL: string
 ): Promise<void> {
   const key = `card_${id}`
-  const existing = await config.get(key)
+  const existing = (await config.get(key)) as
+    | { createdAt?: string }
+    | undefined
 
   //first, store the campaign in the cache
   cardCache.set(id, {
@@ -247,21 +251,13 @@ export async function getPass(id: string): Promise<CardCache | null> {
   try {
     cleanupCache() // Clean up old entries
 
-    const result = await config.get(key)
-    console.log('Query result:', result)
+    const result = (await config.get(key)) as CardCache | null
 
-    if (result === undefined) {
-      // List all cards for debugging
-      //   const allItems = await getAll()
-      //   /*console.log('All items:', allItems)
-      //         console.log('All items type:', typeof allItems)
-      //         console.log('All items keys:', Object.keys(allItems))
-      //         console.log('All items values:', Object.values(allItems))*/
-
+    if (result == null) {
       // use cached data if available
       const cached = cardCache.get(id)
       if (cached) {
-        console.log('Found in cache:', cached)
+        console.log('Found cached card:', cached)
         return cached
       }
 
@@ -271,7 +267,7 @@ export async function getPass(id: string): Promise<CardCache | null> {
     // remove from cache, don't care if it doesn't exist
     cardCache.delete(id)
 
-    return result as CardCache
+    return result
   } catch (error) {
     console.error('Error fetching card:', error)
     return null
@@ -285,6 +281,8 @@ export async function storeRegistration(
   passTypeId: string
 ): Promise<void> {
   const key = `card_${serialNumber}`
+  const record = (await config.get(key)) as CardDetails | null
+  const now = new Date().toISOString()
 
   //first fetch the campaign from the cache
   const campaign = registrationCache.get(serialNumber)?.campaign
@@ -298,32 +296,32 @@ export async function storeRegistration(
   })
 
   // First check if the record exists
-  const existing = await config.get(key)
+  const existing = record
   console.log('Existing record (Registration):', existing)
 
-  let record = existing
-  if (record === undefined) {
+  let data = existing
+  if (data == null) {
     // Wait 5 seconds and try one more time
     console.log('Campaign record not found, waiting 5 seconds before retry...')
     await new Promise((resolve) => setTimeout(resolve, 5000))
 
-    const retryExisting = await config.get(key)
-    if (retryExisting === undefined) {
+    const retryExisting = (await config.get(key)) as CardDetails | null
+    if (retryExisting == null) {
       throw new Error(
         'Cannot update registration: Campaign record not found, allow retry later'
       )
     }
-    record = retryExisting
+    data = retryExisting
   }
 
-  const data = {
-    ...record,
+  const updatedData = {
+    ...data,
     serialNumber,
     deviceId,
     pushToken,
     passTypeId,
-    updatedAt: new Date().toISOString(),
-    createdAt: record.createdAt, // Use existing createdAt
+    updatedAt: now,
+    createdAt: data.createdAt, // Use existing createdAt
   }
 
   // Always use update operation since we know the record exists
@@ -339,7 +337,7 @@ export async function storeRegistration(
         items: [
           {
             key,
-            value: data,
+            value: updatedData,
             operation: 'update', // Always use update since we know it exists
           },
         ],
@@ -354,7 +352,7 @@ export async function storeRegistration(
       statusText: response.statusText,
       body: errorBody,
       key,
-      data,
+      data: updatedData,
       existing: record,
     })
     throw new Error(
@@ -372,10 +370,10 @@ export async function getCardDetails(
   try {
     cleanupCache() // Clean up old entries
 
-    const result = await config.get(key)
+    const result = (await config.get(key)) as CardDetails | null
     console.log('Query result:', result)
 
-    if (result === undefined) {
+    if (result == null) {
       // List all cards for debugging
       const allItems = await getAll()
       console.log('All items:', allItems)
@@ -404,7 +402,7 @@ export async function getCardDetails(
     // remove from cache, don't care if it doesn't exist
     registrationCache.delete(serialNumber)
 
-    return result as CardDetails
+    return result
   } catch (error) {
     console.error('Error fetching card:', error)
     return null
@@ -450,4 +448,52 @@ export async function deleteCardDetails(
   registrationCache.delete(serialNumber)
 
   return response.ok
+}
+
+export async function storeMerchantApiKey(
+  username: string,
+  apiKey: string
+): Promise<void> {
+  const key = `merchant_${username}`
+  const existing = (await config.get(key)) as
+    | { createdAt?: string }
+    | undefined
+
+  const data = {
+    apiKey,
+    updatedAt: new Date().toISOString(),
+    createdAt: existing?.createdAt || new Date().toISOString(),
+  }
+
+  const response = await fetch(
+    `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items?teamId=team_ryJ4XZuu7YrC0TunT5S2QwiZ`,
+    {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${process.env.VERCEL_API_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        items: [
+          {
+            key,
+            value: data,
+            operation: existing ? 'update' : 'create',
+          },
+        ],
+      }),
+    }
+  )
+
+  if (response.ok) {
+    console.log('Merchant API key stored successfully')
+  } else {
+    const errorBody = await response.text()
+    console.error('Failed to store merchant API key:', {
+      status: response.status,
+      statusText: response.statusText,
+      body: errorBody,
+    })
+    throw new Error('Failed to store merchant API key')
+  }
 }
