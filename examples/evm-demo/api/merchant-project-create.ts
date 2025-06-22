@@ -20,7 +20,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Step 1: Create the project to get an API key
     const projectResponse = await fetch(
-      `${process.env.WALLET_PASS_URL}/project`,
+      `${process.env.WALLET_PASS_URL}/projects`,
       {
         method: 'POST',
         headers: headers,
@@ -36,12 +36,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         message: projectData.message || 'Error creating project',
       })
     }
-    
+
     // Step 1.5: Store the API key
     if (projectData.apiKey) {
       await storeMerchantApiKey(username, projectData.apiKey)
     }
-    
+
     // Step 2: Create the issuer
     const issuerResponse = await fetch(
       `${process.env.WALLET_PASS_URL}/create-issuer`,
@@ -60,10 +60,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         message: issuerData.message || 'Error creating issuer',
       })
     }
-    
+
     // Return the successful response from the second call
     return res.status(200).json({ success: true, ...issuerData })
-
   } catch (error: any) {
     console.error('Project creation process error:', error)
     return res

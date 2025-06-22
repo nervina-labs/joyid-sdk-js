@@ -97,9 +97,7 @@ export async function storeCampaign(
   campaign: string
 ): Promise<void> {
   const key = `card_${serialNumber}`
-  const existing = (await config.get(key)) as
-    | { createdAt?: string }
-    | undefined
+  const existing = (await config.get(key)) as { createdAt?: string } | undefined
 
   //first, store the campaign in the cache
   registrationCache.set(serialNumber, {
@@ -173,9 +171,7 @@ export async function storePass(
   fileURL: string
 ): Promise<void> {
   const key = `card_${id}`
-  const existing = (await config.get(key)) as
-    | { createdAt?: string }
-    | undefined
+  const existing = (await config.get(key)) as { createdAt?: string } | undefined
 
   //first, store the campaign in the cache
   cardCache.set(id, {
@@ -455,9 +451,7 @@ export async function storeMerchantApiKey(
   apiKey: string
 ): Promise<void> {
   const key = `merchant_${username}`
-  const existing = (await config.get(key)) as
-    | { createdAt?: string }
-    | undefined
+  const existing = (await config.get(key)) as { createdAt?: string } | undefined
 
   const data = {
     apiKey,
