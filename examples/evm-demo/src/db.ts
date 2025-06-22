@@ -450,8 +450,12 @@ export async function storeMerchantApiKey(
   username: string,
   apiKey: string
 ): Promise<void> {
-  const key = `merchant_${username}`
+  // we must convert the username (email) to be suitable for a key
+  // cannot contain @ or .
+  const key = `merchant_${username.replace(/[@.]/g, '_').toLowerCase()}`
   const existing = (await config.get(key)) as { createdAt?: string } | undefined
+
+  console.log(`Storing key ${key} record (Merchant API Key): ${apiKey}`)
 
   const data = {
     apiKey,
