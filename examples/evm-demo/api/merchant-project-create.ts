@@ -44,7 +44,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Step 2: Create the issuer
     const issuerResponse = await fetch(
-      `${process.env.WALLET_PASS_URL}/create-issuer`,
+      `${process.env.WALLET_PASS_URL}/merchant-logins/create-issuer`,
       {
         method: 'POST',
         headers: headers, // Re-using the same headers
