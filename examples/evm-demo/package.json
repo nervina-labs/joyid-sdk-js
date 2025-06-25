@@ -20,6 +20,7 @@
     "vite-plugin-solid": "^2.5.0"
   },
   "dependencies": {
+    "@coinbase/wallet-sdk": "^4.3.4",
     "@joyid/evm": "workspace:*",
     "@solid-primitives/clipboard": "^1.5.4",
     "@solid-primitives/storage": "^2.1.1",

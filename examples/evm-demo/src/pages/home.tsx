@@ -5,6 +5,11 @@ import toast from 'solid-toast'
 import { useAuthData, useLogout } from '../hooks/localStorage'
 import { truncateMiddle } from '../utils'
 import { useSearchParams } from '@solidjs/router'
+import { coinBaseWalletAddresses } from '../coinbase/store'
+import {
+  connectCoinbaseWallet,
+  disconnectCoinbaseWallet,
+} from '../coinbase/wallet'
 // import { createQuery } from '@tanstack/solid-query'
 // import { formatEther } from 'ethers/lib/utils'
 // import { useProvider } from '../hooks/provider'
@@ -141,18 +146,17 @@ export const Home: Component = () => {
     localStorage.setItem('card_id', cardId)
   }
 
+  function getWalletAddress() {
+    return authData.ethAddress || coinBaseWalletAddresses[0]
+  }
+
   const getAndroidPass = generatePass(
     campaign,
-    authData.ethAddress,
+    getWalletAddress(),
     cardId,
     'google'
   )
-  const getiOSPass = generatePass(
-    campaign,
-    authData.ethAddress,
-    cardId,
-    'apple'
-  )
+  const getiOSPass = generatePass(campaign, getWalletAddress(), cardId, 'apple')
 
   const handleClaim = () => {
     const os = getMobileOS()
@@ -169,16 +173,18 @@ export const Home: Component = () => {
   // const chain = Chains['BaseSepolia']
 
   return (
-    <Show when={authData.ethAddress} fallback={<Navigate href="/" />}>
+    <Show
+      when={authData.ethAddress || coinBaseWalletAddresses.length > 0}
+      fallback={<Navigate href="/" />}>
       <section class="flex-col flex items-center">
         <div class="stat">
           <div class="stat-title">EVM Account</div>
-          <div class="stat-value">{truncateMiddle(authData.ethAddress)}</div>
+          <div class="stat-value">{truncateMiddle(getWalletAddress())}</div>
           <div class="stat-actions mt-2">
             <button
               class="btn btn-xs btn-success btn-outline"
               onClick={() => {
-                writeClipboard(authData.ethAddress)
+                writeClipboard(getWalletAddress())
                 toast.success('Copied Successfully', {
                   position: 'bottom-center',
                 })
@@ -202,6 +208,27 @@ export const Home: Component = () => {
           }}>
           LOGOUT
         </button>
+        {coinBaseWalletAddresses?.length === 0 ? (
+          <button
+            class="btn btn-wide btn-outline mt-8"
+            onClick={() => connectCoinbaseWallet()}>
+            Connect Coinbase Wallet
+          </button>
+        ) : (
+          <>
+            <div>
+              <div class="text-center mt-8">Coinbase Wallets:</div>
+              {coinBaseWalletAddresses.map((address) => (
+                <p>{address}</p>
+              ))}
+            </div>
+            <button
+              class="btn btn-wide btn-outline mt-8"
+              onClick={() => disconnectCoinbaseWallet()}>
+              Disonnect Coinbase Wallet
+            </button>
+          </>
+        )}
       </section>
     </Show>
   )

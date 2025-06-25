@@ -6,6 +6,7 @@ import { routes } from './routes'
 import { initConfig } from '@joyid/evm'
 import { useAuthData } from './hooks/localStorage'
 import { JOY_ID_URL } from './env'
+import { fillCoinbaseWalletAddresses } from './coinbase/wallet'
 
 const qc = new QueryClient()
 
@@ -13,6 +14,7 @@ const App: Component = () => {
   const Route = useRoutes(routes)
   const { authData } = useAuthData()
   createEffect(() => {
+    fillCoinbaseWalletAddresses()
     initConfig({
       name: 'OpenPasskey Wallet',
       logo: 'https://smarttokenlabs.com/favicon-32x32.png',

@@ -4,6 +4,8 @@ import { useAuthData } from '../hooks/localStorage'
 import { connect, initConfig } from '@joyid/evm'
 import { EthSepolia } from '../chains'
 import toast from 'solid-toast'
+import { coinBaseWalletAddresses } from '../coinbase/store'
+import { connectCoinbaseWallet } from '../coinbase/wallet'
 
 export const Root: Component = () => {
   const [isLoading, setIsLoading] = createSignal(false)
@@ -34,15 +36,32 @@ export const Root: Component = () => {
     })
   })
 
-  const onConnect = async () => {
+  const onConnect = async (wallet: 'JoyID' | 'CoinBase') => {
     setIsLoading(true)
+    let address = ''
     try {
-      const address = await connect()
-      setAuthData({
-        ethAddress: address,
-        mode: 'popup',
-        ...EthSepolia,
-      })
+      if (wallet === 'CoinBase') {
+        try {
+          await connectCoinbaseWallet()
+          if (coinBaseWalletAddresses.length === 0) {
+            throw new Error('Please connect wallet')
+          }
+        } catch (error) {
+          toast.error('Please connect wallet')
+          setIsLoading(false)
+          return
+        }
+
+        address = coinBaseWalletAddresses[0]
+      } else {
+        address = await connect()
+        setAuthData({
+          ethAddress: address,
+          mode: 'popup',
+          ...EthSepolia,
+        })
+      }
+
       let url = '/home'
       const params = []
       if (campaignMarker())
@@ -135,7 +154,9 @@ export const Root: Component = () => {
   }
 
   return (
-    <Show when={!authData.ethAddress} fallback={<Navigate href="/home" />}>
+    <Show
+      when={!authData.ethAddress && coinBaseWalletAddresses.length === 0}
+      fallback={<Navigate href="/home" />}>
       <section class="justify-center flex-col flex">
         <div class="text-center mb-8">
           <h2 class="text-2xl font-bold">
@@ -147,8 +168,14 @@ export const Root: Component = () => {
         <button
           class="btn btn-wide mt-8"
           classList={{ loading: isLoading() }}
-          onClick={onConnect}>
-          Connect
+          onClick={() => onConnect('JoyID')}>
+          Connect JoyId Wallet
+        </button>
+        <button
+          class="btn btn-wide mt-8"
+          classList={{ loading: isLoading() }}
+          onClick={() => onConnect('CoinBase')}>
+          Connect CoinBase Wallet
         </button>
       </section>
     </Show>
