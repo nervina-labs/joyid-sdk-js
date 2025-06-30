@@ -3,30 +3,12 @@ import { useRoutes } from '@solidjs/router'
 import { Toaster } from 'solid-toast'
 import { QueryClient, QueryClientProvider } from '@tanstack/solid-query'
 import { routes } from './routes'
-import { initConfig } from '@joyid/evm'
-import { useAuthData } from './hooks/localStorage'
-import { JOY_ID_URL } from './env'
-import { fillCoinbaseWalletAddresses } from './coinbase/wallet'
 
 const qc = new QueryClient()
 
 const App: Component = () => {
   const Route = useRoutes(routes)
-  const { authData } = useAuthData()
-  createEffect(() => {
-    fillCoinbaseWalletAddresses()
-    initConfig({
-      name: 'OpenPasskey Wallet',
-      logo: 'https://smarttokenlabs.com/favicon-32x32.png',
-      // optional
-      joyidAppURL: JOY_ID_URL,
-      rpcURL: authData.rpcURL,
-      network: {
-        name: authData.name,
-        chainId: authData.chainId,
-      },
-    })
-  })
+
   return (
     <>
       <Toaster />

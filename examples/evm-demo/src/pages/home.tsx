@@ -2,14 +2,14 @@ import { type Component, Show, onMount } from 'solid-js'
 import { writeClipboard } from '@solid-primitives/clipboard'
 import { Navigate, useLocation } from '@solidjs/router'
 import toast from 'solid-toast'
-import { useAuthData, useLogout } from '../hooks/localStorage'
+import { useAuthData } from '../hooks/localStorage'
 import { truncateMiddle } from '../utils'
 import { useSearchParams } from '@solidjs/router'
-import { coinBaseWalletAddresses } from '../coinbase/store'
-import {
-  connectCoinbaseWallet,
-  disconnectCoinbaseWallet,
-} from '../coinbase/wallet'
+import { passkeyWalletAddress, setPasskeyWalletAddress } from '../passkey/store'
+import { cardId, campaign, updateCardIdAndCampaignFromUrl } from '../card/store'
+
+// Dont need that, QR code can be read by the user. QR code contains card_id and campaign
+
 // import { createQuery } from '@tanstack/solid-query'
 // import { formatEther } from 'ethers/lib/utils'
 // import { useProvider } from '../hooks/provider'
@@ -54,8 +54,11 @@ function generatePass(
       })
 
       const url =
-        platform === 'google' ? '/api/jwtToken' : '/api/generatePkpass'
+        (import.meta.env.VITE_PUBLIC_BACKEND_ROOT ||
+          'https://openpasskeywallet-ckb-demo.vercel.app') +
+        (platform === 'google' ? '/api/jwtToken' : '/api/generatePkpass')
 
+      console.log(`Request URL: ${url}`)
       // Now trigger the backend to start the pass creation process
       const res = await fetch(url, {
         method: 'POST',
@@ -129,34 +132,25 @@ async function createPassAndListen(
 }
 
 export const Home: Component = () => {
-  const location = useLocation()
-  const logout = useLogout()
-  const { authData } = useAuthData()
   // Get campaign marker from navigation state (passed from root)
   const [searchParams] = useSearchParams()
-  const campaign =
-    searchParams.campaign || localStorage.getItem('campaign') || ''
-  const cardId = searchParams.card_id || localStorage.getItem('card_id') || ''
 
-  if (campaign) {
-    localStorage.setItem('campaign', campaign)
-  }
-
-  if (cardId) {
-    localStorage.setItem('card_id', cardId)
-  }
-
-  function getWalletAddress() {
-    return authData.ethAddress || coinBaseWalletAddresses[0]
-  }
+  onMount(() => {
+    updateCardIdAndCampaignFromUrl(searchParams)
+  })
 
   const getAndroidPass = generatePass(
-    campaign,
-    getWalletAddress(),
-    cardId,
+    campaign(),
+    passkeyWalletAddress.address,
+    cardId(),
     'google'
   )
-  const getiOSPass = generatePass(campaign, getWalletAddress(), cardId, 'apple')
+  const getiOSPass = generatePass(
+    campaign(),
+    passkeyWalletAddress.address,
+    cardId(),
+    'apple'
+  )
 
   const handleClaim = () => {
     const os = getMobileOS()
@@ -173,18 +167,18 @@ export const Home: Component = () => {
   // const chain = Chains['BaseSepolia']
 
   return (
-    <Show
-      when={authData.ethAddress || coinBaseWalletAddresses.length > 0}
-      fallback={<Navigate href="/" />}>
+    <Show when={passkeyWalletAddress.address} fallback={<Navigate href="/" />}>
       <section class="flex-col flex items-center">
         <div class="stat">
           <div class="stat-title">EVM Account</div>
-          <div class="stat-value">{truncateMiddle(getWalletAddress())}</div>
+          <div class="stat-value">
+            {truncateMiddle(passkeyWalletAddress.address)}
+          </div>
           <div class="stat-actions mt-2">
             <button
               class="btn btn-xs btn-success btn-outline"
               onClick={() => {
-                writeClipboard(getWalletAddress())
+                writeClipboard(passkeyWalletAddress.address)
                 toast.success('Copied Successfully', {
                   position: 'bottom-center',
                 })
@@ -194,7 +188,7 @@ export const Home: Component = () => {
           </div>
           {campaign && (
             <div class="stat-desc mt-2 text-md">
-              <span>Campaign: {campaign}</span>
+              <span>Campaign: {campaign()}</span>
             </div>
           )}
         </div>
@@ -204,31 +198,10 @@ export const Home: Component = () => {
         <button
           class="btn btn-wide btn-outline mt-8"
           onClick={() => {
-            logout()
+            setPasskeyWalletAddress({ address: '' })
           }}>
-          LOGOUT
+          Disconnect Passkey
         </button>
-        {coinBaseWalletAddresses?.length === 0 ? (
-          <button
-            class="btn btn-wide btn-outline mt-8"
-            onClick={() => connectCoinbaseWallet()}>
-            Connect Coinbase Wallet
-          </button>
-        ) : (
-          <>
-            <div>
-              <div class="text-center mt-8">Coinbase Wallets:</div>
-              {coinBaseWalletAddresses.map((address) => (
-                <p>{address}</p>
-              ))}
-            </div>
-            <button
-              class="btn btn-wide btn-outline mt-8"
-              onClick={() => disconnectCoinbaseWallet()}>
-              Disonnect Coinbase Wallet
-            </button>
-          </>
-        )}
       </section>
     </Show>
   )
