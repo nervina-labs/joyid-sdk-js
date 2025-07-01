@@ -1,5 +1,11 @@
 # @joyid/evm
 
+## 0.4.4
+
+### Patch Changes
+
+- [#55](https://github.com/nervina-labs/joyid-sdk-js/pull/55) [`5ba48b0`](https://github.com/nervina-labs/joyid-sdk-js/commit/5ba48b0ad38b27c5942587427efa5a4100ebcc3a) Thanks [@yuche](https://github.com/yuche)! - fix: evm sign message/transaction should pass dapp config params
+
 ## 0.4.3
 
 ### Patch Changes

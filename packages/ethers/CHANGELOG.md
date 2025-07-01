@@ -1,5 +1,12 @@
 # @joyid/ethers
 
+## 0.1.13
+
+### Patch Changes
+
+- Updated dependencies [[`5ba48b0`](https://github.com/nervina-labs/joyid-sdk-js/commit/5ba48b0ad38b27c5942587427efa5a4100ebcc3a)]:
+  - @joyid/evm@0.4.4
+
 ## 0.1.12
 
 ### Patch Changes
