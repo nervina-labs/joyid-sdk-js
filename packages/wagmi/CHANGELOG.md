@@ -1,5 +1,12 @@
 # @joyid/wagmi
 
+## 2.0.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @joyid/ethereum-provider@1.0.10
+
 ## 2.0.9
 
 ### Patch Changes
