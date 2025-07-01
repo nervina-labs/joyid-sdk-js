@@ -317,6 +317,7 @@ export const signTypedData = async (
   })
 
   const res = await runPopup({
+    ...config,
     timeoutInSeconds: timeoutInSeconds ?? 5000,
     popup,
     type: DappRequestType.SignMessage,
@@ -388,6 +389,7 @@ const signTxWithPopupBase = async (
   })
 
   const res = await runPopup({
+    ...config,
     timeoutInSeconds: timeoutInSeconds ?? 5000,
     popup,
     type: DappRequestType.SignEvm,
